@@ -1,7 +1,7 @@
 # classroom-games-client
 
-```
-classDiagram
+
+```classDiagram
     %% =======================
     %% Core Entities
     %% =======================
@@ -89,3 +89,4 @@ classDiagram
     OfflineSingleGameContext --> AiStrategy    : uses
     GameContext --> RecordManager
     GameContext --> PrizeManager
+    ```
