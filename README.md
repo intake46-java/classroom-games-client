@@ -1,92 +1,94 @@
 # classroom-games-client
 
 
-```classDiagram
-    %% =======================
-    %% Core Entities
-    %% =======================
-    class PlayerData {
-        +name
-        +score
-        +status
-    }
+```mermaid
+classDiagram
 
-    %% =======================
-    %% Games (Pure Rules / Logic)
-    %% =======================
-    class Game {
-        <<abstract>>
-        +start()
-        +end()
-        +isValidMove()
-        +checkWinCondition()
-        +getBoardState()
-    }
+%% =======================
+%% Core Entities
+%% =======================
+class PlayerData {
+    +String name
+    +int score
+    +String status
+}
 
-    class TicTacToeGame
-    class ConnectFourGame
-    class SuperTicTacToeGame
+%% =======================
+%% Games (Pure Rules / Logic)
+%% =======================
+class Game {
+    <<abstract>>
+    +start()
+    +end()
+    +isValidMove()
+    +checkWinCondition()
+    +getBoardState()
+}
 
-    Game <|-- TicTacToeGame
-    Game <|-- ConnectFourGame
-    Game <|-- SuperTicTacToeGame
+class TicTacToeGame
+class ConnectFourGame
+class SuperTicTacToeGame
 
-    %% =======================
-    %% Game Context (Wrapper / Session)
-    %% =======================
-    class GameContext {
-        <<abstract>>
-        +initializeGame()
-    }
+Game <|-- TicTacToeGame
+Game <|-- ConnectFourGame
+Game <|-- SuperTicTacToeGame
 
-    class OnlineGameContext {
-        +connectServer()
-    }
+%% =======================
+%% Game Context (Wrapper / Session)
+%% =======================
+class GameContext {
+    <<abstract>>
+    +initializeGame()
+}
 
-    class OfflineSingleGameContext
-    class OfflineMultipleGameContext
+class OnlineGameContext {
+    +connectServer()
+}
 
-    GameContext <|-- OnlineGameContext
-    GameContext <|-- OfflineSingleGameContext
-    GameContext <|-- OfflineMultipleGameContext
+class OfflineSingleGameContext
+class OfflineMultipleGameContext
 
-    %% =======================
-    %% AI Strategy
-    %% =======================
-    class AiStrategy {
-        <<interface>>
-        +makeMove()
-        +easyMove()
-        +mediumMove()
-        +hardMove()
-    }
+GameContext <|-- OnlineGameContext
+GameContext <|-- OfflineSingleGameContext
+GameContext <|-- OfflineMultipleGameContext
 
-    class TicTacToeAI
-    class ConnectFourAI
-    class SuperTicTacToeAI
+%% =======================
+%% AI Strategy
+%% =======================
+class AiStrategy {
+    <<interface>>
+    +makeMove()
+    +easyMove()
+    +mediumMove()
+    +hardMove()
+}
 
-    AiStrategy <|-- TicTacToeAI
-    AiStrategy <|-- ConnectFourAI
-    AiStrategy <|-- SuperTicTacToeAI
+class TicTacToeAI
+class ConnectFourAI
+class SuperTicTacToeAI
 
-    %% =======================
-    %% Managers
-    %% =======================
-    class RecordManager {
-        +saveRecord()
-        +loadRecord()
-    }
+AiStrategy <|.. TicTacToeAI
+AiStrategy <|.. ConnectFourAI
+AiStrategy <|.. SuperTicTacToeAI
 
-    class PrizeManager {
-        +awardPrize()
-    }
+%% =======================
+%% Managers
+%% =======================
+class RecordManager {
+    +saveRecord()
+    +loadRecord()
+}
 
-    %% =======================
-    %% Final Relationships
-    %% =======================
-    GameContext *-- Game             : wraps
-    GameContext o-- PlayerData       : players
-    OfflineSingleGameContext --> AiStrategy    : uses
-    GameContext --> RecordManager
-    GameContext --> PrizeManager
-    ```
+class PrizeManager {
+    +awardPrize()
+}
+
+%% =======================
+%% Final Relationships
+%% =======================
+GameContext *-- Game : wraps
+GameContext o-- PlayerData : players
+OfflineSingleGameContext --> AiStrategy : uses
+GameContext --> RecordManager
+GameContext --> PrizeManager
+
