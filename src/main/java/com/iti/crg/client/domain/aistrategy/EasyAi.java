@@ -3,14 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-package com.iti.crg.client.domain.entities;
+package com.iti.crg.client.domain.aistrategy;
 
 /**
  *
  * @author Osama
  */
-public class TicTacToeBoard extends Board {
-    public TicTacToeBoard() {
-        super(3, 3);
-    }
+public class EasyAi implements AiStrategy{
+
 }
