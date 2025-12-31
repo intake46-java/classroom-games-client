@@ -1,0 +1,14 @@
+com\iti\crg\client\controllers\HomeController.class
+com\iti\crg\client\controllers\PrimaryController.class
+com\iti\crg\client\domain\usecases\LoginUseCase.class
+com\iti\crg\client\domain\gamecontext\GameContext.class
+com\iti\crg\client\domain\gamehandling\GameHandling.class
+com\iti\crg\client\domain\usecases\StartGameUseCase.class
+com\iti\crg\client\domain\entities\PlayerData.class
+com\iti\crg\client\controllers\SecondaryController.class
+module-info.class
+com\iti\crg\client\App.class
+com\iti\crg\client\domain\usecases\RegisterUseCase.class
+com\iti\crg\client\infrastructure\dto\User.class
+com\iti\crg\client\domain\aistrategy\AiStrategy.class
+com\iti\crg\client\infrastructure\remote\ServerConnection.class

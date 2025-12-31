@@ -1,0 +1,14 @@
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\HomeController.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\module-info.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\RegisterUseCase.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\App.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\gamehandling\GameHandling.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\gamecontext\GameContext.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\PrimaryController.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\dto\User.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\PlayerData.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\StartGameUseCase.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\LoginUseCase.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\aistrategy\AiStrategy.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\SecondaryController.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\remote\ServerConnection.java
