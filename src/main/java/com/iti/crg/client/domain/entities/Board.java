@@ -28,6 +28,10 @@ public abstract class Board {
         }
     }
 
+    public char[][] getGrid() {
+        return grid;
+    }
+
     public Cell[] emptyCells() {
         List<Cell> empty = new ArrayList<>();
         for (int r = 0; r < rows; r++) {

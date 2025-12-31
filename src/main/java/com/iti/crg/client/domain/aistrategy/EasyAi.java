@@ -5,10 +5,23 @@
 
 package com.iti.crg.client.domain.aistrategy;
 
+import com.iti.crg.client.domain.entities.Board;
+import com.iti.crg.client.domain.entities.Cell;
+import java.util.Random;
+
 /**
  *
  * @author Osama
  */
 public class EasyAi implements AiStrategy{
+    private Random random = new Random();
+    @Override
+    public Cell AIMove(Board board) {
+       Cell[] emptyCells = board.emptyCells();
+       if (emptyCells.length == 0) return null;
+       Cell randomCell = emptyCells[random.nextInt(emptyCells.length)];
+       return randomCell;  
+    }
+
 
 }
