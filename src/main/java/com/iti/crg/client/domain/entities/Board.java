@@ -23,7 +23,7 @@ public abstract class Board {
         this.grid = new char[rows][cols];
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                grid[r][c] = ' ';
+                grid[r][c] = '_';
             }
         }
     }
@@ -44,7 +44,7 @@ public abstract class Board {
         List<Cell> empty = new ArrayList<>();
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                if (grid[r][c] == ' ') {
+                if (grid[r][c] == '_') {
                     empty.add(new Cell(r, c));
                 }
             }
@@ -55,7 +55,7 @@ public abstract class Board {
     public boolean isFull() {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                if (grid[r][c] == ' ') return false;
+                if (grid[r][c] == '_') return false;
             }
         }
         return true;

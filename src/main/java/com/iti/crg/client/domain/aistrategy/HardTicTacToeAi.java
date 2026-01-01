@@ -63,10 +63,72 @@ public class HardTicTacToeAi implements AiStrategy {
 
         return 0;
     }
-    private int minimax
+
+    private int minimax(Board board, int depth, boolean isAi) {
+        char[][] grid = board.getGrid();
+        int score = evaluate(grid);
+
+        if (score == 10) {
+            return score - depth;
+        }
+        if (score == -10) {
+            return score + depth;
+        }
+        if (!isMovesLeft(board)) {
+            return 0;
+        }
+
+        if (isAi) {
+            int best = Integer.MIN_VALUE;
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (grid[i][j] == '_') {
+                        grid[i][j] = AiCharXO;
+                        best = Math.max(best, minimax(board, depth + 1, false));
+                        grid[i][j] = '_';
+                    }
+                }
+            }
+            return best;
+        } else {
+            int best = Integer.MAX_VALUE;
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (grid[i][j] == '_') {
+                        grid[i][j] = opponentCharXO;
+                        best = Math.min(best, minimax(board, depth + 1, true));
+                        grid[i][j] = '_';
+                    }
+                }
+            }
+            return best;
+        }
+    }
+
+    private Cell findBestMove(Board board) {
+        char[][] grid = board.getGrid();
+        int bestVal = Integer.MIN_VALUE;
+        Cell bestCell = new Cell(-1, -1);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                        if(grid[i][j]=='_'){
+                            grid[i][j] = AiCharXO;
+                            int moveVal = minimax(board,0,false);
+                            grid[i][j]='_';
+                            if(moveVal > bestVal){
+                                bestCell.setRow(i);
+                                bestCell.setCol(j);
+                                bestVal = moveVal;
+                            }
+                        }
+            }
+        }
+        return bestCell;
+    }
+
     @Override
     public Cell AIMove(Board board) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return findBestMove(board);
     }
 
 }

@@ -5,6 +5,7 @@ C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\jav
 C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\gamecontext\GameContext.java
 C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\gamehandling\GameHandling.java
 C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\aistrategy\EasyTicTacToeAi.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\aistrategy\MediumTicTacToeAi.java
 C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\controllers\PrimaryController.java
 C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\controllers\SecondaryController.java
 C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\module-info.java
