@@ -28,6 +28,14 @@ public abstract class Board {
         }
     }
 
+    public int getRows() {
+        return rows;
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
     public char[][] getGrid() {
         return grid;
     }

@@ -13,7 +13,7 @@ import java.util.Random;
  *
  * @author Osama
  */
-public class EasyAi implements AiStrategy{
+public class EasyTicTacToeAi implements AiStrategy{
     private Random random = new Random();
     @Override
     public Cell AIMove(Board board) {
