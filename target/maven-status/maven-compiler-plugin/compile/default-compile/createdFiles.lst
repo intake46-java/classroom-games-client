@@ -1,8 +1,13 @@
-com\iti\crg\client\controllers\HomeController.class
+com\iti\crg\client\domain\entities\TicTacToeBoard.class
 com\iti\crg\client\controllers\PrimaryController.class
 com\iti\crg\client\domain\usecases\LoginUseCase.class
 com\iti\crg\client\domain\gamecontext\GameContext.class
+com\iti\crg\client\domain\aistrategy\MediumTicTacToeAi.class
+com\iti\crg\client\domain\entities\Board.class
+com\iti\crg\client\domain\entities\Cell.class
 com\iti\crg\client\domain\gamehandling\GameHandling.class
+com\iti\crg\client\domain\aistrategy\EasyTicTacToeAi.class
+com\iti\crg\client\domain\aistrategy\HardTicTacToeAi.class
 com\iti\crg\client\domain\usecases\StartGameUseCase.class
 com\iti\crg\client\domain\entities\PlayerData.class
 com\iti\crg\client\controllers\SecondaryController.class
