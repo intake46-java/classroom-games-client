@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-package com.iti.crg.client.domain.aistrategy;
+package com.iti.crg.client.domain.game.aistrategy;
 
 import com.iti.crg.client.domain.entities.Board;
 import com.iti.crg.client.domain.entities.Cell;

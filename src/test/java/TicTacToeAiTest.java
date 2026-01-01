@@ -1,5 +1,7 @@
 import com.iti.crg.client.domain.entities.*;
-import com.iti.crg.client.domain.aistrategy.*;
+import com.iti.crg.client.domain.game.aistrategy.EasyTicTacToeAi;
+import com.iti.crg.client.domain.game.aistrategy.HardTicTacToeAi;
+import com.iti.crg.client.domain.game.aistrategy.MediumTicTacToeAi;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,11 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
 
+<StackPane fx:id="rootPane" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iti.crg.client.controllers.HomeController">
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iti.crg.client.controllers.HomeController">
-   <center>
-      <Label fx:id="nameLabel" text="Label" BorderPane.alignment="CENTER" />
-   </center>
-</BorderPane>
+   <Canvas fx:id="backgroundCanvas" height="600.0" width="900.0" />
+
+   <VBox fx:id="contentBox" alignment="CENTER" fillWidth="true" spacing="50.0">
+
+      <VBox alignment="CENTER" spacing="5.0">
+         <Label styleClass="title-text" text="Tic Tac Toe" />
+
+         <SVGPath content="M10,10 Q150,25 290,10"
+                  fill="TRANSPARENT"
+                  stroke="#B388FF"
+                  strokeLineCap="ROUND"
+                  strokeWidth="6.0" />
+      </VBox>
+
+      <HBox alignment="CENTER" spacing="40.0">
+
+         <Button fx:id="btnOffline" styleClass="btn, btn-offline" text="Play Offline">
+            <graphic>
+               <HBox spacing="5" alignment="CENTER">
+                  <SVGPath content="M2,2 L12,12 M12,2 L2,12" stroke="WHITE" strokeWidth="3" strokeLineCap="ROUND" />
+                  <SVGPath content="M7,1 A6,6 0 1,0 7,13 A6,6 0 1,0 7,1" fill="TRANSPARENT" stroke="WHITE" strokeWidth="2.5" />
+               </HBox>
+            </graphic>
+         </Button>
+
+         <Button fx:id="btnOnline" styleClass="btn, btn-online" text="Play Online">
+            <graphic>
+               <SVGPath content="M12,18 C12,18 12,18 12,18 M8,14 A5,5 0 0,1 16,14 M5,10 A9,9 0 0,1 19,10 M2,6 A13,13 0 0,1 22,6"
+                        stroke="WHITE" strokeWidth="2.5" strokeLineCap="ROUND" fill="TRANSPARENT" />
+            </graphic>
+         </Button>
+
+      </HBox>
+
+      <Label styleClass="footer-text" text="More games coming soon..." />
+
+   </VBox>
+</StackPane>

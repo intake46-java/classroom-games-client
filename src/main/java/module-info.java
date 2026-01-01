@@ -6,12 +6,12 @@ module com.iti.tictactoe.client {
     opens com.iti.crg.client to javafx.fxml, org.junit.platform.commons;
     opens com.iti.crg.client.controllers to javafx.fxml, org.junit.platform.commons;
     opens com.iti.crg.client.domain.entities to org.junit.platform.commons;
-    opens com.iti.crg.client.domain.aistrategy to org.junit.platform.commons;
+    opens com.iti.crg.client.domain.game.aistrategy to org.junit.platform.commons;
 
 
     exports com.iti.crg.client;
     exports com.iti.crg.client.controllers;
     exports com.iti.crg.client.domain.entities;
-    exports com.iti.crg.client.domain.aistrategy;
+    exports com.iti.crg.client.domain.game.aistrategy;
 
 }
