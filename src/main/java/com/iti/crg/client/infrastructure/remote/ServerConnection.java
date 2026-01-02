@@ -14,6 +14,7 @@ public class ServerConnection {
     private Socket socket;
     private BufferedReader reader;
     private PrintStream writer;
+    public boolean connected = false;
 
     private ServerConnection() {
         // Optional: You could auto-connect here, or keep it manual
@@ -38,6 +39,7 @@ public class ServerConnection {
      */
     public boolean connect() {
         if (socket != null && !socket.isClosed() && socket.isConnected()) {
+            connected = true;
             return true;
         }
 
@@ -58,6 +60,22 @@ public class ServerConnection {
             if (writer != null) writer.close();
             if (reader != null) reader.close();
             if (socket != null) socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            socket = null;
+            reader = null;
+            writer = null;
+        }
+    }
+
+    public void forceDisconnect() {
+        try {
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+            }
+            if (reader != null) reader.close();
+            if (writer != null) writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
