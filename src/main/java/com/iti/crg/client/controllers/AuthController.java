@@ -2,6 +2,7 @@ package com.iti.crg.client.controllers;
 
 import com.iti.crg.client.domain.usecases.LoginResult;
 import com.iti.crg.client.domain.usecases.LoginUseCase;
+import com.iti.crg.client.infrastructure.remote.ServerConnection;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -127,12 +128,12 @@ public class AuthController implements Initializable {
         }
 
         // Disable button to prevent double clicks
+        loginButton.disableProperty().unbind();
         loginButton.setDisable(true);
 
         // Run Login Logic in Background Thread
         new Thread(() -> {
             LoginResult result = loginUseCase.execute(username, password);
-
             Platform.runLater(() -> {
                 loginButton.setDisable(false);
                 if (result.isSuccess()) {
