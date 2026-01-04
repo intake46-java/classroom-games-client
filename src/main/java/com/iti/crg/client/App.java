@@ -15,9 +15,20 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("home"), 640, 480);
-        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        
+//        confirm invitation dialog
+//        scene = new Scene(loadFXML("game_invitation"), 320, 130);
+//        scene.getStylesheets().add(getClass().getResource("game_invitation.css").toExternalForm());
+//        stage.setMinWidth(320);
+//        stage.setMaxWidth(320);
+//        stage.setMinHeight(160);
+//        stage.setMaxHeight(160);
+        
+        
+        scene = new Scene(loadFXML("auth"), 1000, 600);
+        scene.getStylesheets().add(getClass().getResource("auth.css").toExternalForm());
         stage.setScene(scene);
+        
         stage.show();
     }
 
