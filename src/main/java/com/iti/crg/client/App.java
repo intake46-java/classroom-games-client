@@ -27,8 +27,6 @@ public class App extends Application {
         
         scene = new Scene(loadFXML("auth"), 1000, 600);
         scene.getStylesheets().add(getClass().getResource("auth.css").toExternalForm());
-        
-        
         stage.setScene(scene);
         
         stage.show();

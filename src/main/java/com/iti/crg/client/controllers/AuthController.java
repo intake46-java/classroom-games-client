@@ -2,7 +2,9 @@ package com.iti.crg.client.controllers;
 
 import com.iti.crg.client.domain.usecases.LoginResult;
 import com.iti.crg.client.domain.usecases.LoginUseCase;
+import com.iti.crg.client.domain.usecases.RegisterUseCase;
 import com.iti.crg.client.infrastructure.remote.ServerConnection;
+import com.iti.crg.client.infrastructure.repository.AuthRepositoryImp;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -38,8 +40,15 @@ public class AuthController implements Initializable {
     @FXML private Button eyeButton;
     @FXML private StackPane passwordContainer;
 
+    @FXML private Button loginTabBtn;
+    @FXML private Button registerTabBtn;
+    @FXML private Button actionButton;
+
+    private final RegisterUseCase registerUseCase = new RegisterUseCase();
+    private boolean isLoginMode = true;
+
     // --- Dependencies ---
-    private final LoginUseCase loginUseCase = new LoginUseCase();
+    private final LoginUseCase loginUseCase = new LoginUseCase(new AuthRepositoryImp());
     private boolean isPasswordVisible = false;
 
     @Override
@@ -59,6 +68,40 @@ public class AuthController implements Initializable {
             }
         };
         timer.start();
+
+        setLoginMode();
+    }
+
+    @FXML
+    private void onLoginTabClick(ActionEvent event) {
+        setLoginMode();
+    }
+
+    @FXML
+    private void onRegisterTabClick(ActionEvent event) {
+        setRegisterMode();
+    }
+
+    private void setLoginMode() {
+        isLoginMode = true;
+        loginTabBtn.getStyleClass().removeAll("inactive-tab");
+        loginTabBtn.getStyleClass().add("active-tab");
+
+        registerTabBtn.getStyleClass().removeAll("active-tab");
+        registerTabBtn.getStyleClass().add("inactive-tab");
+
+        actionButton.setText("Login");
+    }
+
+    private void setRegisterMode() {
+        isLoginMode = false;
+        registerTabBtn.getStyleClass().removeAll("inactive-tab");
+        registerTabBtn.getStyleClass().add("active-tab");
+
+        loginTabBtn.getStyleClass().removeAll("active-tab");
+        loginTabBtn.getStyleClass().add("inactive-tab");
+
+        actionButton.setText("Register");
     }
 
     private void initParticles() {
@@ -117,34 +160,6 @@ public class AuthController implements Initializable {
         }
     }
 
-    @FXML
-    private void login(ActionEvent event) {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-
-        if (username.isEmpty() || password.isEmpty()) {
-            showAlert("Error", "Please enter both username and password.");
-            return;
-        }
-
-        // Disable button to prevent double clicks
-        loginButton.disableProperty().unbind();
-        loginButton.setDisable(true);
-
-        // Run Login Logic in Background Thread
-        new Thread(() -> {
-            LoginResult result = loginUseCase.execute(username, password);
-            Platform.runLater(() -> {
-                loginButton.setDisable(false);
-                if (result.isSuccess()) {
-                    navigateToHome(event, username, result);
-                } else {
-                    showAlert("Login Failed", "Wrong username or password, or server is down.");
-                }
-            });
-        }).start();
-    }
-
     private void navigateToHome(ActionEvent event, String username, LoginResult result) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/iti/crg/client/home.fxml"));
@@ -188,5 +203,47 @@ public class AuthController implements Initializable {
             if (x < 0 || x > width) vx *= -1;
             if (y < 0 || y > height) vy *= -1;
         }
+    }
+
+    @FXML
+    private void handleAuthAction(ActionEvent event) {
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            showAlert("Error", "Please enter both username and password.");
+            return;
+        }
+
+        actionButton.setDisable(true);
+
+        new Thread(() -> {
+            LoginResult result;
+
+            if (isLoginMode) {
+                // Perform Login
+                result = loginUseCase.execute(username, password);
+            } else {
+                // Perform Register
+                result = registerUseCase.execute(username, password);
+            }
+
+            Platform.runLater(() -> {
+                actionButton.setDisable(false);
+
+                if (result.isSuccess()) {
+                    if (isLoginMode) {
+                        navigateToHome(event, username, result);
+                    } else {
+                        // If register success, switch back to login or auto-login
+                        showAlert("Success", "Account created! Please log in.");
+                        setLoginMode();
+                    }
+                } else {
+                    String msg = isLoginMode ? "Login Failed" : "Registration Failed (Username taken?)";
+                    showAlert("Error", msg);
+                }
+            });
+        }).start();
     }
 }
