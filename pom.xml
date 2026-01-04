@@ -25,7 +25,11 @@
         <artifactId>javafx-media</artifactId>
         <version>25</version>
     </dependency>
-
+    <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>2.13.2</version>
+    </dependency>
     <!-- JUnit 5 API and Engine -->
     <dependency>
         <groupId>org.junit.jupiter</groupId>

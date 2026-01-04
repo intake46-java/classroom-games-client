@@ -1,5 +1,8 @@
 package com.iti.crg.client.domain.usecases;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.iti.crg.client.domain.repository.AuthRepository;
 import com.iti.crg.client.infrastructure.remote.ServerConnection;
 
 import java.io.BufferedReader;
@@ -7,33 +10,15 @@ import java.io.PrintStream;
 
 
 public class LoginUseCase {
+    private final AuthRepository repository;
+
+    public LoginUseCase(AuthRepository repository) {
+        this.repository = repository;
+    }
 
     public LoginResult execute(String username, String password) {
-        ServerConnection connection = ServerConnection.getInstance();
-
-        connection.forceDisconnect();
-
-        if (!connection.connect()) {
-            return new LoginResult(false, null, null, null);
-        }
-
-
-        try {
-
-            PrintStream ps = connection.getWriter();
-            BufferedReader dis = connection.getReader();
-
-            ps.println(username);
-            ps.println(password);
-            ps.flush();
-            String response = dis.readLine();
-
-            boolean isPlayerExist = Boolean.parseBoolean(response);
-            return new LoginResult(isPlayerExist, connection.getSocket(), dis, ps);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new LoginResult(false, null, null, null);
-        }
+        return repository.login(username, password);
     }
+
+
 }
