@@ -1,20 +1,17 @@
-/* 1. Background Gradient (Subtle White to Teal/Purple mix) */
 .root {
     -fx-background-color: linear-gradient(to bottom right, #ffffff 0%, #f0faff 50%, #f3e5f5 100%);
 }
 
-/* 2. Title Typography */
 .title-text {
     -fx-font-family: "Segoe UI", "Verdana", sans-serif;
     -fx-font-size: 60px;
-    -fx-font-weight: 800; /* Extra Bold */
+    -fx-font-weight: 800; 
     -fx-text-fill: #333333;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
 }
 
-/* 3. Base Button Styling */
 .btn {
-    -fx-background-radius: 40; /* High radius for pill shape */
+    -fx-background-radius: 40; 
     -fx-text-fill: white;
     -fx-font-family: "Segoe UI", sans-serif;
     -fx-font-size: 18px;
@@ -24,15 +21,13 @@
     -fx-cursor: hand;
     -fx-alignment: CENTER;
     -fx-content-display: LEFT;
-    -fx-graphic-text-gap: 15; /* Space between Icon and Text */
+    -fx-graphic-text-gap: 15; 
 }
 
-/* 4. Offline Button Gradient (Blue -> Light Purple) */
-/* Matches the left button in your image */
+
 .btn-offline {
-    -fx-background-color: linear-gradient(to right, #6a85b6 0%, #bac8e0 100%); /* Fallback */
-    -fx-background-color: linear-gradient(to right, #4facfe 0%, #a18cd1 100%); /* Exact Vibe */
-    /* Soft colored shadow */
+    -fx-background-color: linear-gradient(to right, #6a85b6 0%, #bac8e0 100%); 
+    -fx-background-color: linear-gradient(to right, #4facfe 0%, #a18cd1 100%); 
     -fx-effect: dropshadow(three-pass-box, rgba(79, 172, 254, 0.4), 20, 0.0, 0, 8);
 }
 
@@ -40,11 +35,9 @@
     -fx-background-color: linear-gradient(to right, #4facfe 20%, #b721ff 100%);
 }
 
-/* 5. Online Button Gradient (Mint -> Teal) */
-/* Matches the right button in your image */
+
 .btn-online {
     -fx-background-color: linear-gradient(to right, #43e97b 0%, #38f9d7 100%);
-    /* Soft colored shadow */
     -fx-effect: dropshadow(three-pass-box, rgba(67, 233, 123, 0.4), 20, 0.0, 0, 8);
 }
 
@@ -52,7 +45,6 @@
     -fx-background-color: linear-gradient(to right, #38f9d7 0%, #43e97b 100%);
 }
 
-/* 6. Footer Text */
 .footer-text {
     -fx-font-family: "Arial";
     -fx-font-size: 14px;
