@@ -3,6 +3,7 @@ C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\jav
 C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\TicTacToeBoard.java
 C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\controllers\HomeController.java
 C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\WinScreenController.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\LoseScreenController.java
 C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\Cell.java
 C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\aistrategy\MediumTicTacToeAi.java
 C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\Board.java

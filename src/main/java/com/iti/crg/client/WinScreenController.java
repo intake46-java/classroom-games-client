@@ -68,13 +68,13 @@ public class WinScreenController {
     
     @FXML
     private void handlePlayAgain() {
-       // stopVideo();
+         // stopVideo();
         // App.setRoot();
     }
     
     @FXML
     private void handleBackToHome() {
-       // stopVideo();
+         // stopVideo();
         // App.setRoot();
     }
     
