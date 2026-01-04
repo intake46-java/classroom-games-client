@@ -1,4 +1,4 @@
-package com.iti.crg.client;
+package com.iti.crg.client.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

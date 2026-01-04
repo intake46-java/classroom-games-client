@@ -14,7 +14,7 @@
             stylesheets="@win.css"
             xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.iti.crg.client.WinScreenController">
+            fx:controller="com.iti.crg.client.controllers.WinScreenController">
     <children>
         <VBox alignment="CENTER"
               AnchorPane.bottomAnchor="0.0" 
