@@ -23,10 +23,25 @@ public class App extends Application {
 //        stage.setMaxWidth(320);
 //        stage.setMinHeight(160);
 //        stage.setMaxHeight(160);
+
+////////////////////////////////////////////////////////////////
+
+        //OnlinePlayersController        
+//        scene = new Scene(loadFXML("onlinePlayers"), 1000, 600);
+//        scene.getStylesheets().add(getClass().getResource("onlinePlayers.css").toExternalForm());
+//        stage.setMinWidth(1000);
+//        stage.setMaxWidth(1000);
+//        stage.setMinHeight(600);
+//        stage.setMaxHeight(600);
         
-        
-        scene = new Scene(loadFXML("auth"), 1000, 600);
-        scene.getStylesheets().add(getClass().getResource("auth.css").toExternalForm());
+////////////////////////////////////////////////////////////////
+        scene = new Scene(loadFXML("gameBoard"), 1000, 650);
+        scene.getStylesheets().add(getClass().getResource("gameBoard.css").toExternalForm());
+
+                
+                
+//        scene = new Scene(loadFXML("auth"), 1000, 600);
+//        scene.getStylesheets().add(getClass().getResource("auth.css").toExternalForm());
         stage.setScene(scene);
         
         stage.show();
