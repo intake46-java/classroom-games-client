@@ -4,6 +4,7 @@ com\iti\crg\client\domain\entities\Cell.class
 com\iti\crg\client\controllers\AuthController.class
 com\iti\crg\client\domain\usecases\RegisterUseCase.class
 com\iti\crg\client\infrastructure\remote\ServerConnection$ServerConnectionHolder.class
+com\iti\crg\client\domain\game\gamehandling\TicTacToeGame.class
 com\iti\crg\client\domain\usecases\LoginResult.class
 com\iti\crg\client\domain\game\aistrategy\EasyTicTacToeAi.class
 com\iti\crg\client\domain\game\managers\SaveRecordInStream.class

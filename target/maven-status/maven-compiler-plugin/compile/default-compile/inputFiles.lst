@@ -6,6 +6,7 @@ F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\doma
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\OnlinePlayersController.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\AuthController.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\managers\SaveRecordInStream.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamehandling\TicTacToeGame.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamecontext\GameContext.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\PlayerData.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\StartGameUseCase.java

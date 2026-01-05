@@ -9,6 +9,4 @@ public class OfflineSingleGameContext extends GameContext{
     public OfflineSingleGameContext(AiStrategy aiStrategy){
         this.aiStrategy = aiStrategy;
     }
-    
-    
 }
