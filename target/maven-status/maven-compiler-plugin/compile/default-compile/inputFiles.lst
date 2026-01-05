@@ -3,8 +3,10 @@ F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infr
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\RegisterUseCase.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\dto\Request.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\managers\LoadForStream.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\OnlinePlayersController.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\AuthController.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\managers\SaveRecordInStream.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamehandling\TicTacToeGame.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamecontext\GameContext.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\PlayerData.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\StartGameUseCase.java
@@ -21,11 +23,13 @@ F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infr
 F:\ITI\java\Project\classroom-games-client\src\main\java\module-info.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\aistrategy\AiStrategy.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\App.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\GameBoardController.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\Cell.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\aistrategy\MediumTicTacToeAi.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamehandling\GameHandling.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\LoseScreenController.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\WinScreenController.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamecontext\OfflineSingleGameContext.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\repository\AuthRepository.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\TicTacToeBoard.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\managers\VideoManager.java

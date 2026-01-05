@@ -2,6 +2,7 @@ package com.iti.crg.client.controllers;
 
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.URL;
@@ -10,9 +11,15 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+import com.iti.crg.client.domain.usecases.LoginResult;
 import javafx.animation.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -20,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.Glow;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class HomeController implements Initializable {
@@ -166,6 +174,31 @@ public class HomeController implements Initializable {
         this.mySocket = mySocket;
         this.dis = dis;
         this.ps = ps;
+    }
+
+    @FXML
+    private void onOffline(ActionEvent event) {
+        navigate(event, "OfflineView");
+    }
+
+    @FXML
+    private void onOnline(ActionEvent event) {
+        navigate(event, "auth");
+    }
+
+
+    private void navigate(ActionEvent event, String screen) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/iti/crg/client/"+screen+".fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root, 1000, 600));
+            stage.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
     }
     
     
