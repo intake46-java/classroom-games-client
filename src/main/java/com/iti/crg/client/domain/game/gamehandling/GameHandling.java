@@ -1,11 +1,20 @@
 package com.iti.crg.client.domain.game.gamehandling;
 
 import com.iti.crg.client.domain.entities.Cell;
-import com.iti.crg.client.domain.entities.TicTacToeBoard;
 
 public interface GameHandling {
-    
-      abstract public boolean isValidMove(Cell cell);
-      abstract public boolean isWinner(TicTacToeBoard board);
-      abstract public boolean isTie(TicTacToeBoard board);
+      void startGame();
+      void endGame();
+
+      // Returns true if the move was valid and successful
+      boolean makeMove(int row, int col);
+      void changeTurn();
+
+      // Status Checks
+      boolean checkWin();
+      boolean checkTie();
+      boolean isGameOver();
+
+      // Data for UI
+      char getCurrentPlayer(); // Or return a Player object/String for generic usage
 }

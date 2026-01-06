@@ -26,7 +26,7 @@ public class App extends Application {
 
 ////////////////////////////////////////////////////////////////
 
-        //OnlinePlayersController        
+        //OnlinePlayersController
 //        scene = new Scene(loadFXML("onlinePlayers"), 1000, 600);
 //        scene.getStylesheets().add(getClass().getResource("onlinePlayers.css").toExternalForm());
 //        stage.setMinWidth(1000);
