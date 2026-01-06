@@ -60,4 +60,10 @@ public abstract class Board {
         }
         return true;
     }
+    
+    
+    //added by mina
+    public void setGridCell(int row, int col, char ch){
+        grid[row][col] = ch;
+    }
 }

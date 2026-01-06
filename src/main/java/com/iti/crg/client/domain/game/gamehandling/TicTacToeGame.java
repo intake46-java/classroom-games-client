@@ -21,7 +21,7 @@ public class TicTacToeGame extends TicTacToeBoard implements GameHandling {
 
         return row >= 0 && row < 3
                 && col >= 0 && col < 3
-                && grid[row][col] == ' ';
+                && grid[row][col] == '_';
     }
 
     @Override
@@ -29,15 +29,15 @@ public class TicTacToeGame extends TicTacToeBoard implements GameHandling {
         char[][] grid = board.getGrid();
         for (int i = 0; i < board.getRows(); i++) {
             // Check Rows
-            if (grid[i][0] != ' ' && grid[i][0] == grid[i][1] && grid[i][1] == grid[i][2]) {
+            if (grid[i][0] != '_' && grid[i][0] == grid[i][1] && grid[i][1] == grid[i][2]) {
                 return true;
             } // Check Columns
-            else if (grid[0][i] != ' ' && grid[0][i] == grid[1][i] && grid[1][i] == grid[2][i]) {
+            else if (grid[0][i] != '_' && grid[0][i] == grid[1][i] && grid[1][i] == grid[2][i]) {
                 return true;
             }
         }
         // Check Diagonals
-        if (grid[1][1] != ' ') {
+        if (grid[1][1] != '_') {
             if (grid[0][0] == grid[1][1] && grid[1][1] == grid[2][2]) {
                 return true;
             } else if (grid[0][2] == grid[1][1] && grid[1][1] == grid[2][0]) {
