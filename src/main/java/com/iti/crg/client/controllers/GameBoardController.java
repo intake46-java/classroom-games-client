@@ -7,6 +7,8 @@ import com.iti.crg.client.domain.game.aistrategy.HardTicTacToeAi;
 import com.iti.crg.client.domain.game.aistrategy.MediumTicTacToeAi;
 import com.iti.crg.client.domain.game.gamecontext.GameContext;
 import com.iti.crg.client.domain.game.gamecontext.OfflineSingleGameContext;
+import com.iti.crg.client.domain.game.gamehandling.GameHandling;
+import com.iti.crg.client.domain.game.gamehandling.TicTacToeGame;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -42,10 +44,11 @@ public class GameBoardController implements Initializable, Runnable{
     private Button b8;
     
     private OfflineSingleGameContext gameContext;
+//    private TicTacToeGame ticTacToeGame;
 //    private char myChar = 'x';
 //    private char aiChar = 'o';
     private volatile boolean humanTurn = true;
-    private AiStrategy aiStrategy;
+//    private AiStrategy aiStrategy;
     Thread aiThread;
     private volatile boolean gameRunning = true;
     /**
@@ -54,8 +57,9 @@ public class GameBoardController implements Initializable, Runnable{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        gameContext = new OfflineSingleGameContext(new EasyTicTacToeAi());  // -> will be change
-        aiStrategy = new EasyTicTacToeAi();
+        gameContext = new OfflineSingleGameContext(new EasyTicTacToeAi() , new TicTacToeGame());  // -> will be change
+//        aiStrategy = new EasyTicTacToeAi();
+//        ticTacToeGame = new TicTacToeGame();
         
         aiThread = new Thread(this);
         aiThread.start();
@@ -120,10 +124,10 @@ public class GameBoardController implements Initializable, Runnable{
 
     public boolean handleMoveHelper(int row, int col , char c){
         
-        if(gameContext.ticTacToeGame.isValidMove(new Cell(row,col))){
+        if(((TicTacToeGame)gameContext.getGame()).isValidMove(new Cell(row,col))){
 //            b1.setText("X");
-            gameContext.ticTacToeGame.setGridCell(row,col,c);
-            if(gameContext.ticTacToeGame.isWinner(gameContext.ticTacToeGame)){
+            ((TicTacToeGame)gameContext.getGame()).setGridCell(row,col,c);
+            if(((TicTacToeGame)gameContext.getGame()).isWinner()){
                 System.out.println("x wins");
                 gameRunning = false;
             }
@@ -164,18 +168,18 @@ public class GameBoardController implements Initializable, Runnable{
                 } catch (InterruptedException e) {
                     break;
                 }
-                System.out.println("the length = " + gameContext.ticTacToeGame.emptyCells().length);
-                if(gameContext.ticTacToeGame.emptyCells().length == 0)
+                System.out.println("the length = " + ((TicTacToeGame)gameContext.getGame()).emptyCells().length);
+                if(((TicTacToeGame)gameContext.getGame()).emptyCells().length == 0)
                     break;
-                Cell c = aiStrategy.AIMove(gameContext.ticTacToeGame);
+                Cell c = gameContext.aiStrategy.AIMove(((TicTacToeGame)gameContext.getGame()));
                 
                 Platform.runLater(() -> {
                     setButton(c.getRow(), c.getCol(), 'O');
                 });
 
                 
-                gameContext.ticTacToeGame.setGridCell(c.getRow(),c.getCol(),'o');
-                if(gameContext.ticTacToeGame.isWinner(gameContext.ticTacToeGame)){
+                ((TicTacToeGame)gameContext.getGame()).setGridCell(c.getRow(),c.getCol(),'o');
+                if(((TicTacToeGame)gameContext.getGame()).isWinner()){
                     System.out.println("o wins");
                     gameRunning = false;
                 }

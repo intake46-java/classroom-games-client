@@ -1,8 +1,10 @@
 package com.iti.crg.client.infrastructure.repository;
 
 import com.google.gson.Gson;
+import com.iti.crg.client.domain.entities.Player;
 import com.iti.crg.client.domain.repository.AuthRepository;
 import com.iti.crg.client.domain.usecases.LoginResult;
+import com.iti.crg.client.infrastructure.dto.AuthResponse;
 import com.iti.crg.client.infrastructure.dto.Login;
 import com.iti.crg.client.infrastructure.dto.Register;
 import com.iti.crg.client.infrastructure.dto.Request;
@@ -27,11 +29,9 @@ public class AuthRepositoryImp implements AuthRepository {
 
         String loginJson = gson.toJson(loginDto);
 
-        String response = sendRequest("LOGIN", loginJson);
+        Boolean isSuccess = sendRequest("LOGIN", loginJson);
 
-        if (response == null) return new LoginResult(false, null,null,null);
 
-        boolean isSuccess = Boolean.parseBoolean(response);
         return new LoginResult(isSuccess, connection.getSocket(),connection.getReader(),connection.getWriter());
     }
 
@@ -41,15 +41,14 @@ public class AuthRepositoryImp implements AuthRepository {
 
         String registerJson = gson.toJson(registerDto);
 
-        String response = sendRequest("REGISTER", registerJson);
+        Boolean isSuccess = sendRequest("REGISTER", registerJson);
 
-        if (response == null) return new LoginResult(false, null,null,null);
+        if (isSuccess == null) return new LoginResult(false, null,null,null);
 
-        boolean isSuccess = Boolean.parseBoolean(response);
         return new LoginResult(isSuccess, connection.getSocket(), connection.getReader(), connection.getWriter());
     }
 
-    private String sendRequest(String type, String payload) {
+    private Boolean sendRequest(String type, String payload) {
         connection.forceDisconnect();
 
         if (!connection.connect()) {
@@ -66,7 +65,13 @@ public class AuthRepositoryImp implements AuthRepository {
             ps.println(fullJsonRequest);
             ps.flush();
 
-            return dis.readLine();
+            String data = dis.readLine();
+            AuthResponse response =  gson.fromJson(data, AuthResponse.class);
+            for(Player player : response.getOnlinePlayers()){
+                System.out.println(player.getUsername());
+            }
+
+            return response.isSuccess();
 
         } catch (Exception e) {
             e.printStackTrace();
