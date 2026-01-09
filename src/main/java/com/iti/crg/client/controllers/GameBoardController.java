@@ -57,7 +57,7 @@ public class GameBoardController implements Initializable, Runnable{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        gameContext = new OfflineSingleGameContext(new EasyTicTacToeAi() , new TicTacToeGame());  // -> will be change
+        gameContext = new OfflineSingleGameContext(new HardTicTacToeAi('O') , new TicTacToeGame());  // -> will be change
 //        aiStrategy = new EasyTicTacToeAi();
 //        ticTacToeGame = new TicTacToeGame();
         

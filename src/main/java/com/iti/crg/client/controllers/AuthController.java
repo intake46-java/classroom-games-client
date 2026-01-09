@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
+import javafx.scene.paint.Stop;
 
 public class AuthController implements Initializable {
     @FXML private Canvas backgroundCanvas;
@@ -223,6 +224,7 @@ public class AuthController implements Initializable {
             if (isLoginMode) {
                 // Perform Login
                 result = loginUseCase.execute(username, password);
+                
             } else {
                 // Perform Register
                 result = registerUseCase.execute(username, password);
@@ -230,7 +232,7 @@ public class AuthController implements Initializable {
 
             Platform.runLater(() -> {
                 actionButton.setDisable(false);
-
+                
                 if (result.isSuccess()) {
                     if (isLoginMode) {
                         navigateToHome(event, username, result);
@@ -242,6 +244,8 @@ public class AuthController implements Initializable {
                 } else {
                     String msg = isLoginMode ? "Login Failed" : "Registration Failed (Username taken?)";
                     showAlert("Error", msg);
+                    actionButton.setDisable(false);
+                    
                 }
             });
         }).start();

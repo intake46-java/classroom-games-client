@@ -67,6 +67,8 @@ public class AuthRepositoryImp implements AuthRepository {
 
             String data = dis.readLine();
             AuthResponse response =  gson.fromJson(data, AuthResponse.class);
+            if(!response.isSuccess())
+                return false;
             for(Player player : response.getOnlinePlayers()){
                 System.out.println(player.getUsername());
             }
