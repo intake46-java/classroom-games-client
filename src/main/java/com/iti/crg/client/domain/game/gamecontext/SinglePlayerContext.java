@@ -84,7 +84,7 @@ public class SinglePlayerContext extends GameContext {
         String safeDate = formatter.format(d);
 
        // String safeDate = d.toString().replace(":", "-").replace(" ", "_");
-        String fileName = "src/main/resources/records/You_VS_AI_" + safeDate + ".txt";
+        String fileName = "src/main/resources/records/You_VS_AI_" + safeDate + ".dat";
         SaveRecordManager.saveInStream(moves, fileName);
     }
 }
