@@ -38,7 +38,7 @@ public class TicTacToeController implements GameContext.GameCallback {
     public void startSinglePlayerGame() {
         resetButtons();
         GameHandling myGame = new TicTacToeGame();
-        gameContext = new SinglePlayerContext(myGame, new MediumTicTacToeAi('O'));
+        gameContext = new SinglePlayerContext(myGame, new MediumTicTacToeAi('O'), true);
     }
 
     // Call this method from a Main Menu to start Multi Player
