@@ -1,6 +1,6 @@
 package com.iti.crg.client.controllers;
 
-import com.iti.crg.client.infrastructure.remote.ServerConnection;
+import com.iti.crg.client.domain.usecases.RespondToInviteUseCase;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import java.io.PrintStream;
 
 public class Game_invitationController implements Initializable {
 
@@ -16,33 +15,39 @@ public class Game_invitationController implements Initializable {
     private Label invitationLabel;
 
     private String fromUser;
-    private PrintStream ps;
+
+    private final RespondToInviteUseCase respondUseCase;
+
+    public Game_invitationController() {
+        this.respondUseCase = new RespondToInviteUseCase();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        ps = ServerConnection.getInstance().getWriter();
+        // No need to get Writer here anymore
     }
 
-    // يتم استدعاؤها من OnlinePlayersController بعد load
     public void setFromUser(String fromUser) {
         this.fromUser = fromUser;
-        invitationLabel.setText("Player " + fromUser + " invited you to play Tic Tac Toe"
-        );
+        invitationLabel.setText("Player " + fromUser + " invited you to play Tic Tac Toe");
     }
 
     @FXML
     private void onAccept(ActionEvent event) {
-        ps.println("INVITE-ACCEPT");
-        ps.println(fromUser);
-        ps.flush();
+        if (fromUser != null) {
+            respondUseCase.accept(fromUser);
+            System.out.println("Accepted invite from " + fromUser);
+
+        }
         closeStage();
     }
 
     @FXML
     private void onReject(ActionEvent event) {
-        ps.println("INVITE-REJECT");
-        ps.println(fromUser);
-        ps.flush();
+        if (fromUser != null) {
+            respondUseCase.reject(fromUser);
+            System.out.println("Rejected invite from " + fromUser);
+        }
         closeStage();
     }
 
