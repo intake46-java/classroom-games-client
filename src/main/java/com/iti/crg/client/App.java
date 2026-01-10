@@ -43,7 +43,7 @@ public class App extends Application {
 
         scene = new Scene(loadFXML("auth"), 1000, 600);
         scene.getStylesheets().add(getClass().getResource("auth.css").toExternalForm());
-        scene = new Scene(loadFXML("PLayerSetup"), 1000, 600);
+        scene = new Scene(loadFXML("home"), 1000, 600);
         stage.setScene(scene);
         
         stage.show();
