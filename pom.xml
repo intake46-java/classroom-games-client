@@ -37,6 +37,7 @@
         <version>5.10.0</version>
         <scope>test</scope>
     </dependency>
+    
 </dependencies>
     <build>
         <plugins>
@@ -52,9 +53,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <release>11</release>
-                    <source>16</source>
-                    <target>16</target>
+                    <release>25</release>
+
                 </configuration>
             </plugin>
             <plugin>

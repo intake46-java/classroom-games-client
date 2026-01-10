@@ -3,10 +3,10 @@ package com.iti.crg.client.domain.game.gamecontext;
 import com.iti.crg.client.domain.game.gamehandling.GameHandling;
 
 public abstract class GameContext {
-
+    
     // Changed from 'TicTacToeGame' to the interface 'GameHandling'
     protected GameHandling game;
-
+    
     // Dependency Injection: Pass the specific game implementation here
     public GameContext(GameHandling game) {
         this.game = game;

@@ -1,41 +1,41 @@
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\HomeController.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\dto\Login.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\OfflineController.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\RegisterUseCase.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\dto\Request.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamecontext\SinglePlayerContext.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\managers\LoadForStream.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\OnlinePlayersController.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\Player.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\AuthController.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\GetOnlinePlayersUseCase.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\managers\SaveRecordInStream.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamehandling\TicTacToeGame.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\TicTacToeController.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamecontext\GameContext.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\StartGameUseCase.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\repository\AuthRepositoryImp.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\PlayerSetupController.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\aistrategy\EasyTicTacToeAi.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\LoginUseCase.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\LoginResult.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\dto\AuthResponse.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\aistrategy\HardTicTacToeAi.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\Board.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\dto\Register.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\Game_invitationController.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\SecondaryController.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\remote\ServerConnection.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\module-info.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\aistrategy\AiStrategy.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\App.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\GameBoardController.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\Cell.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\aistrategy\MediumTicTacToeAi.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamehandling\GameHandling.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\LoseScreenController.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\WinScreenController.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamecontext\OfflineSingleGameContext.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\repository\AuthRepository.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\TicTacToeBoard.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\managers\VideoManager.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamecontext\SinglePlayerContext.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\LoginUseCase.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\TicTacToeBoard.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\controllers\HomeController.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\Move.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamecontext\OfflineSingleGameContext.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\managers\LoadRecordManager.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\controllers\WinScreenController.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\dto\Request.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\dto\Login.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\Player.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\controllers\LoseScreenController.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\controllers\GameBoardController.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\managers\SaveRecordManager.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\GetOnlinePlayersUseCase.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\Cell.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\aistrategy\MediumTicTacToeAi.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\Board.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\repository\AuthRepository.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamecontext\GameContext.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\controllers\OnlinePlayersController.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\dto\Register.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\aistrategy\HardTicTacToeAi.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\repository\AuthRepositoryImp.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\managers\VideoManager.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\LoginResult.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\controllers\Game_invitationController.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamehandling\GameHandling.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamehandling\TicTacToeGame.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\controllers\TicTacToeController.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\aistrategy\EasyTicTacToeAi.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\dto\AuthResponse.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\controllers\AuthController.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\aistrategy\AiStrategy.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\controllers\OfflineController.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\controllers\SecondaryController.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\module-info.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\RegisterUseCase.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\remote\ServerConnection.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\StartGameUseCase.java
+C:\ITI Materials\Java SE\Project\Client side\classroom-games-client\src\main\java\com\iti\crg\client\App.java
