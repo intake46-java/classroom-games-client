@@ -1,0 +1,84 @@
+/* 1. Background with the colors from your image */
+.main-root {
+    /* Transitions from light purple to white to light green */
+    -fx-background-color: linear-gradient(to top right, #e3d7ff, #fdfbff, #d8f8ee);
+}
+
+/* 2. Header Text Styling */
+.header-text {
+    -fx-font-size: 42px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2D3436;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+/* 3. The Central White Card */
+.setup-card {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    /* Soft shadow to give depth */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 30, 0, 0, 15);
+}
+
+/* 4. Input Field Labels */
+.input-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #2D3436;
+    -fx-font-size: 14px;
+}
+
+/* 5. TextField Styling */
+.text-input {
+    -fx-padding: 12;
+    -fx-background-radius: 10;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 10;
+    -fx-background-color: white;
+    -fx-font-size: 14px;
+}
+
+.text-field-p1 {
+    -fx-border-color: #6D9EF3; /* Blue border for Player 1 */
+}
+
+.text-field-p2 {
+    -fx-border-color: #B197FC; /* Purple border for Player 2 */
+}
+
+/* 6. Checkbox Styling */
+.custom-checkbox {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2D3436;
+}
+
+.custom-checkbox > .box {
+    -fx-background-color: #63E2B7; /* Green box */
+    -fx-background-radius: 5;
+}
+
+.custom-checkbox:selected > .box > .mark {
+    -fx-background-color: white;
+}
+
+/* 7. Start Game Button (Pill Shape) */
+.start-button {
+    -fx-background-color: #6D9EF3;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 14 0;
+    -fx-background-radius: 50; /* Full roundness */
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(109, 158, 243, 0.4), 10, 0, 0, 5);
+}
+
+.start-button:hover {
+    -fx-background-color: #5B8DE0;
+    -fx-translate-y: -2; /* Subtle lift on hover */
+}
+
+/* 8. Footer */
+.footer-text {
+    -fx-text-fill: #636e72;
+    -fx-font-size: 12px;
+}

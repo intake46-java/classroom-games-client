@@ -16,6 +16,7 @@ com\iti\crg\client\domain\entities\TicTacToeBoard.class
 com\iti\crg\client\infrastructure\dto\Request.class
 com\iti\crg\client\domain\entities\Board.class
 com\iti\crg\client\domain\game\aistrategy\MediumTicTacToeAi.class
+com\iti\crg\client\controllers\PlayerSetupController.class
 com\iti\crg\client\controllers\AuthController$1.class
 com\iti\crg\client\controllers\AuthController$Particle.class
 com\iti\crg\client\App.class

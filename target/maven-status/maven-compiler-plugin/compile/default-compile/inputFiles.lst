@@ -15,6 +15,7 @@ F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\cont
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamecontext\GameContext.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\StartGameUseCase.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\repository\AuthRepositoryImp.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\PlayerSetupController.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\aistrategy\EasyTicTacToeAi.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\LoginUseCase.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\LoginResult.java
