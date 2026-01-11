@@ -3,29 +3,23 @@ package com.iti.crg.client.controllers;
 import java.io.IOException;
 
 import com.iti.crg.client.controllers.utils.AnimatedNetworkBackground;
+import com.iti.crg.client.controllers.utils.View;
 import javafx.animation.AnimationTimer;
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+
 import java.util.ResourceBundle;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import static com.iti.crg.client.controllers.utils.Navigator.navigate;
 
 public class OfflineController implements Initializable {
 
@@ -56,7 +50,7 @@ public class OfflineController implements Initializable {
     private void handlePlayComputer(javafx.scene.input.MouseEvent event) {
         System.out.println("Play vs Computer clicked");
         
-        navigate(event, "gameBoard");
+        navigate(View.GAME_BOARD);
     }
 
     @FXML
@@ -87,23 +81,5 @@ public class OfflineController implements Initializable {
         scaleDown.setToY(1.0);
         btn.setOnMouseEntered(e -> scaleUp.playFromStart());
         btn.setOnMouseExited(e -> scaleDown.playFromStart());
-    }
-
-
-
-    
-    //added by mina
-    private void navigate(javafx.scene.input.MouseEvent event, String screen) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/iti/crg/client/"+screen+".fxml"));
-            Parent root = loader.load();
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root, 1000, 600));
-            stage.show();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
     }
 }
