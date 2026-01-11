@@ -1,5 +1,6 @@
 package com.iti.crg.client;
 
+import com.iti.crg.client.controllers.utils.Navigator;
 import com.iti.crg.client.domain.entities.Move;
 import static com.iti.crg.client.domain.game.managers.LoadRecordManager.loadFromStream;
 import javafx.application.Application;
@@ -56,7 +57,7 @@ public class App extends Application {
         scene.getStylesheets().add(getClass().getResource("auth.css").toExternalForm());
         scene = new Scene(loadFXML("home"), 1000, 600);
         stage.setScene(scene);
-
+        Navigator.setStage(stage);
         stage.show();
     }
 

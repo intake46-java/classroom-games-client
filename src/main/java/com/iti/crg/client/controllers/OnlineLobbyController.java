@@ -2,6 +2,7 @@ package com.iti.crg.client.controllers;
 
 import com.google.gson.Gson;
 import com.iti.crg.client.domain.usecases.SendInvitationUseCase;
+import com.iti.crg.client.infrastructure.dto.GameStartDto;
 import com.iti.crg.client.infrastructure.dto.InviteDto;
 import com.iti.crg.client.infrastructure.dto.Request;
 import com.iti.crg.client.infrastructure.remote.ServerConnection;
@@ -38,7 +39,7 @@ public class OnlineLobbyController implements Initializable {
 
     @FXML
     private ComboBox<String> gameSelector;
-
+    private volatile boolean listening = true;
     public static String myUsername;
 
     private BufferedReader reader;
@@ -62,15 +63,21 @@ public class OnlineLobbyController implements Initializable {
 
     private void listenForServerMessages() {
         try {
-            while (true) {
+            while (listening) { // check flag
                 String line = reader.readLine();
                 if (line == null) break;
 
                 if (line.trim().startsWith("{")) {
-                    handleJsonMessage(line);
-                } else {
-                    handleRawMessage(line);
+                    Request request = gson.fromJson(line, Request.class);
+                    if ("GAME_START".equals(request.getType())) {
+                        listening = false; // STOP LISTENING so Context can take over
+                        handleGameStart(request.getPayload());
+                        break; // Break loop
+                    }
+                    handleJsonMessage(line); // existing logic
                 }
+                handleRawMessage(line);
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -207,5 +214,29 @@ public class OnlineLobbyController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void handleGameStart(String payload) {
+        Platform.runLater(() -> {
+            try {
+                GameStartDto startData = gson.fromJson(payload, GameStartDto.class);
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/iti/crg/client/gameBoard.fxml"));
+                Parent root = loader.load();
+
+                TicTacToeController controller = loader.getController();
+
+                controller.startMultiPlayerGame(
+                        startData.getOpponent(),
+                        startData.getMySymbol(),
+                        startData.isTurn()
+                );
+
+                Stage stage = (Stage) playerList.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+
+            } catch (IOException e) { e.printStackTrace(); }
+        });
     }
 }
