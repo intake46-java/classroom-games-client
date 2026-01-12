@@ -33,7 +33,7 @@ public class TicTacToeController implements GameContext.GameCallback {
     public void startSinglePlayerGame() {
         resetButtons();
         GameHandling myGame = new TicTacToeGame();
-        gameContext = new SinglePlayerContext(myGame, new MediumTicTacToeAi('O'), true);
+        gameContext = new SinglePlayerContext(myGame, new MediumTicTacToeAi('O'));
     }
 
     // Called from OnlineLobbyController

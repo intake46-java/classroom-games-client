@@ -9,7 +9,7 @@
     -fx-link-purple: #7e57c2;
 }
 
-#root-pane {
+#root_pane {
     -fx-background-color: -fx-light-grey;
     -fx-padding: 50;
 }

@@ -27,6 +27,13 @@ public class WinScreenController {
     @FXML
     public void initialize() {
         loadBonusVideo();
+    mediaView.setOnMouseClicked(event -> {
+        if (mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.STOPPED) {
+            mediaPlayer.seek(Duration.ZERO);
+            mediaPlayer.play();
+        }
+    });
+
     }
     
     private void loadBonusVideo() {
@@ -45,12 +52,11 @@ public class WinScreenController {
                 mediaView.setVisible(true);
                 mediaPlayer.play();
             });
-            
-            mediaPlayer.setOnEndOfMedia(() -> {
-                mediaPlayer.stop();
-                mediaPlayer.seek(Duration.ZERO);
-                mediaPlayer.play();
-            });
+                    mediaPlayer.setOnEndOfMedia(() -> {
+            System.out.println("Win video finished.");
+            mediaPlayer.stop();
+        });
+    
             
             mediaPlayer.setOnError(() -> {
                 System.err.println("Media error: " + mediaPlayer.getError().getMessage());
