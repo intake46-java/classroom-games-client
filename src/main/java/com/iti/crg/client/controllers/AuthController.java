@@ -1,6 +1,8 @@
 package com.iti.crg.client.controllers;
 
 import com.iti.crg.client.controllers.utils.AnimatedNetworkBackground;
+import com.iti.crg.client.controllers.utils.Navigator;
+import com.iti.crg.client.controllers.utils.View;
 import com.iti.crg.client.domain.usecases.LoginResult;
 import com.iti.crg.client.domain.usecases.LoginUseCase;
 import com.iti.crg.client.domain.usecases.RegisterUseCase;
@@ -69,6 +71,10 @@ public class AuthController implements Initializable {
         setRegisterMode();
     }
 
+    @FXML
+    private void backOffline(ActionEvent event) {
+        Navigator.navigate(View.HOME);
+    }
     private void setLoginMode() {
         isLoginMode = true;
         loginTabBtn.getStyleClass().removeAll("inactive-tab");

@@ -1,8 +1,12 @@
 package com.iti.crg.client.controllers;
 
+import com.iti.crg.client.controllers.utils.View;
+import com.iti.crg.client.domain.game.aistrategy.AiStrategy;
+import com.iti.crg.client.domain.game.aistrategy.EasyTicTacToeAi;   // Ensure these exist
+import com.iti.crg.client.domain.game.aistrategy.HardTicTacToeAi;   // Ensure these exist
 import com.iti.crg.client.domain.game.aistrategy.MediumTicTacToeAi;
 import com.iti.crg.client.domain.game.gamecontext.GameContext;
-import com.iti.crg.client.domain.game.gamecontext.MultiPlayerContext;
+import com.iti.crg.client.domain.game.gamecontext.OnlinePayingContext;
 import com.iti.crg.client.domain.game.gamecontext.SinglePlayerContext;
 import com.iti.crg.client.domain.game.gamehandling.GameHandling;
 import com.iti.crg.client.domain.game.gamehandling.TicTacToeGame;
@@ -14,52 +18,74 @@ import javafx.scene.control.Label;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.iti.crg.client.controllers.utils.Navigator.navigate;
+
 public class TicTacToeController implements GameContext.GameCallback {
 
     @FXML private Button b0, b1, b2, b3, b4, b5, b6, b7, b8;
-    @FXML private Label turnLabel; // Add a Label in your FXML to show status
+    @FXML private Label turnLabel;
 
     private Map<String, Button> buttonMap = new HashMap<>();
     private GameContext gameContext;
+    private boolean isOnlineGame = false;
+
+    // Store data if needed later
+    private String playerName;
+    private boolean isRecorded;
 
     @FXML
     public void initialize() {
+        // Just map buttons here. DO NOT start the game yet.
         buttonMap.put("0,0", b0); buttonMap.put("0,1", b1); buttonMap.put("0,2", b2);
         buttonMap.put("1,0", b3); buttonMap.put("1,1", b4); buttonMap.put("1,2", b5);
         buttonMap.put("2,0", b6); buttonMap.put("2,1", b7); buttonMap.put("2,2", b8);
-        startSinglePlayerGame();
     }
 
-    public void startSinglePlayerGame() {
+    // --- NEW METHOD: Called from Setup Screen ---
+    public void initComputerGame(String playerName, String difficulty, boolean isRecorded) {
+        this.playerName = playerName;
+        this.isRecorded = isRecorded;
+        this.isOnlineGame = false;
+
         resetButtons();
+
+        AiStrategy aiStrategy;
+        switch (difficulty) {
+            case "Easy":
+                aiStrategy = new EasyTicTacToeAi();
+                break;
+            case "Hard":
+                aiStrategy = new HardTicTacToeAi('O');
+                break;
+            case "Medium":
+            default:
+                aiStrategy = new MediumTicTacToeAi('O');
+                break;
+        }
+
+        if (turnLabel != null) {
+            turnLabel.setText("Player: " + playerName + " vs Computer (" + difficulty + ")");
+        }
+
         GameHandling myGame = new TicTacToeGame();
-        gameContext = new SinglePlayerContext(myGame, new MediumTicTacToeAi('O'));
+        gameContext = new SinglePlayerContext(myGame, aiStrategy);
+
+        System.out.println("Starting Single Player: " + playerName + " | Diff: " + difficulty + " | Rec: " + isRecorded);
     }
 
-    // Called from OnlineLobbyController
+
     public void startMultiPlayerGame(String opponentName, char mySymbol, boolean isMyTurn) {
         resetButtons();
-
+        isOnlineGame = true;
         GameHandling myGame = new TicTacToeGame();
-
-        // 1. Create Context
-        MultiPlayerContext mContext = new MultiPlayerContext(
-                myGame,
-                opponentName,
-                mySymbol,
-                isMyTurn
-        );
-
-        // 2. Link Callback & Start Listener
+        OnlinePayingContext mContext = new OnlinePayingContext(myGame, opponentName, mySymbol, isMyTurn);
         mContext.startListening(this);
         this.gameContext = mContext;
-
-        // 3. Set Initial UI State
         if (turnLabel != null) {
             turnLabel.setText(isMyTurn ? "Your Turn (" + mySymbol + ")" : "Opponent's Turn");
         }
-        System.out.println("Game Started. You are " + mySymbol + ". Turn: " + isMyTurn);
     }
+
 
     @FXML
     private void handleMove(ActionEvent event) {
@@ -82,14 +108,6 @@ public class TicTacToeController implements GameContext.GameCallback {
             btn.setText(String.valueOf(symbol));
             btn.setDisable(true);
             btn.setStyle(symbol == 'X' ? "-fx-text-fill: red;" : "-fx-text-fill: blue;");
-        }
-
-        // Update Turn Label (Optional visual helper)
-        if (turnLabel != null) {
-            if (gameContext instanceof MultiPlayerContext) {
-                // Logic to toggle text, or just generic "Wait" vs "Go"
-                // Since we don't expose isMyTurn directly, simpler to just set generic text or leave it
-            }
         }
     }
 
@@ -122,5 +140,12 @@ public class TicTacToeController implements GameContext.GameCallback {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void onExit(ActionEvent event) {
+        if(!isOnlineGame) {
+            navigate(View.OFFLINE_VIEW); // Or wherever you go back to
+        }
     }
 }

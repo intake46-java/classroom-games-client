@@ -38,8 +38,8 @@ public class App extends Application {
 //        stage.setMaxHeight(600);
         
 ////////////////////////////////////////////////////////////////
-//        scene = new Scene(loadFXML("gameBoard"), 1000, 650);
-//        scene.getStylesheets().add(getClass().getResource("gameBoard.css").toExternalForm());
+        scene = new Scene(loadFXML("home"), 1000, 650);
+      //  scene.getStylesheets().add(getClass().getResource("gameBoard.css").toExternalForm());
 
                 
 
@@ -50,11 +50,11 @@ public class App extends Application {
        // Navigator.setStage(stage);
        // stage.show();
        
-       FXMLLoader loader = new FXMLLoader(App.class.getResource("RecordScreen.fxml"));
-        Parent root = loader.load();
+//       FXMLLoader loader = new FXMLLoader(App.class.getResource("RecordScreen.fxml"));
+//        Parent root = loader.load();
 
         // 2. Get the Controller instance so we can pass data to it
-          RecordScreenController controller = loader.getController();
+         // RecordScreenController controller = loader.getController();
 
         // 3. Create Dummy Moves (Simulate a game where X wins diagonally)
         // Assumption: Your Move constructor is Move(row, col, character)
@@ -67,15 +67,14 @@ public class App extends Application {
         };
 
         // 4. Create the GameRecord object
-        GameRecord dummyRecord = new GameRecord("Osama", "Rashed", dummyMoves);
+       // GameRecord dummyRecord = new GameRecord("Osama", "Rashed", dummyMoves);
 
         // 5. Inject the record into the controller
-         controller.setRecord(dummyRecord);
+        // controller.setRecord(dummyRecord);
 
         // 6. Set the scene and show
-        scene = new Scene(root, 700, 600); // Adjust width/height as needed
-        // scene.getStylesheets().add(getClass().getResource("RecordScreen.css").toExternalForm());
-        
+      //  scene = new Scene(root, 700, 600); // Adjust width/height as needed
+
         Navigator.setStage(stage); // Ensure navigator knows the stage if used elsewhere
         stage.setScene(scene);
         stage.show();
@@ -86,7 +85,7 @@ public class App extends Application {
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("RecordScreen.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml+".fxml"));
         return fxmlLoader.load();
     }
 

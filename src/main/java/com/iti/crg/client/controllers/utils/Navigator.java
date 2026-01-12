@@ -10,33 +10,42 @@ public class Navigator {
 
     private static Stage stage;
     private static final String VIEWS_PACKAGE = "/com/iti/crg/client/";
+    private static final double DEFAULT_WIDTH = 1000;
+    private static final double DEFAULT_HEIGHT = 650;
 
     public static void setStage(Stage s) {
         stage = s;
     }
 
-    public static void navigate(View view) {
+    // UPDATED: Now returns the Controller <T>
+    public static <T> T navigate(View view) {
         if (stage == null) {
             System.err.println("Stage not initialized in Navigator!");
-            return;
+            return null;
         }
 
         try {
             FXMLLoader loader = new FXMLLoader(Navigator.class.getResource(VIEWS_PACKAGE + view.getFxmlName()));
             Parent root = loader.load();
 
-            if (stage.getScene() != null) {
-                stage.getScene().setRoot(root);
-            } else {
-                Scene scene = new Scene(root);
+            Scene scene = stage.getScene();
+            if (scene == null) {
+                scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
                 stage.setScene(scene);
+            } else {
+                scene.setRoot(root);
             }
 
+            stage.setWidth(DEFAULT_WIDTH);
+            stage.setHeight(DEFAULT_HEIGHT);
             stage.show();
+
+            // Return the controller so we can pass data to it
+            return loader.getController();
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("Could not load FXML: " + view.getFxmlName());
+            return null;
         }
     }
 }
