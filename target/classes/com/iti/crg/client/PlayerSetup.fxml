@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<StackPane prefHeight="600.0" prefWidth="900.0" 
+           styleClass="main-root" 
+           stylesheets="@playersetup.css" 
+           xmlns="http://javafx.com/javafx/17" 
+           xmlns:fx="http://javafx.com/fxml/1" 
+           fx:controller="com.iti.crg.client.controllers.PlayerSetupController">
+    
+    <VBox alignment="CENTER" spacing="30.0">
+        <Label styleClass="header-text" text="Player Setup" />
+        
+        <VBox maxWidth="420.0" spacing="25.0" styleClass="setup-card">
+            <padding>
+                <Insets bottom="40.0" left="35.0" right="35.0" top="35.0" />
+            </padding>
+            
+            <VBox spacing="8.0">
+                <Label styleClass="input-label" text="Player 1 Name" />
+                <TextField fx:id="player1Field" 
+                           promptText="Enter name, e.g., Alex" 
+                           styleClass="text-field-p1" />
+            </VBox>
+            
+            <VBox spacing="8.0">
+                <Label styleClass="input-label" text="Player 2 Name (or Computer)" />
+                <TextField fx:id="player2Field" 
+                           promptText="Enter name or 'Computer'" 
+                           styleClass="text-field-p2" />
+            </VBox>
+            
+            <CheckBox fx:id="recordGameCheckbox" 
+                      selected="true" 
+                      styleClass="custom-checkbox" 
+                      text="Record this game" />
+            
+            <Button maxWidth="Infinity" 
+                    onAction="#handleStartGame" 
+                    styleClass="start-button" 
+                    text="Start Game" />
+        </VBox>
+    </VBox>
+
+    <Label styleClass="footer-text" 
+           text="© 2024 JavaFX Game Studio. All rights reserved." 
+           StackPane.alignment="BOTTOM_CENTER">
+        <StackPane.margin>
+            <Insets bottom="20.0" />
+        </StackPane.margin>
+    </Label>
+    
+</StackPane>

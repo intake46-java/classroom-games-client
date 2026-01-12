@@ -54,7 +54,7 @@ public class App extends Application {
         Parent root = loader.load();
 
         // 2. Get the Controller instance so we can pass data to it
-        RecordScreenController controller = loader.getController();
+          RecordScreenController controller = loader.getController();
 
         // 3. Create Dummy Moves (Simulate a game where X wins diagonally)
         // Assumption: Your Move constructor is Move(row, col, character)
@@ -70,7 +70,7 @@ public class App extends Application {
         GameRecord dummyRecord = new GameRecord("Osama", "Rashed", dummyMoves);
 
         // 5. Inject the record into the controller
-        controller.setRecord(dummyRecord);
+         controller.setRecord(dummyRecord);
 
         // 6. Set the scene and show
         scene = new Scene(root, 700, 600); // Adjust width/height as needed

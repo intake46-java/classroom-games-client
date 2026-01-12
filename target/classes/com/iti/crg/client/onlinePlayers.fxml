@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.iti.crg.client.controllers.OnlineLobbyController"
+            stylesheets="@onlinePlayers.css">
+
+    <top>
+        <HBox spacing="10" alignment="CENTER_LEFT" styleClass="top-bar">
+            <ComboBox fx:id="gameSelector" prefWidth="150"/>
+            <Label text="Online Lobby" styleClass="title"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button text="Logout" styleClass="logout-btn"/>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="15">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <Label text="Online Players" styleClass="section-title"/>
+
+            <ScrollPane fitToWidth="true">
+                <VBox fx:id="playerList" spacing="10"/>
+            </ScrollPane>
+        </VBox>
+    </center>
+
+</BorderPane>

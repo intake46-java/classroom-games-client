@@ -27,6 +27,13 @@ public class LoseScreenController {
     @FXML
     public void initialize() {
         loadLoseVideo();
+            mediaView.setOnMouseClicked(event -> {
+        if (mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.STOPPED) {
+            mediaPlayer.seek(Duration.ZERO);
+            mediaPlayer.play();
+        }
+    });
+
     }
     
 private void loadLoseVideo() {
@@ -39,26 +46,24 @@ private void loadLoseVideo() {
         mediaView.setPreserveRatio(true);
         mediaView.setSmooth(true);
 
-            mediaPlayer.setOnReady(() -> {
-                placeholderBox.setVisible(false);
-                mediaView.setVisible(true);
-                Duration totalDuration = media.getDuration();
-                Duration loopPoint = totalDuration.subtract(Duration.millis(100)); 
-                mediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
-                    if (newTime.greaterThanOrEqualTo(loopPoint)) {
-                        mediaPlayer.seek(Duration.ZERO);
-                    }
-                });
-                
-                mediaPlayer.play();
-            });
-        mediaPlayer.setOnError(() -> {
-            System.err.println("Media error: " + mediaPlayer.getError().getMessage());
+        mediaPlayer.setOnReady(() -> {
+            placeholderBox.setVisible(false);
+            mediaView.setVisible(true);
+            mediaPlayer.play(); // play once
         });
 
-        media.setOnError(() -> {
-            System.err.println("Media loading error: " + media.getError().getMessage());
+        mediaPlayer.setOnEndOfMedia(() -> {
+            System.out.println("Lose video finished. Click to replay if desired.");
+            mediaPlayer.stop();
         });
+
+        mediaPlayer.setOnError(() ->
+            System.err.println("Media error: " + mediaPlayer.getError().getMessage())
+        );
+
+        media.setOnError(() ->
+            System.err.println("Media loading error: " + media.getError().getMessage())
+        );
 
     } catch (NullPointerException e) {
         System.err.println("Video file not found at /videos/lose.mp4");
@@ -67,8 +72,7 @@ private void loadLoseVideo() {
         System.err.println("Could not load video: " + e.getMessage());
         e.printStackTrace();
     }
-}    
-    @FXML
+}    @FXML
     private void handlePlayAgain() {
         // Add your navigation logic here
         // Example: App.setRoot("game");

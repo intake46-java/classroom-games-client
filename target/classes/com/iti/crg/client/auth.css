@@ -1,0 +1,130 @@
+/* Variables for colors */
+* {
+    -fx-primary-blue: #5e97db;
+    -fx-dark-grey: #333333;
+    -fx-light-grey: #f0f2f5;
+    -fx-border-purple: #c2b2e0;
+    -fx-text-color: #555555;
+    -fx-secondary-text: #888888;
+    -fx-link-purple: #7e57c2;
+}
+
+#root_pane {
+    -fx-background-color: -fx-light-grey;
+    -fx-padding: 50;
+}
+
+#modal-container {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 20, 0, 0, 5);
+    -fx-max-width: 400;
+}
+
+/* Header Tabs */
+#header-tabs {
+    -fx-background-radius: 20 20 0 0;
+    -fx-background-color: -fx-dark-grey;
+}
+
+.tab-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 15 0;
+    -fx-cursor: hand;
+    -fx-background-radius: 20 20 0 0;
+}
+
+.active-tab {
+    -fx-background-color: -fx-primary-blue;
+}
+
+.inactive-tab {
+    -fx-background-color: -fx-dark-grey;
+    -fx-text-fill: #aaaaaa;
+}
+
+/* Form Content */
+#title-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-dark-grey;
+}
+
+.input-field {
+    -fx-background-color: white;
+    -fx-border-color: -fx-border-purple;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 12;
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: -fx-secondary-text;
+}
+
+.input-field:focused {
+    -fx-border-color: -fx-primary-blue;
+    -fx-border-width: 1.5;
+}
+
+.password-container {
+    -fx-alignment: CENTER-RIGHT;
+}
+
+.password-field {
+    -fx-padding: 12 40 12 12; /* Right padding for the button */
+}
+
+.eye-button {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-padding: 5;
+}
+
+#login-button {
+    -fx-background-color: -fx-primary-blue;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 25;
+    -fx-padding: 12 0;
+    -fx-cursor: hand;
+}
+
+#login-button:hover {
+    -fx-background-color: derive(-fx-primary-blue, -10%);
+}
+
+.secondary-text {
+    -fx-text-fill: -fx-text-color;
+    -fx-font-size: 14px;
+}
+
+.link-text {
+    -fx-text-fill: -fx-link-purple;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+    -fx-underline: false;
+}
+
+.link-text:hover {
+    -fx-underline: true;
+}
+
+/* Footer */
+#footer {
+    -fx-background-color: #f9f9f9;
+    -fx-background-radius: 0 0 20 20;
+    -fx-border-color: #eeeeee;
+    -fx-border-width: 1 0 0 0;
+}
+
+.footer-link {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-link-purple;
+    -fx-font-weight: normal;
+}
