@@ -28,10 +28,12 @@ F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\cont
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\remote\ServerConnection.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\module-info.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\aistrategy\AiStrategy.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\OnlineGameBoardController.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\App.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\GameBoardController.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\Cell.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\aistrategy\MediumTicTacToeAi.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\dto\InviteDto.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamehandling\GameHandling.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\LoseScreenController.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\WinScreenController.java

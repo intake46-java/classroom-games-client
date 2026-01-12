@@ -192,6 +192,8 @@ public class AuthController implements Initializable {
             showAlert("System Error", "Could not load Home Screen.");
         }
     }
+    
+   
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

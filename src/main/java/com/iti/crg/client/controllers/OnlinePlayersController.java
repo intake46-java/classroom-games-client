@@ -32,6 +32,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import com.google.gson.Gson;
+import com.iti.crg.client.infrastructure.dto.InviteDto;
+import com.iti.crg.client.infrastructure.dto.Request;
 
 public class OnlinePlayersController implements Initializable{
 
@@ -46,8 +49,14 @@ public class OnlinePlayersController implements Initializable{
     PrintStream ps;
     private final Object sendLock = new Object();
 
+    private final Gson gson = new Gson();
+    
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
+        
+        if (myUsername == null) {
+            System.out.println("ERROR: myUsername not set!");
+        }
 
         // Populate ComboBox here (correct way)
         gameSelector.setItems(FXCollections.observableArrayList("Tic-Tac-Toe"));
@@ -77,7 +86,16 @@ public class OnlinePlayersController implements Initializable{
                         case "INVITE-REJECTED":
                             System.out.println(reader.readLine() + " rejected your invitation");
                             break;
-
+                        case "GAME_START":
+                            String payload = reader.readLine();
+                            InviteDto startInfo = gson.fromJson(payload, InviteDto.class);
+                            Platform.runLater(() -> startOnlineMatch(startInfo.getUsername()));
+                            break;    
+                        case "INVITE_RECEIVED":
+                            String payload2 = reader.readLine();
+                            InviteDto dto = gson.fromJson(payload2, InviteDto.class);
+                            Platform.runLater(() -> showInviteDialog(dto.getUsername()));
+                            break;    
                         default:
                             throw new AssertionError();
                     }
@@ -132,14 +150,17 @@ public class OnlinePlayersController implements Initializable{
 
         Button invite = new Button("Invite");
         invite.getStyleClass().add("invite-btn");
-        invite.setOnAction(event->{
-            new Thread(()->{
-                synchronized(sendLock){
-                    ps.println("SEND-INVITE");
-                    ps.println(name);
+        invite.setOnAction(event -> {
+            new Thread(() -> {
+                synchronized (sendLock) {
+
+                    InviteDto dto = new InviteDto(name);
+                    Request req = new Request("SEND_INVITE", gson.toJson(dto));
+
+                    ps.println(gson.toJson(req));
+                    ps.flush();
                 }
             }).start();
-            
         });
         
         
@@ -176,6 +197,28 @@ public class OnlinePlayersController implements Initializable{
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    private void startOnlineMatch(String opponent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/iti/crg/client/onlineGameBoard.fxml"));
+            Parent root = loader.load();
+
+            OnlineGameBoardController controller = loader.getController();
+
+            controller.initializeMatch(
+                    opponent,
+                    myUsername,
+                    ps,
+                    reader
+            );
+
+            Stage stage = (Stage) playerList.getScene().getWindow();
+            stage.setScene(new Scene(root, 1000, 600));
+            stage.show();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

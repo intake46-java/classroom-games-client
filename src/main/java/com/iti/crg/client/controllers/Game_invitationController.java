@@ -1,5 +1,8 @@
 package com.iti.crg.client.controllers;
 
+import com.google.gson.Gson;
+import com.iti.crg.client.infrastructure.dto.InviteDto;
+import com.iti.crg.client.infrastructure.dto.Request;
 import com.iti.crg.client.infrastructure.remote.ServerConnection;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,7 +20,8 @@ public class Game_invitationController implements Initializable {
 
     private String fromUser;
     private PrintStream ps;
-
+    Gson gson = new Gson();
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ps = ServerConnection.getInstance().getWriter();
@@ -32,18 +36,20 @@ public class Game_invitationController implements Initializable {
 
     @FXML
     private void onAccept(ActionEvent event) {
-        ps.println("INVITE-ACCEPT");
-        ps.println(fromUser);
+        InviteDto dto = new InviteDto(fromUser);
+        Request req = new Request("INVITE_ACCEPT", gson.toJson(dto));
+
+        ps.println(gson.toJson(req));
         ps.flush();
-        closeStage();
     }
 
     @FXML
     private void onReject(ActionEvent event) {
-        ps.println("INVITE-REJECT");
-        ps.println(fromUser);
+        InviteDto dto = new InviteDto(fromUser);
+        Request req = new Request("INVITE_REJECT", gson.toJson(dto));
+
+        ps.println(gson.toJson(req));
         ps.flush();
-        closeStage();
     }
 
     private void closeStage() {

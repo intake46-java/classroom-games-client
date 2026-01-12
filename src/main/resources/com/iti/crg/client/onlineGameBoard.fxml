@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@gameBoard.css"
+            fx:controller="com.iti.crg.client.controllers.OnlineGameBoardController">
+
+    <!-- TOP BAR -->
+    <top>
+        <HBox alignment="CENTER" styleClass="top-bar">
+            <Label fx:id="topLabel" text="Online Game" styleClass="top-title"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button text="👤" fx:id="profileButton" styleClass="profile-btn"/>
+        </HBox>
+    </top>
+
+    <!-- CENTER -->
+    <center>
+        <VBox alignment="CENTER" spacing="25">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <!-- PLAYERS -->
+            <HBox spacing="40" alignment="CENTER" styleClass="score-box">
+                <Label fx:id="playerXLabel" text="You (X)" styleClass="score-x"/>
+                <Label fx:id="playerOLabel" text="Opponent (O)" styleClass="score-o"/>
+            </HBox>
+
+            <!-- TURN -->
+            <Label fx:id="turnLabel" text="Waiting for opponent..." styleClass="turn-label"/>
+
+            <!-- BOARD -->
+            <GridPane fx:id="boardGrid"
+                      alignment="CENTER"
+                      hgap="15"
+                      vgap="15">
+
+                <!-- ROWS -->
+                <rowConstraints>
+                    <RowConstraints/>
+                    <RowConstraints/>
+                    <RowConstraints/>
+                </rowConstraints>
+
+                <!-- COLUMNS -->
+                <columnConstraints>
+                    <ColumnConstraints/>
+                    <ColumnConstraints/>
+                    <ColumnConstraints/>
+                </columnConstraints>
+
+                <!-- ROW 0 -->
+                <Button fx:id="b0" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                        onAction="#handleMove" styleClass="cell"/>
+                <Button fx:id="b1" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                        onAction="#handleMove" styleClass="cell"/>
+                <Button fx:id="b2" GridPane.rowIndex="0" GridPane.columnIndex="2"
+                        onAction="#handleMove" styleClass="cell"/>
+
+                <!-- ROW 1 -->
+                <Button fx:id="b3" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                        onAction="#handleMove" styleClass="cell"/>
+                <Button fx:id="b4" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                        onAction="#handleMove" styleClass="cell"/>
+                <Button fx:id="b5" GridPane.rowIndex="1" GridPane.columnIndex="2"
+                        onAction="#handleMove" styleClass="cell"/>
+
+                <!-- ROW 2 -->
+                <Button fx:id="b6" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                        onAction="#handleMove" styleClass="cell"/>
+                <Button fx:id="b7" GridPane.rowIndex="2" GridPane.columnIndex="1"
+                        onAction="#handleMove" styleClass="cell"/>
+                <Button fx:id="b8" GridPane.rowIndex="2" GridPane.columnIndex="2"
+                        onAction="#handleMove" styleClass="cell"/>
+
+            </GridPane>
+
+            <!-- ACTIONS -->
+            <HBox spacing="25" alignment="CENTER">
+                <Button fx:id="exitButton" text="Exit" styleClass="exit-btn" onAction="#handleExit"/>
+                <Button fx:id="replayButton" text="Replay" styleClass="replay-btn" onAction="#handleReplay"/>
+            </HBox>
+
+        </VBox>
+    </center>
+
+</BorderPane>
