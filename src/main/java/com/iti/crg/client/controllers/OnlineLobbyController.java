@@ -240,7 +240,7 @@ public class OnlineLobbyController implements Initializable {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/iti/crg/client/gameBoard.fxml"));
                 Parent root = loader.load();
                 TicTacToeController controller = loader.getController();
-                controller.startMultiPlayerGame(startData.getOpponent(), startData.getMySymbol(), startData.isTurn());
+                controller.startMultiPlayerGame(myUsername,startData.getOpponent(), startData.getMySymbol(), startData.isTurn());
 
                 Stage stage = (Stage) playerList.getScene().getWindow();
                 stage.setScene(new Scene(root));

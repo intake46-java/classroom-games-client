@@ -1,5 +1,6 @@
 package com.iti.crg.client.controllers;
 
+import com.iti.crg.client.controllers.utils.Navigator;
 import com.iti.crg.client.controllers.utils.View;
 import com.iti.crg.client.domain.game.aistrategy.AiStrategy;
 import com.iti.crg.client.domain.game.aistrategy.EasyTicTacToeAi;   // Ensure these exist
@@ -28,10 +29,10 @@ public class TicTacToeController implements GameContext.GameCallback {
     private Map<String, Button> buttonMap = new HashMap<>();
     private GameContext gameContext;
     private boolean isOnlineGame = false;
-
     // Store data if needed later
     private String playerName;
     private boolean isRecorded;
+    private char mySymbol = 'X';
 
     @FXML
     public void initialize() {
@@ -74,15 +75,16 @@ public class TicTacToeController implements GameContext.GameCallback {
     }
 
 
-    public void startMultiPlayerGame(String opponentName, char mySymbol, boolean isMyTurn) {
+    public void startMultiPlayerGame(String myName, String opponentName, char mySymbol, boolean isMyTurn) {
         resetButtons();
+        this.mySymbol=mySymbol;
         isOnlineGame = true;
         GameHandling myGame = new TicTacToeGame();
         OnlinePayingContext mContext = new OnlinePayingContext(myGame, opponentName, mySymbol, isMyTurn);
         mContext.startListening(this);
         this.gameContext = mContext;
         if (turnLabel != null) {
-            turnLabel.setText(isMyTurn ? "Your Turn (" + mySymbol + ")" : "Opponent's Turn");
+            turnLabel.setText(myName + " VS "+opponentName);
         }
     }
 
@@ -98,6 +100,7 @@ public class TicTacToeController implements GameContext.GameCallback {
         if (gameContext != null) {
             gameContext.processMove(row, col, this);
         }
+
     }
 
     @Override
@@ -113,7 +116,13 @@ public class TicTacToeController implements GameContext.GameCallback {
 
     @Override
     public void onGameWin(char winner) {
-        showAlert("Game Over", winner + " Wins!");
+        //showAlert("Game Over", winner + " Wins!");
+        isOnlineGame = false;
+        if(winner == mySymbol) {
+            Navigator.navigate(View.WIN_SCREEN);
+        }else {
+            Navigator.navigate(View.LOSE_SCREEN);
+        }
         disableAllButtons();
     }
 
