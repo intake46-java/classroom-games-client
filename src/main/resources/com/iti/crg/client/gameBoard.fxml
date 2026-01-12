@@ -31,7 +31,7 @@
             </HBox>
 
             <!-- TURN -->
-            <Label text="Your turn, Player X!" styleClass="turn-label"/>
+            <Label fx:id="turnLabel" text="Your turn, Player X!" styleClass="turn-label"/>
 
             <!-- BOARD -->
             <GridPane fx:id="boardGrid"
