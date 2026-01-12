@@ -44,18 +44,20 @@ public class OfflineController implements Initializable {
     @FXML
     private void handleBack(ActionEvent event) {
         System.out.println("Back to Welcome Screen clicked");
+        navigate(View.HOME);
     }
 
     @FXML
     private void handlePlayComputer(javafx.scene.input.MouseEvent event) {
         System.out.println("Play vs Computer clicked");
         
-        navigate(View.GAME_BOARD);
+        navigate(View.COMPUTER_SETUP);
     }
 
     @FXML
     private void handlePlayLocal(javafx.scene.input.MouseEvent event) {
         System.out.println("Play vs Local Player clicked");
+        navigate(View.PLAYER_SETUP);
     }
 
 

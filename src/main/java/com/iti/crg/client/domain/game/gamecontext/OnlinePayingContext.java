@@ -12,7 +12,7 @@ import javafx.application.Platform;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class MultiPlayerContext extends GameContext {
+public class OnlinePayingContext extends GameContext {
 
     private final String opponentUsername;
     private final char mySymbol;
@@ -24,7 +24,7 @@ public class MultiPlayerContext extends GameContext {
     private volatile boolean listening = true;
     private GameCallback uiCallback; // Needed to update UI
 
-    public MultiPlayerContext(GameHandling game, String opponent, char mySymbol, boolean isMyTurn) {
+    public OnlinePayingContext(GameHandling game, String opponent, char mySymbol, boolean isMyTurn) {
         super(game);
         this.opponentUsername = opponent;
         this.mySymbol = mySymbol;

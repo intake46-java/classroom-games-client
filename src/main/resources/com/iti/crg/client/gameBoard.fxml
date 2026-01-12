@@ -82,8 +82,7 @@
 
             <!-- ACTIONS -->
             <HBox spacing="25" alignment="CENTER">
-                <Button text="Exit" styleClass="exit-btn"/>
-                <Button text="Replay" styleClass="replay-btn"/>
+                <Button onAction="#onExit" text="Exit" styleClass="exit-btn"/>
             </HBox>
 
 
