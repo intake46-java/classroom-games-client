@@ -31,6 +31,7 @@ public class AuthRepositoryImp implements AuthRepository {
 
         Boolean isSuccess = sendRequest("LOGIN", loginJson);
 
+        if (isSuccess == null) return new LoginResult(false, null,null,null);
 
         return new LoginResult(isSuccess, connection.getSocket(),connection.getReader(),connection.getWriter());
     }
@@ -68,12 +69,9 @@ public class AuthRepositoryImp implements AuthRepository {
             String data = dis.readLine();
             AuthResponse response =  gson.fromJson(data, AuthResponse.class);
 
-            // to handle in other time
-            if(!response.isSuccess())
-                return false;
-            for(Player player : response.getOnlinePlayers()){
-                System.out.println(player.getUsername());
-            }
+            System.out.println(response.getScore());
+
+
 
             return response.isSuccess();
 
