@@ -62,6 +62,7 @@ public class OfflineController implements Initializable {
     @FXML
     private void handlePlayLocal(javafx.scene.input.MouseEvent event) {
         System.out.println("Play vs Local Player clicked");
+         navigate(event,"gameBoard");
     }
 
 

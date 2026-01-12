@@ -4,6 +4,7 @@ import com.iti.crg.client.domain.game.aistrategy.EasyTicTacToeAi;
 import com.iti.crg.client.domain.game.aistrategy.HardTicTacToeAi;
 import com.iti.crg.client.domain.game.aistrategy.MediumTicTacToeAi;
 import com.iti.crg.client.domain.game.gamecontext.GameContext;
+import com.iti.crg.client.domain.game.gamecontext.MultiplePlayerContext;
 import com.iti.crg.client.domain.game.gamecontext.SinglePlayerContext;
 import com.iti.crg.client.domain.game.gamehandling.GameHandling;
 import com.iti.crg.client.domain.game.gamehandling.TicTacToeGame;
@@ -31,7 +32,8 @@ public class TicTacToeController implements GameContext.GameCallback {
         buttonMap.put("2,0", b6); buttonMap.put("2,1", b7); buttonMap.put("2,2", b8);
 
         // DEFAULT TO SINGLE PLAYER FOR DEMO (You can change this based on a menu selection)
-        startSinglePlayerGame();
+//        startSinglePlayerGame();
+          startMultiPlayerGame();
     }
 
     // Call this method from a Main Menu to start Single Player
@@ -44,7 +46,8 @@ public class TicTacToeController implements GameContext.GameCallback {
     // Call this method from a Main Menu to start Multi Player
     public void startMultiPlayerGame() {
         resetButtons();
-
+        GameHandling myGame = new TicTacToeGame();
+        gameContext = new MultiplePlayerContext(myGame);
     }
 
     @FXML

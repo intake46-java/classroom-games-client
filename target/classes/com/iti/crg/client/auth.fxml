@@ -12,9 +12,8 @@
 <?import javafx.scene.shape.SVGPath?>
 
 <?import javafx.scene.canvas.Canvas?>
-<StackPane id="root-pane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"  stylesheets="@auth.css"
+<StackPane fx:id="root_pane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"  stylesheets="@auth.css"
            fx:controller="com.iti.crg.client.controllers.AuthController">
-    <Canvas fx:id="backgroundCanvas" width="900" height="600" />
     <VBox id="modal-container">
 
         <HBox id="header-tabs">
