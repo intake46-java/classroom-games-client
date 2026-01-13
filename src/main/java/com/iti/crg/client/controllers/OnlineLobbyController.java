@@ -168,10 +168,12 @@ public class OnlineLobbyController implements Initializable {
     public void readOnlinePlayersLegacy() {
         try {
             String countStr = reader.readLine();
+            String scoreSer = reader.readLine();
             if (countStr == null) return;
             int n = Integer.parseInt(countStr);
+            int userScore = Integer.parseInt(scoreSer);
             Map<String, Integer> onlinePlayers = new HashMap<>();
-
+            System.out.println("Score "+ userScore);
             for (int i = 0; i < n; i++) {
                 String username = reader.readLine();
                 int score = Integer.parseInt(reader.readLine());
@@ -182,6 +184,7 @@ public class OnlineLobbyController implements Initializable {
             }
 
             Platform.runLater(() -> {
+                currentScoreLabel.setText(String.valueOf(userScore));
                 playerList.getChildren().clear();
                 inviteButtons.clear();
                 onlinePlayers.forEach((username, score) -> addPlayer(username, score, true));
