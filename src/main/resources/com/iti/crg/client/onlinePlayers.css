@@ -166,3 +166,50 @@
     -fx-padding: 15;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.03), 5, 0, 0, 3);
 }
+/* --- PLAYER LIST CARD STYLES --- */
+
+/* The container for a single player row (The Card) */
+.player-row {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-padding: 15;
+    -fx-border-color: #f0f0f0;
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.03), 5, 0, 0, 3);
+}
+
+/* The Player Name Text */
+.player-name {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50; /* Dark Blue-Grey */
+}
+
+/* The Invite Button */
+.invite-btn {
+    -fx-background-color: #4a90e2; /* Bright Blue */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 20; /* Pill shape */
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+    -fx-transition: all 0.2s;
+}
+
+.invite-btn:hover {
+    -fx-background-color: #357abd; /* Darker Blue on Hover */
+    -fx-effect: dropshadow(three-pass-box, rgba(74, 144, 226, 0.4), 8, 0, 0, 2);
+}
+
+.invite-btn:pressed {
+    -fx-background-color: #2a629c;
+}
+
+/* Disabled State (When 'Sent...' or waiting) */
+.invite-btn:disabled {
+    -fx-background-color: #bdc3c7;
+    -fx-text-fill: #ecf0f1;
+    -fx-opacity: 0.8;
+}

@@ -77,12 +77,19 @@ public class OnlinePayingContext extends GameContext {
         }
     }
 
+    public void leaveGame() {
+        listening = false; // Stop listener loop
+        gameRepository.sendLeave(opponentUsername);
+    }
+
     private void listenToServer() {
-        System.out.println("MultiPlayer Listener Started...");
         try {
             while (listening) {
                 String line = reader.readLine();
-                if (line == null) break;
+                if (line == null) {
+                    handleServerDisconnect();
+                    break;
+                }
 
                 if (line.trim().startsWith("{")) {
                     Request request = gson.fromJson(line, Request.class);
@@ -91,11 +98,27 @@ public class OnlinePayingContext extends GameContext {
                         GameMoveDto move = gson.fromJson(request.getPayload(), GameMoveDto.class);
                         Platform.runLater(() -> handleOpponentMove(move));
                     }
+                    // NEW: Handle opponent leaving
+                    else if ("OPPONENT_LEFT".equals(request.getType())) {
+                        listening = false;
+                        Platform.runLater(() -> {
+                            if (uiCallback != null) uiCallback.onOpponentDisconnected();
+                        });
+                    }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void handleServerDisconnect() {
+        listening = false;
+        Platform.runLater(() -> {
+            if (uiCallback != null) {
+                uiCallback.onOpponentDisconnected();
+            }
+        });
     }
 
     private void handleOpponentMove(GameMoveDto move) {

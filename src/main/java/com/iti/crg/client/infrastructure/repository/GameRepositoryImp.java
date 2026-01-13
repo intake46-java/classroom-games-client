@@ -47,4 +47,9 @@ public class GameRepositoryImp implements GameRepository {
             return false;
         }
     }
+    @Override
+    public void sendLeave(String opponent) {
+        InviteDto data = new InviteDto(opponent);
+        sendRequest("GAME_LEAVE", gson.toJson(data));
+    }
 }

@@ -250,6 +250,19 @@ public class TicTacToeController implements GameContext.GameCallback {
         isRecorded = value;
     }
 
+    @Override
+    public void onOpponentDisconnected() {
+        Platform.runLater(() -> {
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.WARNING);
+            alert.setTitle("Game Over");
+            alert.setHeaderText("Connection Issue");
+            alert.setContentText("The connection to the opponent or server was lost.");
+            alert.showAndWait();
+
+            onExit(null);
+        });
+    }
+
     private void disableAllButtons() {
         buttonMap.values().forEach(b -> b.setDisable(true));
     }
@@ -265,6 +278,10 @@ public class TicTacToeController implements GameContext.GameCallback {
 
     @FXML
     private void onExit(ActionEvent event) {
+        if (isOnlineGame && gameContext instanceof OnlinePayingContext) {
+            ((OnlinePayingContext) gameContext).leaveGame();
+        }
+
         ScoreManager.setP1Score(0);
         ScoreManager.setP2Score(0);
         Navigator.navigateBack();

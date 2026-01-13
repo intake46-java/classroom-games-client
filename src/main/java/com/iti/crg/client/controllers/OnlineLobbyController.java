@@ -98,7 +98,13 @@ public class OnlineLobbyController implements Initializable {
         try {
             while (listening) {
                 String line = reader.readLine();
-                if (line == null) break;
+
+                if (line == null) {
+                    System.out.println("Server connection lost (Stream ended).");
+                    handleServerDisconnect();
+                    break;
+                }
+
                 if (line.trim().startsWith("{")) {
                     Request request = gson.fromJson(line, Request.class);
                     if ("GAME_START".equals(request.getType())) {
@@ -111,7 +117,26 @@ public class OnlineLobbyController implements Initializable {
                     handleRawMessage(line);
                 }
             }
-        } catch (IOException e) { e.printStackTrace(); }
+        } catch (IOException e) {
+            if (listening) { // Only report if we didn't intentionally stop listening
+                System.err.println("Connection error: " + e.getMessage());
+                handleServerDisconnect();
+            }
+        }
+    }
+
+    private void handleServerDisconnect() {
+        listening = false;
+        Platform.runLater(() -> {
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+            alert.setTitle("Connection Lost");
+            alert.setHeaderText("Server Offline");
+            alert.setContentText("The server has shut down or the connection was lost.\nYou will be returned to the main menu.");
+            alert.showAndWait();
+
+            // Navigate back to Home/Login
+            logout();
+        });
     }
 
     private void handleJsonMessage(String json) {

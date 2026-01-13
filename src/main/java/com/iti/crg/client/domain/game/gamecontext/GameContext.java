@@ -26,5 +26,6 @@ public abstract class GameContext {
         void onGameTie();
         boolean isRecorded();
         void setRecorded(boolean value);
+        void onOpponentDisconnected();
     }
 }
