@@ -18,13 +18,19 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Glow;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.TextField;
+import com.iti.crg.client.infrastructure.remote.ServerConnection;
 import static com.iti.crg.client.controllers.utils.Navigator.navigate;
 
 public class HomeController implements Initializable {
@@ -177,7 +183,74 @@ public class HomeController implements Initializable {
 
     @FXML
     private void onOnline(ActionEvent event) {
-        navigate(View.AUTH);
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Connect to Server");
+        dialog.setHeaderText("Enter Server IP Address");
+
+        ButtonType connectButtonType = new ButtonType("Connect", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(connectButtonType, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+
+        TextField ipField = new TextField();
+        ipField.setPromptText("127.0.0.1");
+        ipField.setText("127.0.0.1");
+
+        grid.add(new Label("IP Address:"), 0, 0);
+        grid.add(ipField, 1, 0);
+
+        dialog.getDialogPane().setContent(grid);
+
+        javafx.application.Platform.runLater(ipField::requestFocus);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == connectButtonType) {
+                return ipField.getText();
+            }
+            return null;
+        });
+
+        final Button btConnect = (Button) dialog.getDialogPane().lookupButton(connectButtonType);
+        btConnect.addEventFilter(ActionEvent.ACTION, ae -> {
+            String ip = ipField.getText();
+            if (!isValidIPv4(ip)) {
+                ae.consume();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid IP");
+                alert.setHeaderText(null);
+                alert.setContentText("Please enter a valid IPv4 address (e.g., 127.0.0.1 or 192.168.1.5)");
+                alert.showAndWait();
+            }
+        });
+
+        Optional<String> result = dialog.showAndWait();
+
+        result.ifPresent(ip -> {
+            ServerConnection.getInstance().setIp(ip);
+
+            boolean isConnected = ServerConnection.getInstance().connect();
+
+            if (isConnected) {
+                navigate(View.AUTH);
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Connection Failed");
+                alert.setHeaderText("Cannot reach server");
+                alert.setContentText("Could not connect to " + ip + ".\nPlease check if the server is running.");
+                alert.showAndWait();
+            }
+        });
+    }
+
+    // Helper method for IP Validation using Regex
+    private boolean isValidIPv4(String ip) {
+        if (ip == null || ip.isEmpty()) return false;
+        // Regex for IPv4
+        String zeroTo255 = "([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])";
+        String regex = "^(" + zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255 + "\\." + zeroTo255 + ")$";
+        return ip.matches(regex);
     }
 
     

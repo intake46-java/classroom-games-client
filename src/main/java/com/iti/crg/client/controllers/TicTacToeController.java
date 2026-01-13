@@ -75,7 +75,7 @@ public class TicTacToeController implements GameContext.GameCallback {
     }
 
     public void initLocalTwoPlayerGame(String p1, String p2, boolean isRecorded) {
-        setupGameCommon(p1, p2, false); // Local usually not recorded here
+        setupGameCommon(p1, p2, false);
         this.isOnlineGame = false;
         this.isRecorded = isRecorded;
         GameHandling game = new TicTacToeGame();
