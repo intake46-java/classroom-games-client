@@ -58,7 +58,7 @@
             <padding>
                 <Insets bottom="15.0" top="15.0" />
             </padding>
-            <Hyperlink styleClass="link-text, footer-link" text="Continue Offline" />
+            <Hyperlink onAction="#backOffline" styleClass="link-text, footer-link" text="Continue Offline" />
         </VBox>
     </VBox>
 </StackPane>

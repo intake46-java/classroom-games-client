@@ -1,6 +1,8 @@
 package com.iti.crg.client.controllers;
 
 import com.iti.crg.client.controllers.utils.AnimatedNetworkBackground;
+import com.iti.crg.client.controllers.utils.Navigator;
+import com.iti.crg.client.controllers.utils.View;
 import com.iti.crg.client.domain.usecases.LoginResult;
 import com.iti.crg.client.domain.usecases.LoginUseCase;
 import com.iti.crg.client.domain.usecases.RegisterUseCase;
@@ -69,6 +71,10 @@ public class AuthController implements Initializable {
         setRegisterMode();
     }
 
+    @FXML
+    private void backOffline(ActionEvent event) {
+        Navigator.navigate(View.HOME);
+    }
     private void setLoginMode() {
         isLoginMode = true;
         loginTabBtn.getStyleClass().removeAll("inactive-tab");
@@ -106,21 +112,6 @@ public class AuthController implements Initializable {
         }
     }
 
-    private void navigateToHome(ActionEvent event, String username, LoginResult result) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/iti/crg/client/home.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.getScene().getStylesheets().add(getClass().getResource("/com/iti/crg/client/home.css").toExternalForm());
-            stage.show();
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            showAlert("System Error", "Could not load Home Screen.");
-        }
-    }
     
     private void navigateToOnlinePlayers(ActionEvent event, String username, LoginResult result) {
         try {

@@ -26,12 +26,19 @@
 
             <!-- SCORE -->
             <HBox spacing="40" alignment="CENTER" styleClass="score-box">
-                <Label fx:id="playerScoreLabel" text="Player: 0" styleClass="score-x"/>
-                <Label fx:id="aiScoreLabel" text="Computer: 0" styleClass="score-o"/>
+                <VBox alignment="CENTER">
+                    <Label fx:id="playerNameLabel" text="Player" styleClass="score-name"/>
+                    <Label fx:id="playerScoreLabel" text="0" styleClass="score-x"/>
+                </VBox>
+
+                <VBox alignment="CENTER">
+                    <Label fx:id="opponentNameLabel" text="Opponent" styleClass="score-name"/>
+                    <Label fx:id="opponentScoreLabel" text="0" styleClass="score-o"/>
+                </VBox>
             </HBox>
 
             <!-- TURN -->
-            <Label text="Your turn, Player X!" styleClass="turn-label"/>
+            <Label fx:id="turnLabel" text="Your turn, Player X!" styleClass="turn-label"/>
 
             <!-- BOARD -->
             <GridPane fx:id="boardGrid"
@@ -82,8 +89,7 @@
 
             <!-- ACTIONS -->
             <HBox spacing="25" alignment="CENTER">
-                <Button text="Exit" styleClass="exit-btn"/>
-                <Button text="Replay" styleClass="replay-btn"/>
+                <Button onAction="#onExit" text="Exit" styleClass="exit-btn"/>
             </HBox>
 
 

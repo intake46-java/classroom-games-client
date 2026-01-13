@@ -31,4 +31,8 @@ public class Move implements Serializable {
 
     public char getplayedCharacter() { return playedCharacter; }
     public void setplayedCharacter(char playedCharacter) { this.playedCharacter = playedCharacter; }
+        public int getPositionIndex() {
+        return row * 3 + col;
+    }
+
 }

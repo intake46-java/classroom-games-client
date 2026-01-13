@@ -6,11 +6,16 @@ package com.iti.crg.client.controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import com.iti.crg.client.controllers.utils.View;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+
+import static com.iti.crg.client.controllers.utils.Navigator.navigate;
+
 /**
  * FXML Controller class
  *
@@ -49,12 +54,19 @@ public class PlayerSetupController {
             return;
         }
 
+        TicTacToeController controller = navigate(View.GAME_BOARD);
+        controller.initLocalTwoPlayerGame(p1Name, p2Name);
+    
         System.out.println("Starting game...");
         System.out.println("Player 1: " + p1Name);
         System.out.println("Player 2: " + p2Name);
         System.out.println("Recording enabled: " + isRecorded);
 
-        // TODO: Add logic to switch to your Game Board scene
+    }
+    @FXML
+    private void handleBack(ActionEvent event) {
+        System.out.println("Back to Welcome Screen clicked");
+        navigate(View.OFFLINE_VIEW);
     }
 }
 

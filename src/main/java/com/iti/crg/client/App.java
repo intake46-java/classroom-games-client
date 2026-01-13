@@ -1,6 +1,8 @@
 package com.iti.crg.client;
 
+import com.iti.crg.client.controllers.RecordScreenController;
 import com.iti.crg.client.controllers.utils.Navigator;
+import com.iti.crg.client.domain.entities.GameRecord;
 import com.iti.crg.client.domain.entities.Move;
 import static com.iti.crg.client.domain.game.managers.LoadRecordManager.loadFromStream;
 import javafx.application.Application;
@@ -36,28 +38,45 @@ public class App extends Application {
 //        stage.setMaxHeight(600);
         
 ////////////////////////////////////////////////////////////////
-//        scene = new Scene(loadFXML("gameBoard"), 1000, 650);
-//        scene.getStylesheets().add(getClass().getResource("gameBoard.css").toExternalForm());
+        scene = new Scene(loadFXML("home"), 1000, 650);
+      //  scene.getStylesheets().add(getClass().getResource("gameBoard.css").toExternalForm());
 
                 
-          String fileName = "src/main/resources/records/You_VS_AI_09-01-2026_17-17-02.dat";
 
-        Move[] loadedMoves = loadFromStream(fileName);
-        if (loadedMoves != null) {
-            for (Move m : loadedMoves) {
-                if (m != null) {
-                    System.out.println("Row: " + m.getRow()
-                            + ", Col: " + m.getCol()
-                            + ", Player: " + m.getplayedCharacter());
-                }
-            }
-        }
+        //scene = new Scene(loadFXML("auth"), 1000, 600);
+       // scene.getStylesheets().add(getClass().getResource("auth.css").toExternalForm());
+       // scene = new Scene(loadFXML("home"), 1000, 600);
+       // stage.setScene(scene);
+       // Navigator.setStage(stage);
+       // stage.show();
+       
+//       FXMLLoader loader = new FXMLLoader(App.class.getResource("RecordScreen.fxml"));
+//        Parent root = loader.load();
 
-        scene = new Scene(loadFXML("auth"), 1000, 600);
-        scene.getStylesheets().add(getClass().getResource("auth.css").toExternalForm());
-        scene = new Scene(loadFXML("home"), 1000, 600);
+        // 2. Get the Controller instance so we can pass data to it
+         // RecordScreenController controller = loader.getController();
+
+        // 3. Create Dummy Moves (Simulate a game where X wins diagonally)
+        // Assumption: Your Move constructor is Move(row, col, character)
+        Move[] dummyMoves = new Move[] {
+            new Move(0, 0, 'X'), // Move 1: X top-left
+            new Move(0, 1, 'O'), // Move 2: O top-center
+            new Move(1, 1, 'X'), // Move 3: X center
+            new Move(0, 2, 'O'), // Move 4: O top-right
+            new Move(2, 2, 'X')  // Move 5: X bottom-right (WIN)
+        };
+
+        // 4. Create the GameRecord object
+       // GameRecord dummyRecord = new GameRecord("Osama", "Rashed", dummyMoves);
+
+        // 5. Inject the record into the controller
+        // controller.setRecord(dummyRecord);
+
+        // 6. Set the scene and show
+      //  scene = new Scene(root, 700, 600); // Adjust width/height as needed
+
+        Navigator.setStage(stage); // Ensure navigator knows the stage if used elsewhere
         stage.setScene(scene);
-        Navigator.setStage(stage);
         stage.show();
     }
 
@@ -66,7 +85,7 @@ public class App extends Application {
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml+".fxml"));
         return fxmlLoader.load();
     }
 

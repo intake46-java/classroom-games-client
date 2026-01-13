@@ -3,20 +3,28 @@ package com.iti.crg.client.controllers;
 import com.iti.crg.client.domain.usecases.RespondToInviteUseCase;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.shape.Arc;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Game_invitationController implements Initializable {
 
-    @FXML
-    private Label invitationLabel;
+    @FXML private Label invitationLabel;
+    @FXML private Label timerLabel;
+    @FXML private Arc timerArc; // Link to FXML Arc
 
     private String fromUser;
-
     private final RespondToInviteUseCase respondUseCase;
+
+    private Timeline countdownTimeline;
+    private static final int TIMEOUT_SECONDS = 20;
+    private int timeSeconds = TIMEOUT_SECONDS;
 
     public Game_invitationController() {
         this.respondUseCase = new RespondToInviteUseCase();
@@ -24,35 +32,66 @@ public class Game_invitationController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // No need to get Writer here anymore
+        if (timerLabel != null) timerLabel.setText(String.valueOf(timeSeconds));
     }
 
     public void setFromUser(String fromUser) {
         this.fromUser = fromUser;
-        invitationLabel.setText("Player " + fromUser + " invited you to play Tic Tac Toe");
+        invitationLabel.setText(fromUser + " wants to play!");
+        startTimer();
+    }
+
+    private void startTimer() {
+        countdownTimeline = new Timeline();
+        countdownTimeline.setCycleCount(Timeline.INDEFINITE);
+
+        countdownTimeline.getKeyFrames().add(
+                new KeyFrame(Duration.seconds(1), event -> {
+                    timeSeconds--;
+
+                    // Update Text
+                    if (timerLabel != null) {
+                        timerLabel.setText(String.valueOf(timeSeconds));
+                    }
+
+                    // Update Circle Arc (360 degrees / 20 seconds = 18 degrees per second)
+                    if (timerArc != null) {
+                        double progress = (double) timeSeconds / TIMEOUT_SECONDS;
+                        timerArc.setLength(progress * 360);
+                    }
+
+                    // Auto-Reject
+                    if (timeSeconds <= 0) {
+                        stopTimer();
+                        onReject(null);
+                    }
+                })
+        );
+        countdownTimeline.play();
+    }
+
+    private void stopTimer() {
+        if (countdownTimeline != null) countdownTimeline.stop();
     }
 
     @FXML
     private void onAccept(ActionEvent event) {
-        if (fromUser != null) {
-            respondUseCase.accept(fromUser);
-            System.out.println("Accepted invite from " + fromUser);
-
-        }
+        stopTimer();
+        if (fromUser != null) respondUseCase.accept(fromUser);
         closeStage();
     }
 
     @FXML
-    private void onReject(ActionEvent event) {
-        if (fromUser != null) {
-            respondUseCase.reject(fromUser);
-            System.out.println("Rejected invite from " + fromUser);
-        }
+    public void onReject(ActionEvent event) {
+        stopTimer();
+        if (fromUser != null) respondUseCase.reject(fromUser);
         closeStage();
     }
 
     private void closeStage() {
-        Stage stage = (Stage) invitationLabel.getScene().getWindow();
-        stage.close();
+        if (invitationLabel.getScene() != null) {
+            Stage stage = (Stage) invitationLabel.getScene().getWindow();
+            stage.close();
+        }
     }
 }

@@ -8,13 +8,12 @@ import com.iti.crg.client.infrastructure.dto.Request;
 import com.iti.crg.client.infrastructure.remote.ServerConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.HashSet;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -34,18 +33,24 @@ import javafx.stage.Stage;
 
 public class OnlineLobbyController implements Initializable {
 
-    @FXML
-    private VBox playerList;
+    @FXML private VBox playerList;
+    @FXML private ComboBox<String> gameSelector;
 
-    @FXML
-    private ComboBox<String> gameSelector;
     private volatile boolean listening = true;
     public static String myUsername;
-
     private BufferedReader reader;
     private final Gson gson = new Gson();
-
     private final SendInvitationUseCase sendInvitationUseCase;
+
+    // --- STATE MANAGEMENT ---
+    private final Set<String> pendingInvites = new HashSet<>();
+    private final Map<String, Button> inviteButtons = new HashMap<>();
+
+    // 1. Flag for Receiver: Is a popup open?
+    private boolean isDialogActive = false;
+
+    // 2. NEW Flag for Sender: Are we waiting for someone to accept our invite?
+    private boolean isWaitingForResponse = false;
 
     public OnlineLobbyController() {
         this.sendInvitationUseCase = new SendInvitationUseCase();
@@ -55,36 +60,48 @@ public class OnlineLobbyController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         gameSelector.setItems(FXCollections.observableArrayList("Tic-Tac-Toe"));
         gameSelector.getSelectionModel().selectFirst();
-
         reader = ServerConnection.getInstance().getReader();
-
         new Thread(this::listenForServerMessages).start();
+    }
+
+    // --- HELPER: Global Button Toggle ---
+    // If 'disable' is true, ALL buttons turn off.
+    // If 'disable' is false, buttons turn on UNLESS specific logic prevents it.
+    private void setAllButtonsDisable(boolean disable) {
+        inviteButtons.forEach((username, button) -> {
+            if (disable) {
+                button.setDisable(true);
+            } else {
+                // Determine if we should really enable this button
+                // 1. Are we blocked by a popup?
+                // 2. Are we waiting for an outgoing invite to this specific user?
+                // 3. Are we waiting for ANY outgoing invite?
+                if (!pendingInvites.contains(username) && !isDialogActive && !isWaitingForResponse) {
+                    button.setDisable(false);
+                }
+            }
+        });
     }
 
     private void listenForServerMessages() {
         try {
-            while (listening) { // check flag
+            while (listening) {
                 String line = reader.readLine();
                 if (line == null) break;
-
                 if (line.trim().startsWith("{")) {
                     Request request = gson.fromJson(line, Request.class);
                     if ("GAME_START".equals(request.getType())) {
-                        listening = false; // STOP LISTENING so Context can take over
+                        listening = false;
                         handleGameStart(request.getPayload());
-                        break; // Break loop
+                        break;
                     }
-                    handleJsonMessage(line); // existing logic
+                    handleJsonMessage(line);
+                } else {
+                    handleRawMessage(line);
                 }
-                handleRawMessage(line);
-
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) { e.printStackTrace(); }
     }
-
-    // --- New Logic (JSON / Use Cases) ---
 
     private void handleJsonMessage(String json) {
         try {
@@ -94,35 +111,33 @@ public class OnlineLobbyController implements Initializable {
 
             switch (type) {
                 case "INVITE_RECEIVED":
-                    // Parse payload to get username
                     InviteDto inviteData = gson.fromJson(payload, InviteDto.class);
                     Platform.runLater(() -> showInviteDialog(inviteData.getUsername()));
                     break;
-
                 case "INVITE_ACCEPTED":
-                    InviteDto acceptData = gson.fromJson(payload, InviteDto.class);
-                    System.out.println(acceptData.getUsername() + " accepted your invitation");
+                    System.out.println("Accepted.");
                     break;
-
                 case "INVITE_REJECTED":
                     InviteDto rejectData = gson.fromJson(payload, InviteDto.class);
-                    System.out.println(rejectData.getUsername() + " rejected your invitation");
+                    String rejectUser = rejectData.getUsername();
+                    Platform.runLater(() -> {
+                        // Clear flags
+                        pendingInvites.remove(rejectUser);
+
+                        // IMPORTANT: We are no longer waiting for a response
+                        isWaitingForResponse = false;
+
+                        // Re-enable everyone (unless dialog is open)
+                        setAllButtonsDisable(false);
+                    });
                     break;
-
-                default:
-                    System.out.println("Unknown JSON Request: " + type);
             }
-        } catch (Exception e) {
-            System.err.println("Failed to parse JSON: " + e.getMessage());
-        }
+        } catch (Exception e) { e.printStackTrace(); }
     }
-
 
     private void handleRawMessage(String type) {
         if ("ONLINE_PLAYERS".equals(type)) {
             readOnlinePlayersLegacy();
-        } else {
-            System.out.println("Unknown Raw Message: " + type);
         }
     }
 
@@ -130,7 +145,6 @@ public class OnlineLobbyController implements Initializable {
         try {
             String countStr = reader.readLine();
             if (countStr == null) return;
-
             int n = Integer.parseInt(countStr);
             Map<String, Integer> onlinePlayers = new HashMap<>();
 
@@ -138,7 +152,6 @@ public class OnlineLobbyController implements Initializable {
                 String username = reader.readLine();
                 int score = Integer.parseInt(reader.readLine());
                 int status = Integer.parseInt(reader.readLine());
-
                 if (!myUsername.equals(username)) {
                     onlinePlayers.put(username, score);
                 }
@@ -146,39 +159,48 @@ public class OnlineLobbyController implements Initializable {
 
             Platform.runLater(() -> {
                 playerList.getChildren().clear();
-                onlinePlayers.forEach((username, score) ->
-                        addPlayer(username, score, true)
-                );
+                inviteButtons.clear();
+                onlinePlayers.forEach((username, score) -> addPlayer(username, score, true));
             });
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
+        } catch (IOException ex) { ex.printStackTrace(); }
     }
-
-    // --- UI Helpers ---
 
     private void addPlayer(String name, int score, boolean online) {
         HBox row = new HBox(15);
         row.getStyleClass().add("player-row");
-
         Circle status = new Circle(6, online ? Color.web("#2ecc71") : Color.web("#bdc3c7"));
-
         Label username = new Label(name);
         username.getStyleClass().add("player-name");
-
         Label scoreLabel = new Label("Score: " + score);
         scoreLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #555;");
 
         Button invite = new Button("Invite");
         invite.getStyleClass().add("invite-btn");
 
+        // --- CHECK STATE ---
+        // Disable if:
+        // 1. We are waiting for THIS specific user
+        // 2. We are waiting for SOMEONE ELSE (Sender block)
+        // 3. We are viewing an invite (Receiver block)
+        if (pendingInvites.contains(name) || isWaitingForResponse || isDialogActive) {
+            invite.setDisable(true);
+            if (pendingInvites.contains(name)) invite.setText("Sent...");
+        }
+
+        inviteButtons.put(name, invite);
+
         invite.setOnAction(event -> {
             boolean sent = sendInvitationUseCase.execute(name);
             if (sent) {
-                System.out.println("Invitation sent to " + name);
-                invite.setDisable(true);
-            } else {
-                System.out.println("Failed to send invitation");
+                // 1. Mark that we are waiting
+                pendingInvites.add(name);
+                isWaitingForResponse = true;
+
+                // 2. Set this specific button text
+                invite.setText("Sent...");
+
+                // 3. Disable ALL buttons immediately
+                setAllButtonsDisable(true);
             }
         });
 
@@ -188,54 +210,41 @@ public class OnlineLobbyController implements Initializable {
 
     private void showInviteDialog(String fromUser) {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/com/iti/crg/client/Game_invitation.fxml")
-            );
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/iti/crg/client/Game_invitation.fxml"));
             Parent root = loader.load();
-
             Game_invitationController controller = loader.getController();
             controller.setFromUser(fromUser);
 
             Stage stage = new Stage();
-            stage.setTitle("Game Invitation");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            Scene scene = new Scene(root);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(playerList.getScene().getWindow());
+            stage.setScene(new Scene(root));
 
-            // Safe check for CSS
-            URL cssUrl = getClass().getResource("/com/iti/crg/client/game_invitation.css");
-            if (cssUrl != null) {
-                scene.getStylesheets().add(cssUrl.toExternalForm());
-            }
+            isDialogActive = true;
+            setAllButtonsDisable(true);
 
-            stage.setScene(scene);
-            stage.setResizable(false);
+            stage.setOnHidden(e -> {
+                isDialogActive = false;
+                setAllButtonsDisable(false);
+            });
+
+            stage.setOnCloseRequest(e -> controller.onReject(null));
             stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) { e.printStackTrace(); }
     }
 
     private void handleGameStart(String payload) {
         Platform.runLater(() -> {
             try {
                 GameStartDto startData = gson.fromJson(payload, GameStartDto.class);
-
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/iti/crg/client/gameBoard.fxml"));
                 Parent root = loader.load();
-
                 TicTacToeController controller = loader.getController();
-
-                controller.startMultiPlayerGame(
-                        startData.getOpponent(),
-                        startData.getMySymbol(),
-                        startData.isTurn()
-                );
+                controller.startMultiPlayerGame(myUsername,startData.getOpponent(), startData.getMySymbol(), startData.isTurn());
 
                 Stage stage = (Stage) playerList.getScene().getWindow();
                 stage.setScene(new Scene(root));
                 stage.show();
-
             } catch (IOException e) { e.printStackTrace(); }
         });
     }

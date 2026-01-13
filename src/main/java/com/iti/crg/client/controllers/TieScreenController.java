@@ -11,64 +11,60 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 
-public class WinScreenController {
-    
-    @FXML
-    private MediaView mediaView;
-    
-    @FXML
-    private VBox placeholderBox;
-    
-    @FXML
-    private Button playAgainButton;
-    
-    @FXML
-    private Button backToHomeButton;
-    
+public class TieScreenController {
+
+    @FXML private MediaView mediaView;
+    @FXML private VBox placeholderBox;
+    @FXML private Button playAgainButton;
+    @FXML private Button backToHomeButton;
+
     private MediaPlayer mediaPlayer;
-    
+
     @FXML
     public void initialize() {
-        loadBonusVideo();
-    mediaView.setOnMouseClicked(event -> {
+        loadTieVideo();
+        mediaView.setOnMouseClicked(event -> {
         if (mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.STOPPED) {
             mediaPlayer.seek(Duration.ZERO);
             mediaPlayer.play();
         }
     });
 
+
     }
-    
-    private void loadBonusVideo() {
+
+    private void loadTieVideo() {
         try {
-            String videoPath = getClass().getResource("/videos/bonus.mp4").toExternalForm();
-            
+            String videoPath = getClass().getResource("/videos/tie.mp4").toExternalForm();
             Media media = new Media(videoPath);
             mediaPlayer = new MediaPlayer(media);
-            
+
             mediaView.setMediaPlayer(mediaPlayer);
             mediaView.setPreserveRatio(true);
             mediaView.setSmooth(true);
-            
+
             mediaPlayer.setOnReady(() -> {
                 placeholderBox.setVisible(false);
                 mediaView.setVisible(true);
-                mediaPlayer.play();
+                mediaPlayer.play(); // play once
             });
-                    mediaPlayer.setOnEndOfMedia(() -> {
-            System.out.println("Win video finished.");
-            mediaPlayer.stop();
-        });
-    
-            
-            mediaPlayer.setOnError(() -> {
-                System.err.println("Media error: " + mediaPlayer.getError().getMessage());
+
+            mediaPlayer.setOnEndOfMedia(() -> {
+                System.out.println("Tie video finished.");
+                mediaPlayer.stop();
             });
-            
-            media.setOnError(() -> {
-                System.err.println("Media loading error: " + media.getError().getMessage());
-            });
-            
+
+            mediaPlayer.setOnError(() ->
+                System.err.println("Media error: " + mediaPlayer.getError().getMessage())
+            );
+
+            media.setOnError(() ->
+                System.err.println("Media loading error: " + media.getError().getMessage())
+            );
+
+        } catch (NullPointerException e) {
+            System.err.println("Video file not found at /videos/tie.mp4");
+            e.printStackTrace();
         } catch (Exception e) {
             System.err.println("Could not load video: " + e.getMessage());
             e.printStackTrace();
@@ -97,19 +93,19 @@ public class WinScreenController {
             );
         }
     }
-    
+
     @FXML
     private void handleBackToHome() {
         Navigator.navigate(View.OFFLINE_VIEW);
     }
-    
+
     private void stopVideo() {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.dispose();
         }
     }
-    
+
     public void cleanup() {
         stopVideo();
     }

@@ -15,13 +15,11 @@ public class SinglePlayerContext extends GameContext {
     private AiStrategy aiStrategy;
     public Move[] moves = new Move[9];
     private int moveIndex = 0;
-    private boolean isRecorded;
 
     // Constructor accepts ANY game and ANY strategy
-    public SinglePlayerContext(GameHandling game, AiStrategy aiStrategy, boolean isRecorded) {
+    public SinglePlayerContext(GameHandling game, AiStrategy aiStrategy) {
         super(game);
         this.aiStrategy = aiStrategy;
-        this.isRecorded = isRecorded;
     }
 
     @Override
@@ -75,29 +73,15 @@ public class SinglePlayerContext extends GameContext {
         if (game.checkWin()) {
             game.endGame();
             callback.onGameWin(game.getCurrentPlayer());
-            if (isRecorded) {
-                saveGame();
-            }
             return true;
         } else if (game.checkTie()) {
             game.endGame();
             callback.onGameTie();
-            if (isRecorded) {
-                saveGame();
-            }
+
             return true;
         }
         return false;
     }
 
-    private void saveGame() {
-        System.out.println("this is recorded");
-        Date d = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-YYYY_HH-mm-ss");
-        String safeDate = formatter.format(d);
 
-       // String safeDate = d.toString().replace(":", "-").replace(" ", "_");
-        String fileName = "src/main/resources/records/You_VS_AI_" + safeDate + ".dat";
-        SaveRecordManager.saveInStream(moves, fileName);
-    }
 }
