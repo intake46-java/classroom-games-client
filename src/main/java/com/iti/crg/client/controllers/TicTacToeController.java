@@ -7,6 +7,7 @@ import com.iti.crg.client.domain.game.aistrategy.EasyTicTacToeAi;
 import com.iti.crg.client.domain.game.aistrategy.HardTicTacToeAi;
 import com.iti.crg.client.domain.game.aistrategy.MediumTicTacToeAi;
 import com.iti.crg.client.domain.game.gamecontext.GameContext;
+import com.iti.crg.client.domain.game.gamecontext.MultiplePlayerContext;
 import com.iti.crg.client.domain.game.gamecontext.OnlinePayingContext;
 import com.iti.crg.client.domain.game.gamecontext.SinglePlayerContext;
 import com.iti.crg.client.domain.game.gamehandling.GameHandling;
@@ -21,7 +22,6 @@ import java.util.Map;
 
 import static com.iti.crg.client.controllers.utils.Navigator.navigate;
 import com.iti.crg.client.controllers.utils.ScoreManager;
-import com.iti.crg.client.domain.game.gamecontext.MultiplePlayerContext;
 
 public class TicTacToeController implements GameContext.GameCallback {
 
@@ -173,13 +173,6 @@ public class TicTacToeController implements GameContext.GameCallback {
         }
     }
 
-    private void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
 
     @FXML
     private void onExit(ActionEvent event) {
