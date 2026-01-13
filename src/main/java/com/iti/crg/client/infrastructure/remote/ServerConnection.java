@@ -16,6 +16,10 @@ public class ServerConnection {
     private PrintStream writer;
     public boolean connected = false;
 
+    public boolean isConnected() {
+        return socket != null && !socket.isClosed() && socket.isConnected();
+    }
+
     private ServerConnection() {
         // Optional: You could auto-connect here, or keep it manual
     }

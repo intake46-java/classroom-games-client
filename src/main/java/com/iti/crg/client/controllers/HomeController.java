@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+import com.iti.crg.client.controllers.utils.View;
 import com.iti.crg.client.domain.usecases.LoginResult;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
@@ -29,6 +30,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import static com.iti.crg.client.controllers.utils.Navigator.navigate;
 
 public class HomeController implements Initializable {
 
@@ -178,28 +181,14 @@ public class HomeController implements Initializable {
 
     @FXML
     private void onOffline(ActionEvent event) {
-        navigate(event, "OfflineView");
+        navigate(View.OFFLINE_VIEW);
     }
 
     @FXML
     private void onOnline(ActionEvent event) {
-        navigate(event, "auth");
+        navigate(View.AUTH);
     }
 
-
-    private void navigate(ActionEvent event, String screen) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/iti/crg/client/"+screen+".fxml"));
-            Parent root = loader.load();
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root, 1000, 600));
-            stage.show();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-    }
     
     
 }

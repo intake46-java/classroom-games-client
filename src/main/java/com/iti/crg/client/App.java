@@ -1,5 +1,8 @@
 package com.iti.crg.client;
 
+import com.iti.crg.client.controllers.utils.Navigator;
+import com.iti.crg.client.domain.entities.Move;
+import static com.iti.crg.client.domain.game.managers.LoadRecordManager.loadFromStream;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,14 +11,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-
 public class App extends Application {
 
     private static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
-        
+
         //confirm invitation dialog
 //        scene = new Scene(loadFXML("game_invitation"), 320, 130);
 //        scene.getStylesheets().add(getClass().getResource("game_invitation.css").toExternalForm());
@@ -23,8 +25,7 @@ public class App extends Application {
 //        stage.setMaxWidth(320);
 //        stage.setMinHeight(160);
 //        stage.setMaxHeight(160);
-
-////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////
 
         //OnlinePlayersController
 //        scene = new Scene(loadFXML("onlinePlayers"), 1000, 600);
@@ -39,13 +40,24 @@ public class App extends Application {
 //        scene.getStylesheets().add(getClass().getResource("gameBoard.css").toExternalForm());
 
                 
-                
+          String fileName = "src/main/resources/records/You_VS_AI_09-01-2026_17-17-02.dat";
+
+        Move[] loadedMoves = loadFromStream(fileName);
+        if (loadedMoves != null) {
+            for (Move m : loadedMoves) {
+                if (m != null) {
+                    System.out.println("Row: " + m.getRow()
+                            + ", Col: " + m.getCol()
+                            + ", Player: " + m.getplayedCharacter());
+                }
+            }
+        }
 
         scene = new Scene(loadFXML("auth"), 1000, 600);
         scene.getStylesheets().add(getClass().getResource("auth.css").toExternalForm());
         scene = new Scene(loadFXML("home"), 1000, 600);
         stage.setScene(scene);
-        
+        Navigator.setStage(stage);
         stage.show();
     }
 

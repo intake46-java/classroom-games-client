@@ -1,6 +1,14 @@
 package com.iti.crg.client.infrastructure.dto;
 
 public class Request {
+    public String getType() {
+        return type;
+    }
+
+    public String getPayload() {
+        return payload;
+    }
+
     private String type;
     private String payload;
 
@@ -9,17 +17,13 @@ public class Request {
         this.payload = payload;
     }
 
-    public String getType() {
-        return type;
-    }
+    
 
     public void setType(String type) {
         this.type = type;
     }
 
-    public String getPayload() {
-        return payload;
-    }
+    
 
     public void setPayload(String payload) {
         this.payload = payload;

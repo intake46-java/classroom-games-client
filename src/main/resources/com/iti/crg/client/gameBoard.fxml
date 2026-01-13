@@ -26,8 +26,8 @@
 
             <!-- SCORE -->
             <HBox spacing="40" alignment="CENTER" styleClass="score-box">
-                <Label text="Player X: 2" styleClass="score-x"/>
-                <Label text="Player O: 1" styleClass="score-o"/>
+                <Label fx:id="playerScoreLabel" text="Player: 0" styleClass="score-x"/>
+                <Label fx:id="aiScoreLabel" text="Computer: 0" styleClass="score-o"/>
             </HBox>
 
             <!-- TURN -->

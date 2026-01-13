@@ -1,9 +1,6 @@
 package com.iti.crg.client.controllers;
 
-import com.google.gson.Gson;
-import com.iti.crg.client.infrastructure.dto.InviteDto;
-import com.iti.crg.client.infrastructure.dto.Request;
-import com.iti.crg.client.infrastructure.remote.ServerConnection;
+import com.iti.crg.client.domain.usecases.RespondToInviteUseCase;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -11,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import java.io.PrintStream;
 
 public class Game_invitationController implements Initializable {
 
@@ -19,37 +15,40 @@ public class Game_invitationController implements Initializable {
     private Label invitationLabel;
 
     private String fromUser;
-    private PrintStream ps;
-    Gson gson = new Gson();
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        ps = ServerConnection.getInstance().getWriter();
+
+    private final RespondToInviteUseCase respondUseCase;
+
+    public Game_invitationController() {
+        this.respondUseCase = new RespondToInviteUseCase();
     }
 
-    // يتم استدعاؤها من OnlinePlayersController بعد load
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // No need to get Writer here anymore
+    }
+
     public void setFromUser(String fromUser) {
         this.fromUser = fromUser;
-        invitationLabel.setText("Player " + fromUser + " invited you to play Tic Tac Toe"
-        );
+        invitationLabel.setText("Player " + fromUser + " invited you to play Tic Tac Toe");
     }
 
     @FXML
     private void onAccept(ActionEvent event) {
-        InviteDto dto = new InviteDto(fromUser);
-        Request req = new Request("INVITE_ACCEPT", gson.toJson(dto));
+        if (fromUser != null) {
+            respondUseCase.accept(fromUser);
+            System.out.println("Accepted invite from " + fromUser);
 
-        ps.println(gson.toJson(req));
-        ps.flush();
+        }
+        closeStage();
     }
 
     @FXML
     private void onReject(ActionEvent event) {
-        InviteDto dto = new InviteDto(fromUser);
-        Request req = new Request("INVITE_REJECT", gson.toJson(dto));
-
-        ps.println(gson.toJson(req));
-        ps.flush();
+        if (fromUser != null) {
+            respondUseCase.reject(fromUser);
+            System.out.println("Rejected invite from " + fromUser);
+        }
+        closeStage();
     }
 
     private void closeStage() {

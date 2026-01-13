@@ -10,4 +10,5 @@ public class InviteDto {
     public String getUsername() {
         return username;
     }
+
 }
