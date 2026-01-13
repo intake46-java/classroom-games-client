@@ -4,7 +4,6 @@ import com.iti.crg.client.domain.entities.Cell;
 import com.iti.crg.client.domain.entities.TicTacToeBoard;
 
 public class TicTacToeGame extends TicTacToeBoard implements GameHandling {
-
     private char currentPlayer;
     private boolean isGameOver;
 
@@ -12,7 +11,6 @@ public class TicTacToeGame extends TicTacToeBoard implements GameHandling {
         super();
         startGame();
     }
-
 
     @Override
     public boolean makeMove(int row, int col) {
@@ -74,8 +72,6 @@ public class TicTacToeGame extends TicTacToeBoard implements GameHandling {
                 && col >= 0 && col < 3
                 && grid[row][col] == '_';
     }    
-    
-    
 
     public boolean isWinner() {
         char[][] grid = this.getGrid();
@@ -103,5 +99,4 @@ public class TicTacToeGame extends TicTacToeBoard implements GameHandling {
     public boolean isTie(TicTacToeBoard board) {
         return !isWinner() && board.isFull();
     }
-
 }

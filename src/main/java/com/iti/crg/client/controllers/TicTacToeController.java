@@ -227,8 +227,8 @@ public class TicTacToeController implements GameContext.GameCallback {
     }
 
     @Override
-    public void setRecorded(boolean value) {
-        isRecorded = value;
+    public void buttonsActive(boolean value) {
+        setBoardLocked(value);
     }
 
     @Override

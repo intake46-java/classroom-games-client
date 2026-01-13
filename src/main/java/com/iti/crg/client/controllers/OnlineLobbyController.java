@@ -87,6 +87,7 @@ public class OnlineLobbyController implements Initializable {
         });
     }
 
+
     private void listenForServerMessages() {
         try {
             while (listening) {

@@ -45,9 +45,10 @@ public class SinglePlayerContext extends GameContext {
 
             new Thread(() -> {
                 try {
+                    callback.buttonsActive(true);
                     Thread.sleep(700); // AI Thinking delay
                 } catch (InterruptedException ignored) {}
-
+                callback.buttonsActive(false);
                 Cell aiMove = aiStrategy.AIMove((Board) game);
 
                 Platform.runLater(() -> {
