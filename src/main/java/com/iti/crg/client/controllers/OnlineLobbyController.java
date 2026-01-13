@@ -1,6 +1,7 @@
 package com.iti.crg.client.controllers;
 
 import com.google.gson.Gson;
+import com.iti.crg.client.controllers.utils.AnimatedNetworkBackground;
 import com.iti.crg.client.controllers.utils.Navigator;
 import com.iti.crg.client.controllers.utils.View;
 import com.iti.crg.client.domain.usecases.SendInvitationUseCase;
@@ -21,13 +22,14 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
@@ -37,9 +39,15 @@ public class OnlineLobbyController implements Initializable {
 
     @FXML private VBox playerList;
     @FXML private ComboBox<String> gameSelector;
+    @FXML private StackPane rootPane;
+    // --- NEW INJECTED LABELS FOR USER INFO ---
+    @FXML private Label currentUserLabel;
+    @FXML private Label currentScoreLabel;
 
     private volatile boolean listening = true;
     public static String myUsername;
+    public static int score;
+
     private BufferedReader reader;
     private final Gson gson = new Gson();
     private final SendInvitationUseCase sendInvitationUseCase;
@@ -48,10 +56,7 @@ public class OnlineLobbyController implements Initializable {
     private final Set<String> pendingInvites = new HashSet<>();
     private final Map<String, Button> inviteButtons = new HashMap<>();
 
-    // 1. Flag for Receiver: Is a popup open?
     private boolean isDialogActive = false;
-
-    // 2. NEW Flag for Sender: Are we waiting for someone to accept our invite?
     private boolean isWaitingForResponse = false;
 
     public OnlineLobbyController() {
@@ -60,24 +65,28 @@ public class OnlineLobbyController implements Initializable {
 
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
+        AnimatedNetworkBackground background = new AnimatedNetworkBackground(rootPane);
+        // 1. Setup Game Selector
         gameSelector.setItems(FXCollections.observableArrayList("Tic-Tac-Toe"));
         gameSelector.getSelectionModel().selectFirst();
+
+        // 2. DISPLAY USER INFO (New Code)
+        if (myUsername != null) {
+            currentUserLabel.setText(myUsername);
+        }
+        currentScoreLabel.setText(String.valueOf(score));
+
+        // 3. Setup Connection
         reader = ServerConnection.getInstance().getReader();
         new Thread(this::listenForServerMessages).start();
     }
 
     // --- HELPER: Global Button Toggle ---
-    // If 'disable' is true, ALL buttons turn off.
-    // If 'disable' is false, buttons turn on UNLESS specific logic prevents it.
     private void setAllButtonsDisable(boolean disable) {
         inviteButtons.forEach((username, button) -> {
             if (disable) {
                 button.setDisable(true);
             } else {
-                // Determine if we should really enable this button
-                // 1. Are we blocked by a popup?
-                // 2. Are we waiting for an outgoing invite to this specific user?
-                // 3. Are we waiting for ANY outgoing invite?
                 if (!pendingInvites.contains(username) && !isDialogActive && !isWaitingForResponse) {
                     button.setDisable(false);
                 }
@@ -123,13 +132,8 @@ public class OnlineLobbyController implements Initializable {
                     InviteDto rejectData = gson.fromJson(payload, InviteDto.class);
                     String rejectUser = rejectData.getUsername();
                     Platform.runLater(() -> {
-                        // Clear flags
                         pendingInvites.remove(rejectUser);
-
-                        // IMPORTANT: We are no longer waiting for a response
                         isWaitingForResponse = false;
-
-                        // Re-enable everyone (unless dialog is open)
                         setAllButtonsDisable(false);
                     });
                     break;
@@ -168,22 +172,34 @@ public class OnlineLobbyController implements Initializable {
     }
 
     private void addPlayer(String name, int score, boolean online) {
-        HBox row = new HBox(15);
+        HBox row = new HBox();
         row.getStyleClass().add("player-row");
-        Circle status = new Circle(6, online ? Color.web("#2ecc71") : Color.web("#bdc3c7"));
+        row.setAlignment(Pos.CENTER_LEFT);
+
+        // --- Left side of card (Status + Name + Score) ---
+        HBox infoBox = new HBox(15);
+        infoBox.setAlignment(Pos.CENTER_LEFT);
+
+        Circle status = new Circle(5, online ? Color.web("#2ecc71") : Color.web("#bdc3c7"));
+
+        VBox nameBox = new VBox(2);
         Label username = new Label(name);
         username.getStyleClass().add("player-name");
-        Label scoreLabel = new Label("Score: " + score);
-        scoreLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #555;");
 
+        Label scoreLabel = new Label("Score: " + score);
+        scoreLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #95a5a6;");
+
+        nameBox.getChildren().addAll(username, scoreLabel);
+        infoBox.getChildren().addAll(status, nameBox);
+
+        // --- Spacer to push button to right ---
+        Pane spacer = new Pane();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        // --- Invite Button ---
         Button invite = new Button("Invite");
         invite.getStyleClass().add("invite-btn");
 
-        // --- CHECK STATE ---
-        // Disable if:
-        // 1. We are waiting for THIS specific user
-        // 2. We are waiting for SOMEONE ELSE (Sender block)
-        // 3. We are viewing an invite (Receiver block)
         if (pendingInvites.contains(name) || isWaitingForResponse || isDialogActive) {
             invite.setDisable(true);
             if (pendingInvites.contains(name)) invite.setText("Sent...");
@@ -194,19 +210,14 @@ public class OnlineLobbyController implements Initializable {
         invite.setOnAction(event -> {
             boolean sent = sendInvitationUseCase.execute(name);
             if (sent) {
-                // 1. Mark that we are waiting
                 pendingInvites.add(name);
                 isWaitingForResponse = true;
-
-                // 2. Set this specific button text
                 invite.setText("Sent...");
-
-                // 3. Disable ALL buttons immediately
                 setAllButtonsDisable(true);
             }
         });
 
-        row.getChildren().addAll(status, username, scoreLabel, invite);
+        row.getChildren().addAll(infoBox, spacer, invite);
         playerList.getChildren().add(row);
     }
 
@@ -235,22 +246,6 @@ public class OnlineLobbyController implements Initializable {
         } catch (IOException e) { e.printStackTrace(); }
     }
 
-//    private void handleGameStart(String payload) {
-//        Platform.runLater(() -> {
-//            try {
-//                GameStartDto startData = gson.fromJson(payload, GameStartDto.class);
-//                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/iti/crg/client/gameBoard.fxml"));
-//                Parent root = loader.load();
-//                TicTacToeController controller = loader.getController();
-//                controller.startMultiPlayerGame(myUsername,startData.getOpponent(), startData.getMySymbol(), startData.isTurn());
-//                Navigator.setLast(View.ONLINE_LOBBY);
-//                Stage stage = (Stage) playerList.getScene().getWindow();
-//                stage.setScene(new Scene(root));
-//                stage.show();
-//            } catch (IOException e) { e.printStackTrace(); }
-//        });
-//    }
-
     private void handleGameStart(String payload) {
         Platform.runLater(() -> {
                     GameStartDto startData = gson.fromJson(payload, GameStartDto.class);
@@ -258,7 +253,7 @@ public class OnlineLobbyController implements Initializable {
                     TicTacToeController controller = Navigator.navigate(View.GAME_BOARD);
                     controller.startMultiPlayerGame(myUsername, startData.getOpponent(), startData.getMySymbol(), startData.isTurn());
                 }
-            );
+        );
     }
 
     @FXML

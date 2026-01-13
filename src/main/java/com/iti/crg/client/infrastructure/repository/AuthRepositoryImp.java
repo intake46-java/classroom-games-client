@@ -17,7 +17,6 @@ public class AuthRepositoryImp implements AuthRepository {
 
     private final Gson gson;
     private final ServerConnection connection;
-
     public AuthRepositoryImp() {
         this.gson = new Gson();
         this.connection = ServerConnection.getInstance();
@@ -70,8 +69,6 @@ public class AuthRepositoryImp implements AuthRepository {
             AuthResponse response =  gson.fromJson(data, AuthResponse.class);
 
             System.out.println(response.getScore());
-
-
 
             return response.isSuccess();
 

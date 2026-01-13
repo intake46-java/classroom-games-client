@@ -170,7 +170,8 @@ public class AuthController implements Initializable {
                 if (result.isSuccess()) {
                     if (isLoginMode) {
                         OnlineLobbyController.myUsername = username;
-                        navigateToOnlinePlayers(event, username, result);
+                        OnlineLobbyController.score = 0;
+                        Navigator.navigate(View.ONLINE_LOBBY);
                     } else {
                         // If register success, switch back to login or auto-login
                         showAlert("Success", "Account created! Please log in.");

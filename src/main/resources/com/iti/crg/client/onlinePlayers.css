@@ -1,52 +1,168 @@
 .root {
-    -fx-background-color: #f5f7fb;
-    -fx-font-family: "Segoe UI";
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: #f8f9fa;
 }
 
-/* TOP BAR */
-.top-bar {
-    -fx-padding: 15;
+/* --- SIDEBAR --- */
+.sidebar {
     -fx-background-color: white;
-    -fx-border-color: #e0e0e0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 10, 0, 0, 0);
 }
 
-.title {
+.profile-avatar-bg {
+    -fx-fill: linear-gradient(to bottom right, #ffffff, #f0f2f5);
+    -fx-stroke: #4a90e2;
+    -fx-stroke-width: 3;
+    -fx-effect: dropshadow(three-pass-box, rgba(74, 144, 226, 0.3), 10, 0, 0, 0);
+}
+
+.avatar-text {
     -fx-font-size: 20px;
     -fx-font-weight: bold;
+    -fx-text-fill: #4a90e2;
+}
+
+.profile-name {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.score-badge {
+    -fx-background-color: #e8f5e9; /* Light Green Bg */
+    -fx-background-radius: 15;
+    -fx-padding: 5 15;
+}
+
+.score-label-small {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #27ae60;
+}
+
+.profile-score-value {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #27ae60;
 }
 
 .logout-btn {
-    -fx-background-color: #4a90e2;
-    -fx-text-fill: white;
-    -fx-background-radius: 6;
-}
-
-/* SECTION */
-.section-title {
-    -fx-font-size: 22px;
+    -fx-background-color: transparent;
+    -fx-border-color: #e74c3c;
+    -fx-border-radius: 8;
+    -fx-text-fill: #e74c3c;
     -fx-font-weight: bold;
-}
-
-/* PLAYER LIST */
-.player-container {
-    -fx-padding: 10;
-}
-
-.player-row {
     -fx-padding: 12;
-    -fx-alignment: CENTER_LEFT;
-    -fx-background-color: white;
-    -fx-background-radius: 8;
-    -fx-border-color: #dcdcdc;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s;
 }
 
-.player-name {
+.logout-btn:hover {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+}
+
+/* --- CENTER CONTENT --- */
+.page-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.page-subtitle {
     -fx-font-size: 14px;
+    -fx-text-fill: #95a5a6;
+}
+
+.section-header {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e;
+}
+
+.status-indicator {
+    -fx-font-size: 12px;
+    -fx-text-fill: #2ecc71;
     -fx-font-weight: bold;
 }
 
-.invite-btn {
+.custom-separator .line {
+    -fx-border-color: #eceff1;
+    -fx-border-width: 1;
+}
+
+/* --- IMPRESSIVE GAME SELECTOR --- */
+.game-selector-container {
+    -fx-background-color: white;
+    -fx-background-radius: 30;
+    -fx-padding: 5 15 5 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 30;
+}
+
+.selector-label {
+    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 10 0 0;
+}
+
+.game-combo {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.game-combo .list-cell {
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+/* The arrow button area */
+.game-combo .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.game-combo .arrow {
     -fx-background-color: #4a90e2;
-    -fx-text-fill: white;
-    -fx-background-radius: 6;
+    -fx-padding: 3;
+}
+
+/* The Popup List */
+.game-combo .list-view {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 10, 0, 0, 5);
+    -fx-padding: 5;
+}
+
+.game-combo .list-view .list-cell {
+    -fx-padding: 8 10;
+    -fx-background-radius: 5;
+}
+
+.game-combo .list-view .list-cell:hover {
+    -fx-background-color: #f0f7fd;
+    -fx-text-fill: #4a90e2;
+}
+
+.game-combo .list-view .list-cell:selected {
+    -fx-background-color: #e1f0fa;
+    -fx-text-fill: #4a90e2;
+}
+
+/* --- PLAYER CARDS --- */
+.custom-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+/* Keep the card styles from previous response for player rows */
+.player-row {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.03), 5, 0, 0, 3);
 }
