@@ -2,16 +2,18 @@ package com.iti.crg.client.controllers;
 
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.ResourceBundle;
+import java.util.*;
 
+import com.iti.crg.client.controllers.utils.AnimatedNetworkBackground;
+import com.iti.crg.client.controllers.utils.Navigator;
 import com.iti.crg.client.controllers.utils.View;
+import com.iti.crg.client.domain.entities.GameRecord;
+import com.iti.crg.client.domain.game.managers.LoadRecordManager;
 import com.iti.crg.client.domain.usecases.LoginResult;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
@@ -26,6 +28,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Glow;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -39,34 +42,114 @@ public class HomeController implements Initializable {
     @FXML private VBox contentBox;
     @FXML private Button btnOffline;
     @FXML private Button btnOnline;
+    @FXML private StackPane rootPane;
     @FXML private Label nameLabel;
-
+    @FXML private VBox historyListContainer;
     Socket mySocket;
 
     BufferedReader dis;
     PrintStream ps;
 
-    private final List<Particle> particles = new ArrayList<>();
     private static final int PARTICLE_COUNT = 40;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // 1. Initial Entry Animations
         playEntryAnimations();
-
+        loadHistory();
         // 2. Button Hover Effects
         addPulseEffect(btnOffline);
         addPulseEffect(btnOnline);
 
         // 3. Start Background Animation
-        initParticles();
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                drawNetworkBackground();
+        AnimatedNetworkBackground background = new AnimatedNetworkBackground(rootPane);
+    }
+
+    private void loadHistory() {
+        File folder = new File("Records");
+        if (!folder.exists() || !folder.isDirectory()) {
+            Label placeholder = new Label("No records found.");
+            placeholder.setStyle("-fx-text-fill: #999; -fx-padding: 10;");
+            historyListContainer.getChildren().add(placeholder);
+            return;
+        }
+
+        File[] files = folder.listFiles((dir, name) -> name.endsWith(".record"));
+
+        if (files != null && files.length > 0) {
+            // Sort by Last Modified (Newest first)
+            Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
+
+            for (File file : files) {
+                historyListContainer.getChildren().add(createRecordCard(file));
             }
-        };
-        timer.start();
+        } else {
+            Label placeholder = new Label("No recent matches.");
+            placeholder.setStyle("-fx-text-fill: #999; -fx-padding: 10;");
+            historyListContainer.getChildren().add(placeholder);
+        }
+    }
+
+    private VBox createRecordCard(File file) {
+        // Parse filename for quick display without loading the whole object yet
+        // Filename format: "P1_vs_P2_TIMESTAMP.record"
+        String name = file.getName().replace(".record", "");
+        String[] parts = name.split("_vs_");
+
+        String playersText = name;
+        String dateText = "Recorded Game";
+
+        if(parts.length >= 2) {
+            // Cleaning up the string display
+            String p1 = parts[0];
+            // The rest might contain the date
+            String p2AndDate = parts[1];
+            String p2 = p2AndDate;
+
+            // Basic parsing logic (adjust based on your exact save format)
+            if(p2AndDate.contains("_")) {
+                p2 = p2AndDate.substring(0, p2AndDate.lastIndexOf("_"));
+            }
+            playersText = p1 + " vs " + p2;
+        }
+
+        // --- Create UI Nodes ---
+        VBox card = new VBox(5);
+        card.getStyleClass().add("record-card");
+
+        Label lblPlayers = new Label(playersText);
+        lblPlayers.getStyleClass().add("record-players");
+
+        Label lblDate = new Label(dateText); // You could format file.lastModified() to a Date string here
+        lblDate.getStyleClass().add("record-date");
+        lblDate.setText(new java.util.Date(file.lastModified()).toString());
+
+        card.getChildren().addAll(lblPlayers, lblDate);
+
+        // --- Handle Click ---
+        card.setOnMouseClicked(event -> {
+            playRecord(file.getAbsolutePath());
+        });
+
+        return card;
+    }
+
+    private void playRecord(String filePath) {
+        // 1. Load the data
+        GameRecord record = LoadRecordManager.loadFromStream(filePath);
+
+        if (record != null) {
+            // 2. Set "Last View" so Back button works
+            Navigator.setLast(View.HOME);
+
+            // 3. Navigate
+            RecordScreenController controller = Navigator.navigate(View.RECORD_SCREEN);
+
+            // 4. Pass Data
+            if (controller != null) {
+                controller.setRecord(record);
+            }
+        }
     }
 
     private void playEntryAnimations() {
@@ -104,73 +187,9 @@ public class HomeController implements Initializable {
         });
     }
 
-    // --- Background Logic ---
 
-    private void initParticles() {
-        Random rand = new Random();
-        double w = backgroundCanvas.getWidth(); // Default 900
-        double h = backgroundCanvas.getHeight(); // Default 600
 
-        // Create particles randomly distributed
-        for (int i = 0; i < PARTICLE_COUNT; i++) {
-            particles.add(new Particle(rand.nextDouble() * w, rand.nextDouble() * h));
-        }
-    }
 
-    private void drawNetworkBackground() {
-        GraphicsContext gc = backgroundCanvas.getGraphicsContext2D();
-        double w = backgroundCanvas.getWidth();
-        double h = backgroundCanvas.getHeight();
-
-        gc.clearRect(0, 0, w, h);
-
-        // Style for the "constellation" lines
-        gc.setLineWidth(0.5);
-        gc.setStroke(Color.rgb(180, 180, 180, 0.4)); // Light grey lines
-        gc.setFill(Color.rgb(160, 160, 160, 0.5));   // Light grey dots
-
-        for (Particle p : particles) {
-            p.move(w, h);
-
-            // Draw the dot
-            gc.fillOval(p.x, p.y, 3, 3);
-
-            // Draw connections
-            for (Particle other : particles) {
-                double distance = Math.hypot(p.x - other.x, p.y - other.y);
-
-                // Only connect if close enough
-                if (distance < 120) {
-                    // Opacity depends on distance (fades out as they get further)
-                    gc.setGlobalAlpha(1.0 - (distance / 120));
-                    gc.strokeLine(p.x, p.y, other.x, other.y);
-                }
-            }
-        }
-        gc.setGlobalAlpha(1.0); // Reset alpha
-    }
-
-    // Simple inner class for particle data
-    private static class Particle {
-        double x, y;
-        double vx, vy;
-
-        Particle(double x, double y) {
-            this.x = x;
-            this.y = y;
-            // Very slow, floating movement
-            this.vx = (Math.random() - 0.5) * 0.7;
-            this.vy = (Math.random() - 0.5) * 0.7;
-        }
-
-        void move(double width, double height) {
-            x += vx;
-            y += vy;
-            // Bounce off edges
-            if (x < 0 || x > width) vx *= -1;
-            if (y < 0 || y > height) vy *= -1;
-        }
-    }
 
     public void setData(String name, Socket mySocket, BufferedReader dis, PrintStream ps ) {
         nameLabel.setText(name);

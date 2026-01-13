@@ -1,7 +1,10 @@
 package com.iti.crg.client.domain.game.gamecontext;
 
 import com.google.gson.Gson;
+import com.iti.crg.client.domain.entities.GameRecord;
+import com.iti.crg.client.domain.entities.Move;
 import com.iti.crg.client.domain.game.gamehandling.GameHandling;
+import com.iti.crg.client.domain.game.managers.SaveRecordManager;
 import com.iti.crg.client.domain.repository.GameRepository;
 import com.iti.crg.client.infrastructure.dto.GameMoveDto;
 import com.iti.crg.client.infrastructure.dto.Request;
@@ -11,9 +14,13 @@ import javafx.application.Platform;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
 
 public class OnlinePayingContext extends GameContext {
 
+    private final String myName;
     private final String opponentUsername;
     private final char mySymbol;
     private boolean isMyTurn;
@@ -22,11 +29,16 @@ public class OnlinePayingContext extends GameContext {
     private final BufferedReader reader;
     private final Gson gson;
     private volatile boolean listening = true;
-    private GameCallback uiCallback; // Needed to update UI
+    private GameCallback uiCallback;
 
-    public OnlinePayingContext(GameHandling game, String opponent, char mySymbol, boolean isMyTurn) {
+    // Recording Fields
+    private Move[] moves = new Move[9];
+    private int moveIndex = 0;
+
+    public OnlinePayingContext(GameHandling game, String myName, String opponentUsername, char mySymbol, boolean isMyTurn) {
         super(game);
-        this.opponentUsername = opponent;
+        this.myName = myName;
+        this.opponentUsername = opponentUsername;
         this.mySymbol = mySymbol;
         this.isMyTurn = isMyTurn;
 
@@ -35,7 +47,6 @@ public class OnlinePayingContext extends GameContext {
         this.gson = new Gson();
     }
 
-    // Call this immediately after creating the Context in the Controller
     public void startListening(GameCallback callback) {
         this.uiCallback = callback;
         new Thread(this::listenToServer).start();
@@ -48,20 +59,19 @@ public class OnlinePayingContext extends GameContext {
             return;
         }
 
-        // 1. Update Local Game Logic
         if (game.makeMove(row, col)) {
-            // 2. Update UI
+
+            // 2. Record the Move
+            moves[moveIndex++] = new Move(row, col, mySymbol);
+
             callback.onMoveMade(row, col, mySymbol);
 
-            // 3. Send to Server
             System.out.println("Sending move: " + row + "," + col + " to " + opponentUsername);
             GameMoveDto moveDto = new GameMoveDto(opponentUsername, row, col, mySymbol);
             gameRepository.sendMove(moveDto);
 
-            // 4. Check End Game
             if (checkStatus(callback)) return;
 
-            // 5. Lock Turn
             game.changeTurn();
             isMyTurn = false;
         }
@@ -74,14 +84,11 @@ public class OnlinePayingContext extends GameContext {
                 String line = reader.readLine();
                 if (line == null) break;
 
-                System.out.println("Received from Server: " + line); // DEBUG
-
                 if (line.trim().startsWith("{")) {
                     Request request = gson.fromJson(line, Request.class);
 
                     if ("OPPONENT_MOVE".equals(request.getType())) {
                         GameMoveDto move = gson.fromJson(request.getPayload(), GameMoveDto.class);
-                        // Important: Run UI updates on JavaFX Thread
                         Platform.runLater(() -> handleOpponentMove(move));
                     }
                 }
@@ -94,25 +101,25 @@ public class OnlinePayingContext extends GameContext {
     private void handleOpponentMove(GameMoveDto move) {
         System.out.println("Processing Opponent Move: " + move.getRow() + "," + move.getCol());
 
-        // 1. Update Internal Logic
-        // Note: We force the move because the server validated it (or we trust the flow)
         game.makeMove(move.getRow(), move.getCol());
 
-        // 2. Update UI
+        moves[moveIndex++] = new Move(move.getRow(), move.getCol(), move.getSymbol());
+
         if (uiCallback != null) {
             uiCallback.onMoveMade(move.getRow(), move.getCol(), move.getSymbol());
 
-            // 3. Check End Game
             if (game.checkWin()) {
                 game.endGame();
+                if (uiCallback.isRecorded()) saveRecording(); // Save
                 uiCallback.onGameWin(move.getSymbol());
                 listening = false;
             } else if (game.checkTie()) {
                 game.endGame();
+                if (uiCallback.isRecorded()) saveRecording(); // Save
                 uiCallback.onGameTie();
                 listening = false;
             } else {
-                // 4. Unlock Turn
+                // 5. Unlock Turn
                 game.changeTurn();
                 isMyTurn = true;
                 System.out.println("It is now your turn!");
@@ -123,17 +130,42 @@ public class OnlinePayingContext extends GameContext {
     private boolean checkStatus(GameCallback callback) {
         if (game.checkWin()) {
             game.endGame();
+            if (callback.isRecorded()) saveRecording(); // Save
             callback.onGameWin(mySymbol);
-            gameRepository.sendWin(opponentUsername); // Optional: Notify server
+            gameRepository.sendWin(opponentUsername);
             listening = false;
             return true;
         } else if (game.checkTie()) {
             game.endGame();
+            if (callback.isRecorded()) saveRecording();
             callback.onGameTie();
-            gameRepository.sendTie(opponentUsername); // Optional
+            gameRepository.sendTie(opponentUsername);
             listening = false;
             return true;
         }
         return false;
+    }
+
+    private void saveRecording() {
+        String p1, p2;
+        if (mySymbol == 'X') {
+            p1 = myName;
+            p2 = opponentUsername;
+        } else {
+            p1 = opponentUsername;
+            p2 = myName;
+        }
+
+        Move[] actualMoves = Arrays.copyOf(moves, moveIndex);
+        GameRecord record = new GameRecord(p1, p2, actualMoves);
+
+        // 3. Generate filename
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String safeP1 = p1.replaceAll("\\s+", "");
+        String safeP2 = p2.replaceAll("\\s+", "");
+        String fileName = "Records/Online_" + safeP1 + "_vs_" + safeP2 + "_" + timeStamp + ".record";
+
+        // 4. Save
+        SaveRecordManager.saveInStream(record, fileName);
     }
 }

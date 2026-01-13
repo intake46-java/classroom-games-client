@@ -1,5 +1,7 @@
 package com.iti.crg.client.controllers;
 
+import com.iti.crg.client.controllers.utils.Navigator;
+import com.iti.crg.client.controllers.utils.View;
 import com.iti.crg.client.domain.entities.GameRecord;
 import com.iti.crg.client.domain.entities.Move;
 import javafx.animation.KeyFrame;
@@ -99,7 +101,7 @@ public class RecordScreenController implements Initializable {
 
     @FXML
     private void handleBack() {
-        System.out.println("Back pressed");
+        Navigator.navigate(View.HOME);
     }
 
     @FXML

@@ -37,7 +37,9 @@ public class TicTacToeController implements GameContext.GameCallback {
     private GameContext gameContext;
     private boolean isOnlineGame = false;
     private char mySymbol = 'X';
+    private boolean isRecorded = false;
     public static TicTacToeController lastController;
+
 
     @FXML
     public void initialize() {
@@ -57,7 +59,7 @@ public class TicTacToeController implements GameContext.GameCallback {
     public void initComputerGame(String player1Name, String difficulty, boolean isRecorded) {
         setupGameCommon(player1Name, "Computer (" + difficulty + ")", isRecorded);
         this.isOnlineGame = false;
-
+        this.isRecorded = isRecorded;
         AiStrategy aiStrategy;
         switch (difficulty) {
             case "Hard": aiStrategy = new HardTicTacToeAi('O'); break;
@@ -66,15 +68,16 @@ public class TicTacToeController implements GameContext.GameCallback {
         }
 
         GameHandling myGame = new TicTacToeGame();
-        gameContext = new SinglePlayerContext(myGame, aiStrategy);
+        gameContext = new SinglePlayerContext(myGame, aiStrategy, player1Name);
     }
 
     // Local Multi Player ---
-    public void initLocalTwoPlayerGame(String p1, String p2) {
+    public void initLocalTwoPlayerGame(String p1, String p2, boolean isRecorded) {
         setupGameCommon(p1, p2, false); // Local usually not recorded here
         this.isOnlineGame = false;
+        this.isRecorded = isRecorded;
         GameHandling game = new TicTacToeGame();
-        gameContext = new MultiplePlayerContext(game);
+        gameContext = new MultiplePlayerContext(game, p1, p2);
     }
 
     // Online Multi Player ---
@@ -82,12 +85,12 @@ public class TicTacToeController implements GameContext.GameCallback {
         // Assume online is recorded if the backend says so, or pass it as param.
         // For now, let's say online matches are recorded:
         setupGameCommon(myName, opponentName, true);
-
+        isRecorded = true;
         this.isOnlineGame = true;
         this.mySymbol = mySymbol;
 
         GameHandling myGame = new TicTacToeGame();
-        OnlinePayingContext mContext = new OnlinePayingContext(myGame, opponentName, mySymbol, isMyTurn);
+        OnlinePayingContext mContext = new OnlinePayingContext(myGame, myName, opponentName, mySymbol, isMyTurn);
         mContext.startListening(this);
         this.gameContext = mContext;
 
@@ -233,6 +236,16 @@ public class TicTacToeController implements GameContext.GameCallback {
         });
     }
 
+    @Override
+    public boolean isRecorded() {
+        return isRecorded;
+    }
+
+    @Override
+    public void setRecorded(boolean value) {
+        isRecorded = value;
+    }
+
     private void disableAllButtons() {
         buttonMap.values().forEach(b -> b.setDisable(true));
     }
@@ -250,10 +263,6 @@ public class TicTacToeController implements GameContext.GameCallback {
     private void onExit(ActionEvent event) {
         ScoreManager.setP1Score(0);
         ScoreManager.setP2Score(0);
-        if(!isOnlineGame) {
-            Navigator.navigate(View.OFFLINE_VIEW);
-        } else {
-            Navigator.navigate(View.HOME);
-        }
+        Navigator.navigateBack();
     }
 }

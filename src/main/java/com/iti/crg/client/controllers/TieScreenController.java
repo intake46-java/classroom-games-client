@@ -87,15 +87,16 @@ public class TieScreenController {
             );
 
         } else {
-            controller.initLocalTwoPlayerGame(
-                    ScoreManager.getP1Name(),
-                    ScoreManager.getP2Name()
-            );
+//            controller.initLocalTwoPlayerGame(
+//                    ScoreManager.getP1Name(),
+//                    ScoreManager.getP2Name(),
+//                    isRecorded);
         }
     }
 
     @FXML
     private void handleBackToHome() {
+        stopVideo();
         Navigator.navigateBack();
     }
 

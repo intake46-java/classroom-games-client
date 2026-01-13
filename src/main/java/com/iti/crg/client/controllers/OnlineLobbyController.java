@@ -235,20 +235,30 @@ public class OnlineLobbyController implements Initializable {
         } catch (IOException e) { e.printStackTrace(); }
     }
 
+//    private void handleGameStart(String payload) {
+//        Platform.runLater(() -> {
+//            try {
+//                GameStartDto startData = gson.fromJson(payload, GameStartDto.class);
+//                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/iti/crg/client/gameBoard.fxml"));
+//                Parent root = loader.load();
+//                TicTacToeController controller = loader.getController();
+//                controller.startMultiPlayerGame(myUsername,startData.getOpponent(), startData.getMySymbol(), startData.isTurn());
+//                Navigator.setLast(View.ONLINE_LOBBY);
+//                Stage stage = (Stage) playerList.getScene().getWindow();
+//                stage.setScene(new Scene(root));
+//                stage.show();
+//            } catch (IOException e) { e.printStackTrace(); }
+//        });
+//    }
+
     private void handleGameStart(String payload) {
         Platform.runLater(() -> {
-            try {
-                GameStartDto startData = gson.fromJson(payload, GameStartDto.class);
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/iti/crg/client/gameBoard.fxml"));
-                Parent root = loader.load();
-                TicTacToeController controller = loader.getController();
-                controller.startMultiPlayerGame(myUsername,startData.getOpponent(), startData.getMySymbol(), startData.isTurn());
-                Navigator.setLast(View.ONLINE_LOBBY);
-                Stage stage = (Stage) playerList.getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.show();
-            } catch (IOException e) { e.printStackTrace(); }
-        });
+                    GameStartDto startData = gson.fromJson(payload, GameStartDto.class);
+                    Navigator.setLast(View.ONLINE_LOBBY);
+                    TicTacToeController controller = Navigator.navigate(View.GAME_BOARD);
+                    controller.startMultiPlayerGame(myUsername, startData.getOpponent(), startData.getMySymbol(), startData.isTurn());
+                }
+            );
     }
 
     @FXML

@@ -10,8 +10,8 @@ public enum View {
     ONLINE_LOBBY("onlinePlayers.fxml"), // Assuming this matches OnlineLobbyController
     PLAYER_SETUP("PlayerSetup.fxml"),
     WIN_SCREEN("WinScreen.fxml"),
-    DIFFICULTY("difficulty.fxml"),
     TIE_SCREEN("TieScreen.fxml"),
+    RECORD_SCREEN("RecordScreen.fxml"),
     COMPUTER_SETUP("ComputerSetup.fxml");
 
     private final String fxmlName;

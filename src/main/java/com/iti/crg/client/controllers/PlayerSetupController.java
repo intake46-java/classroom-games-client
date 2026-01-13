@@ -56,7 +56,7 @@ public class PlayerSetupController {
         }
         setLast(View.PLAYER_SETUP);
         TicTacToeController controller = navigate(View.GAME_BOARD);
-        controller.initLocalTwoPlayerGame(p1Name, p2Name);
+        controller.initLocalTwoPlayerGame(p1Name, p2Name, isRecorded);
     
         System.out.println("Starting game...");
         System.out.println("Player 1: " + p1Name);
