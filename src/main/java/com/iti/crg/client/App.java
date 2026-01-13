@@ -5,7 +5,10 @@ import com.iti.crg.client.controllers.utils.Navigator;
 import com.iti.crg.client.domain.entities.GameRecord;
 import com.iti.crg.client.domain.entities.Move;
 import static com.iti.crg.client.domain.game.managers.LoadRecordManager.loadFromStream;
+
+import com.iti.crg.client.infrastructure.remote.ServerConnection;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -74,6 +77,23 @@ public class App extends Application {
 
         // 6. Set the scene and show
       //  scene = new Scene(root, 700, 600); // Adjust width/height as needed
+        stage.setOnCloseRequest(event -> {
+            System.out.println("Closing application...");
+
+            // 1. Close Server Connection
+            try {
+                // Check if instance exists to avoid NullPointer if never connected
+                ServerConnection.getInstance().forceDisconnect();
+            } catch (Exception e) {
+                System.err.println("Error disconnecting from server: " + e.getMessage());
+            }
+
+            // 2. Stop JavaFX Thread
+            Platform.exit();
+
+            // 3. Force Kill (Ensures all background threads/sockets die)
+            System.exit(0);
+        });
 
         Navigator.setStage(stage); // Ensure navigator knows the stage if used elsewhere
         stage.setScene(scene);

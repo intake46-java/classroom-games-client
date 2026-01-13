@@ -15,6 +15,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 
 import static com.iti.crg.client.controllers.utils.Navigator.navigate;
+import static com.iti.crg.client.controllers.utils.Navigator.setLast;
 
 /**
  * FXML Controller class
@@ -53,7 +54,7 @@ public class PlayerSetupController {
             // You could add a CSS class here to turn the border red if empty
             return;
         }
-
+        setLast(View.PLAYER_SETUP);
         TicTacToeController controller = navigate(View.GAME_BOARD);
         controller.initLocalTwoPlayerGame(p1Name, p2Name);
     

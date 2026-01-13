@@ -1,6 +1,8 @@
 package com.iti.crg.client.controllers;
 
 import com.google.gson.Gson;
+import com.iti.crg.client.controllers.utils.Navigator;
+import com.iti.crg.client.controllers.utils.View;
 import com.iti.crg.client.domain.usecases.SendInvitationUseCase;
 import com.iti.crg.client.infrastructure.dto.GameStartDto;
 import com.iti.crg.client.infrastructure.dto.InviteDto;
@@ -241,11 +243,17 @@ public class OnlineLobbyController implements Initializable {
                 Parent root = loader.load();
                 TicTacToeController controller = loader.getController();
                 controller.startMultiPlayerGame(myUsername,startData.getOpponent(), startData.getMySymbol(), startData.isTurn());
-
+                Navigator.setLast(View.ONLINE_LOBBY);
                 Stage stage = (Stage) playerList.getScene().getWindow();
                 stage.setScene(new Scene(root));
                 stage.show();
             } catch (IOException e) { e.printStackTrace(); }
         });
+    }
+
+    @FXML
+    private void logout() {
+        ServerConnection.getInstance().forceDisconnect();
+        Navigator.navigate(View.HOME);
     }
 }

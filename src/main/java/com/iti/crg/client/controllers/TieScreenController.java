@@ -96,7 +96,7 @@ public class TieScreenController {
 
     @FXML
     private void handleBackToHome() {
-        Navigator.navigate(View.OFFLINE_VIEW);
+        Navigator.navigateBack();
     }
 
     private void stopVideo() {

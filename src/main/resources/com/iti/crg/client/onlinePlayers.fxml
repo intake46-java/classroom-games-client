@@ -14,7 +14,7 @@
             <ComboBox fx:id="gameSelector" prefWidth="150"/>
             <Label text="Online Lobby" styleClass="title"/>
             <Pane HBox.hgrow="ALWAYS"/>
-            <Button text="Logout" styleClass="logout-btn"/>
+            <Button onAction="#logout" text="Logout" styleClass="logout-btn"/>
         </HBox>
     </top>
 

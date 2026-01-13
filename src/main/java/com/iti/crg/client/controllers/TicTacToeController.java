@@ -2,163 +2,235 @@ package com.iti.crg.client.controllers;
 
 import com.iti.crg.client.controllers.utils.Navigator;
 import com.iti.crg.client.controllers.utils.View;
-import com.iti.crg.client.domain.game.aistrategy.AiStrategy;
-import com.iti.crg.client.domain.game.aistrategy.EasyTicTacToeAi;
-import com.iti.crg.client.domain.game.aistrategy.HardTicTacToeAi;
-import com.iti.crg.client.domain.game.aistrategy.MediumTicTacToeAi;
-import com.iti.crg.client.domain.game.gamecontext.GameContext;
-import com.iti.crg.client.domain.game.gamecontext.MultiplePlayerContext;
-import com.iti.crg.client.domain.game.gamecontext.OnlinePayingContext;
-import com.iti.crg.client.domain.game.gamecontext.SinglePlayerContext;
+import com.iti.crg.client.domain.game.aistrategy.*;
+import com.iti.crg.client.domain.game.gamecontext.*;
 import com.iti.crg.client.domain.game.gamehandling.GameHandling;
 import com.iti.crg.client.domain.game.gamehandling.TicTacToeGame;
+import com.iti.crg.client.controllers.utils.ScoreManager;
+
+import javafx.animation.ScaleTransition;
+import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.util.Duration;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.iti.crg.client.controllers.utils.Navigator.navigate;
-import com.iti.crg.client.controllers.utils.ScoreManager;
 
 public class TicTacToeController implements GameContext.GameCallback {
 
     @FXML private Button b0, b1, b2, b3, b4, b5, b6, b7, b8;
+    @FXML private GridPane boardGrid;
     @FXML private Label turnLabel;
     @FXML private Label playerNameLabel;
     @FXML private Label opponentNameLabel;
     @FXML private Label opponentScoreLabel;
     @FXML private Label playerScoreLabel;
+    @FXML private HBox recordingIndicator; // The new REC badge
 
     private Map<String, Button> buttonMap = new HashMap<>();
     private GameContext gameContext;
     private boolean isOnlineGame = false;
-    // Store data if needed later
-    private String player1Name;
-    private String player2Name;
-    private boolean isRecorded;
     private char mySymbol = 'X';
-    private boolean isLocalTwoPlayer = false;
-    private boolean isSinglePlayer = false;
-    private String difficulty;
     public static TicTacToeController lastController;
-    
+
     @FXML
     public void initialize() {
-        // Just map buttons here. DO NOT start the game yet.
         buttonMap.put("0,0", b0); buttonMap.put("0,1", b1); buttonMap.put("0,2", b2);
         buttonMap.put("1,0", b3); buttonMap.put("1,1", b4); buttonMap.put("1,2", b5);
         buttonMap.put("2,0", b6); buttonMap.put("2,1", b7); buttonMap.put("2,2", b8);
         lastController = this;
+
+        // Add subtle entry animation for the board
+        boardGrid.setOpacity(0);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), boardGrid);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+        ft.play();
     }
 
-    // --- NEW METHOD: Called from Setup Screen ---
     public void initComputerGame(String player1Name, String difficulty, boolean isRecorded) {
-        this.player1Name = player1Name;
-        this.player2Name = "Computer (" + difficulty + ")";
-        this.isRecorded = isRecorded;
+        setupGameCommon(player1Name, "Computer (" + difficulty + ")", isRecorded);
         this.isOnlineGame = false;
-        this.isSinglePlayer = true;
-        this.isLocalTwoPlayer = false;
-        this.difficulty = difficulty;
-        resetButtons();
 
-        playerNameLabel.setText(player1Name);
-        opponentNameLabel.setText(player2Name);
-
-        playerScoreLabel.setText(String.valueOf(ScoreManager.getP1Score()));
-        opponentScoreLabel.setText(String.valueOf(ScoreManager.getP2Score()));
-
-        turnLabel.setText(player1Name + " VS " + player2Name);
-
-        ScoreManager.startNewSession(player1Name, player2Name, true, difficulty);
-        
         AiStrategy aiStrategy;
         switch (difficulty) {
-            case "Easy":
-                aiStrategy = new EasyTicTacToeAi();
-                break;
-            case "Hard":
-                aiStrategy = new HardTicTacToeAi('O');
-                break;
-            case "Medium":
-            default:
-                aiStrategy = new MediumTicTacToeAi('O');
-                break;
+            case "Hard": aiStrategy = new HardTicTacToeAi('O'); break;
+            case "Medium": aiStrategy = new MediumTicTacToeAi('O'); break;
+            default: aiStrategy = new EasyTicTacToeAi(); break;
         }
-
-        turnLabel.setText(player1Name + " VS " + player2Name);
 
         GameHandling myGame = new TicTacToeGame();
         gameContext = new SinglePlayerContext(myGame, aiStrategy);
-
-        System.out.println("Starting Single Player: " + player1Name + " | Diff: " + difficulty + " | Rec: " + isRecorded);
     }
 
+    // Local Multi Player ---
+    public void initLocalTwoPlayerGame(String p1, String p2) {
+        setupGameCommon(p1, p2, false); // Local usually not recorded here
+        this.isOnlineGame = false;
+        GameHandling game = new TicTacToeGame();
+        gameContext = new MultiplePlayerContext(game);
+    }
 
+    // Online Multi Player ---
     public void startMultiPlayerGame(String myName, String opponentName, char mySymbol, boolean isMyTurn) {
-        resetButtons();
-        this.mySymbol=mySymbol;
-        isOnlineGame = true;
+        // Assume online is recorded if the backend says so, or pass it as param.
+        // For now, let's say online matches are recorded:
+        setupGameCommon(myName, opponentName, true);
+
+        this.isOnlineGame = true;
+        this.mySymbol = mySymbol;
+
         GameHandling myGame = new TicTacToeGame();
         OnlinePayingContext mContext = new OnlinePayingContext(myGame, opponentName, mySymbol, isMyTurn);
         mContext.startListening(this);
         this.gameContext = mContext;
-        if (turnLabel != null) {
-            turnLabel.setText(myName + " VS "+opponentName);
+
+        updateOnlineTurnUI(isMyTurn);
+    }
+
+    // --- HELPER: Common Setup ---
+    private void setupGameCommon(String p1, String p2, boolean isRecorded) {
+        resetButtons();
+        playerNameLabel.setText(p1);
+        opponentNameLabel.setText(p2);
+        playerScoreLabel.setText(String.valueOf(ScoreManager.getP1Score()));
+        opponentScoreLabel.setText(String.valueOf(ScoreManager.getP2Score()));
+
+        // Handle Recording Indicator
+        recordingIndicator.setVisible(isRecorded);
+        if(isRecorded) {
+            // Blinking animation for REC
+            FadeTransition ft = new FadeTransition(Duration.seconds(1), recordingIndicator);
+            ft.setFromValue(1.0);
+            ft.setToValue(0.3);
+            ft.setCycleCount(FadeTransition.INDEFINITE);
+            ft.setAutoReverse(true);
+            ft.play();
         }
     }
 
     @FXML
     private void handleMove(ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
-        Integer r = javafx.scene.layout.GridPane.getRowIndex(clickedButton);
-        Integer c = javafx.scene.layout.GridPane.getColumnIndex(clickedButton);
+
+        // Prevent clicking if disabled locally (Online Turn Handling)
+        if (clickedButton.isDisabled()) return;
+
+        Integer r = GridPane.getRowIndex(clickedButton);
+        Integer c = GridPane.getColumnIndex(clickedButton);
         int row = (r == null) ? 0 : r;
         int col = (c == null) ? 0 : c;
 
         if (gameContext != null) {
             gameContext.processMove(row, col, this);
         }
-
     }
 
     @Override
     public void onMoveMade(int row, int col, char symbol) {
-        String key = row + "," + col;
-        Button btn = buttonMap.get(key);
-        if (btn != null) {
-            btn.setText(String.valueOf(symbol));
-            btn.setDisable(true);
-            btn.setStyle(symbol == 'X' ? "-fx-text-fill: red;" : "-fx-text-fill: blue;");
+        // Ensure UI updates happen on JavaFX Thread
+        Platform.runLater(() -> {
+            String key = row + "," + col;
+            Button btn = buttonMap.get(key);
+
+            if (btn != null) {
+                btn.setText(String.valueOf(symbol));
+                btn.setDisable(true); // Disable this specific cell
+
+                // Style based on symbol
+                if (symbol == 'X') {
+                    btn.getStyleClass().add("cell-x");
+                } else {
+                    btn.getStyleClass().add("cell-o");
+                }
+
+                // Animate the pop
+                animateMove(btn);
+
+                // HANDLE TURNS FOR ONLINE
+                if (isOnlineGame) {
+                    boolean isNowMyTurn = (symbol != mySymbol);
+                    updateOnlineTurnUI(isNowMyTurn);
+                }
+            }
+        });
+    }
+
+    private void updateOnlineTurnUI(boolean isMyTurn) {
+        if (isMyTurn) {
+            turnLabel.setText("Your Turn");
+            turnLabel.setStyle("-fx-text-fill: #5D9CEC;"); // Blue
+            setBoardLocked(false);
+        } else {
+            turnLabel.setText("Waiting for opponent...");
+            turnLabel.setStyle("-fx-text-fill: #999;"); // Grey
+            setBoardLocked(true);
         }
+    }
+
+    private void setBoardLocked(boolean locked) {
+        // Disable interaction with the whole board, but keep it visible
+        // We iterate buttons to check if they are already played.
+        // If locked = true, disable all free buttons.
+        // If locked = false, enable all free buttons (buttons with no text).
+
+        buttonMap.values().forEach(b -> {
+            if (b.getText().isEmpty()) {
+                b.setDisable(locked);
+            }
+        });
+    }
+
+    private void animateMove(Button btn) {
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), btn);
+        st.setFromX(0.5);
+        st.setFromY(0.5);
+        st.setToX(1.0);
+        st.setToY(1.0);
+        st.play();
     }
 
     @Override
     public void onGameWin(char winner) {
+        Platform.runLater(() -> {
+            if (winner == mySymbol) ScoreManager.increaseScorePlayer1();
+            else ScoreManager.increaseScorePlayer2();
 
-        if (winner == 'X') ScoreManager.increaseScorePlayer1();
-        else ScoreManager.increaseScorePlayer2();
+            playerScoreLabel.setText(String.valueOf(ScoreManager.getP1Score()));
+            opponentScoreLabel.setText(String.valueOf(ScoreManager.getP2Score()));
 
-        playerScoreLabel.setText(String.valueOf(ScoreManager.getP1Score()));
-        opponentScoreLabel.setText(String.valueOf(ScoreManager.getP2Score()));
+            disableAllButtons();
 
-        if (isSinglePlayer) {
-            if (winner == 'X') Navigator.navigate(View.WIN_SCREEN);
-            else Navigator.navigate(View.LOSE_SCREEN);
-        } else {
-            Navigator.navigate(View.WIN_SCREEN);
-        }
-
-        disableAllButtons();
+            // Brief delay before navigating so user sees the win
+            new java.util.Timer().schedule(new java.util.TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(() -> {
+                        if (winner == mySymbol) Navigator.navigate(View.WIN_SCREEN);
+                        else Navigator.navigate(View.LOSE_SCREEN);
+                    });
+                }
+            }, 1000);
+        });
     }
 
     @Override
     public void onGameTie() {
-
-        Navigator.navigate(View.TIE_SCREEN);
+        Platform.runLater(() -> {
+            disableAllButtons();
+            new java.util.Timer().schedule(new java.util.TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(() -> Navigator.navigate(View.TIE_SCREEN));
+                }
+            }, 1000);
+        });
     }
 
     private void disableAllButtons() {
@@ -169,42 +241,19 @@ public class TicTacToeController implements GameContext.GameCallback {
         for (Button b : buttonMap.values()) {
             b.setText("");
             b.setDisable(false);
-            b.setStyle("");
+            b.getStyleClass().removeAll("cell-x", "cell-o");
+            b.setOpacity(1.0);
         }
     }
-
 
     @FXML
     private void onExit(ActionEvent event) {
-        if(!isOnlineGame) {
-            navigate(View.OFFLINE_VIEW);
-        }
         ScoreManager.setP1Score(0);
         ScoreManager.setP2Score(0);
+        if(!isOnlineGame) {
+            Navigator.navigate(View.OFFLINE_VIEW);
+        } else {
+            Navigator.navigate(View.HOME);
+        }
     }
-    
-    public void initLocalTwoPlayerGame(String p1, String p2) {
-
-        this.player1Name = p1;
-        this.player2Name = p2;
-
-        this.isSinglePlayer = false;
-        this.isLocalTwoPlayer = true;
-
-        resetButtons();
-
-        playerNameLabel.setText(p1);
-        opponentNameLabel.setText(p2);
-
-        playerScoreLabel.setText(String.valueOf(ScoreManager.getP1Score()));
-        opponentScoreLabel.setText(String.valueOf(ScoreManager.getP2Score()));
-
-        turnLabel.setText(p1 + " VS " + p2);
-
-        ScoreManager.startNewSession(p1, p2, false, null);
-
-        GameHandling game = new TicTacToeGame();
-        gameContext = new MultiplePlayerContext(game);
-    }
-    
 }

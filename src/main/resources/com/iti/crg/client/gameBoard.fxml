@@ -2,98 +2,68 @@
 
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.geometry.Insets?>
 
 <BorderPane xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml"
-            stylesheets="@gameBoard.css" fx:controller="com.iti.crg.client.controllers.TicTacToeController">
+            stylesheets="@gameBoard.css"
+            fx:controller="com.iti.crg.client.controllers.TicTacToeController"
+            fx:id="rootPane">
 
-    <!-- TOP BAR -->
     <top>
-        <HBox alignment="CENTER" styleClass="top-bar">
-            <Label text="Game Board" styleClass="top-title"/>
+        <HBox alignment="CENTER_LEFT" styleClass="top-bar" spacing="10">
+            <Label text="Tic Tac Toe" styleClass="top-title"/>
             <Pane HBox.hgrow="ALWAYS"/>
+
+            <HBox fx:id="recordingIndicator" alignment="CENTER" spacing="5" styleClass="rec-badge" visible="false">
+                <Circle radius="5" styleClass="rec-dot"/>
+                <Label text="REC" styleClass="rec-text"/>
+            </HBox>
+
             <Button text="👤" styleClass="profile-btn"/>
         </HBox>
     </top>
 
-    <!-- CENTER -->
     <center>
-        <VBox alignment="CENTER" spacing="25">
+        <VBox alignment="CENTER" spacing="20">
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
+                <Insets top="10" right="20" bottom="20" left="20"/>
             </padding>
 
-            <!-- SCORE -->
-            <HBox spacing="40" alignment="CENTER" styleClass="score-box">
-                <VBox alignment="CENTER">
+            <HBox spacing="0" alignment="CENTER" styleClass="score-card">
+                <VBox alignment="CENTER" HBox.hgrow="ALWAYS" styleClass="player-box, player-box-active">
                     <Label fx:id="playerNameLabel" text="Player" styleClass="score-name"/>
-                    <Label fx:id="playerScoreLabel" text="0" styleClass="score-x"/>
+                    <Label fx:id="playerScoreLabel" text="0" styleClass="score-val, score-x"/>
                 </VBox>
 
-                <VBox alignment="CENTER">
+                <Separator orientation="VERTICAL"/>
+
+                <VBox alignment="CENTER" HBox.hgrow="ALWAYS" styleClass="player-box">
                     <Label fx:id="opponentNameLabel" text="Opponent" styleClass="score-name"/>
-                    <Label fx:id="opponentScoreLabel" text="0" styleClass="score-o"/>
+                    <Label fx:id="opponentScoreLabel" text="0" styleClass="score-val, score-o"/>
                 </VBox>
             </HBox>
 
-            <!-- TURN -->
-            <Label fx:id="turnLabel" text="Your turn, Player X!" styleClass="turn-label"/>
+            <Label fx:id="turnLabel" text="Your Turn" styleClass="turn-label"/>
 
-            <!-- BOARD -->
-            <GridPane fx:id="boardGrid"
-                        alignment="CENTER"
-                        hgap="15"
-                        vgap="15">
+            <StackPane styleClass="board-container">
+                <GridPane fx:id="boardGrid" alignment="CENTER" hgap="10" vgap="10">
+                    <Button fx:id="b0" GridPane.rowIndex="0" GridPane.columnIndex="0" onAction="#handleMove" styleClass="cell"/>
+                    <Button fx:id="b1" GridPane.rowIndex="0" GridPane.columnIndex="1" onAction="#handleMove" styleClass="cell"/>
+                    <Button fx:id="b2" GridPane.rowIndex="0" GridPane.columnIndex="2" onAction="#handleMove" styleClass="cell"/>
 
-                  <!-- ROWS -->
-                  <rowConstraints>
-                      <RowConstraints/>
-                      <RowConstraints/>
-                      <RowConstraints/>
-                  </rowConstraints>
+                    <Button fx:id="b3" GridPane.rowIndex="1" GridPane.columnIndex="0" onAction="#handleMove" styleClass="cell"/>
+                    <Button fx:id="b4" GridPane.rowIndex="1" GridPane.columnIndex="1" onAction="#handleMove" styleClass="cell"/>
+                    <Button fx:id="b5" GridPane.rowIndex="1" GridPane.columnIndex="2" onAction="#handleMove" styleClass="cell"/>
 
-                  <!-- COLUMNS -->
-                  <columnConstraints>
-                      <ColumnConstraints/>
-                      <ColumnConstraints/>
-                      <ColumnConstraints/>
-                  </columnConstraints>
+                    <Button fx:id="b6" GridPane.rowIndex="2" GridPane.columnIndex="0" onAction="#handleMove" styleClass="cell"/>
+                    <Button fx:id="b7" GridPane.rowIndex="2" GridPane.columnIndex="1" onAction="#handleMove" styleClass="cell"/>
+                    <Button fx:id="b8" GridPane.rowIndex="2" GridPane.columnIndex="2" onAction="#handleMove" styleClass="cell"/>
+                </GridPane>
+            </StackPane>
 
-                  <!-- ROW 0 -->
-                  <Button fx:id="b0" GridPane.rowIndex="0" GridPane.columnIndex="0"
-                          onAction="#handleMove" styleClass="cell"/>
-                  <Button fx:id="b1" GridPane.rowIndex="0" GridPane.columnIndex="1"
-                          onAction="#handleMove" styleClass="cell"/>
-                  <Button fx:id="b2" GridPane.rowIndex="0" GridPane.columnIndex="2"
-                          onAction="#handleMove" styleClass="cell"/>
-
-                  <!-- ROW 1 -->
-                  <Button fx:id="b3" GridPane.rowIndex="1" GridPane.columnIndex="0"
-                          onAction="#handleMove" styleClass="cell"/>
-                  <Button fx:id="b4" GridPane.rowIndex="1" GridPane.columnIndex="1"
-                          onAction="#handleMove" styleClass="cell"/>
-                  <Button fx:id="b5" GridPane.rowIndex="1" GridPane.columnIndex="2"
-                          onAction="#handleMove" styleClass="cell"/>
-
-                  <!-- ROW 2 -->
-                  <Button fx:id="b6" GridPane.rowIndex="2" GridPane.columnIndex="0"
-                          onAction="#handleMove" styleClass="cell"/>
-                  <Button fx:id="b7" GridPane.rowIndex="2" GridPane.columnIndex="1"
-                          onAction="#handleMove" styleClass="cell"/>
-                  <Button fx:id="b8" GridPane.rowIndex="2" GridPane.columnIndex="2"
-                          onAction="#handleMove" styleClass="cell"/>
-
-              </GridPane>
-
-
-            <!-- ACTIONS -->
-            <HBox spacing="25" alignment="CENTER">
-                <Button onAction="#onExit" text="Exit" styleClass="exit-btn"/>
-            </HBox>
-
-
+            <Button onAction="#onExit" text="Exit Game" styleClass="exit-btn"/>
         </VBox>
     </center>
-
 </BorderPane>

@@ -29,7 +29,7 @@ public class ComputerSetupController implements Initializable {
 
         String difficulty = difficultyBox.getValue();
         boolean isRecorded = recordGameCheckbox.isSelected();
-
+        Navigator.setLast(View.COMPUTER_SETUP);
         TicTacToeController gameController = Navigator.navigate(View.GAME_BOARD);
 
         if (gameController != null) {
