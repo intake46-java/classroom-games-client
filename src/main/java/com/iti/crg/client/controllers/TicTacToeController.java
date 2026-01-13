@@ -128,7 +128,7 @@ public class TicTacToeController implements GameContext.GameCallback {
 
     @Override
     public void onGameTie() {
-        showAlert("Game Over", "It's a Tie!");
+        Navigator.navigate(View.TIE_SCREEN);
     }
 
     private void disableAllButtons() {
