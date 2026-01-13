@@ -34,7 +34,7 @@ public class TicTacToeController implements GameContext.GameCallback {
     @FXML private Label opponentNameLabel;
     @FXML private Label opponentScoreLabel;
     @FXML private Label playerScoreLabel;
-    @FXML private HBox recordingIndicator; // The new REC badge
+    @FXML private HBox recordingIndicator;
 
     private Map<String, Button> buttonMap = new HashMap<>();
     private GameContext gameContext;
@@ -52,7 +52,6 @@ public class TicTacToeController implements GameContext.GameCallback {
         buttonMap.put("2,0", b6); buttonMap.put("2,1", b7); buttonMap.put("2,2", b8);
         lastController = this;
 
-        // Add subtle entry animation for the board
         boardGrid.setOpacity(0);
         FadeTransition ft = new FadeTransition(Duration.millis(1000), boardGrid);
         ft.setFromValue(0);
@@ -75,7 +74,6 @@ public class TicTacToeController implements GameContext.GameCallback {
         gameContext = new SinglePlayerContext(myGame, aiStrategy, player1Name);
     }
 
-    // Local Multi Player ---
     public void initLocalTwoPlayerGame(String p1, String p2, boolean isRecorded) {
         setupGameCommon(p1, p2, false); // Local usually not recorded here
         this.isOnlineGame = false;
@@ -84,10 +82,7 @@ public class TicTacToeController implements GameContext.GameCallback {
         gameContext = new MultiplePlayerContext(game, p1, p2);
     }
 
-    // Online Multi Player ---
     public void startMultiPlayerGame(String myName, String opponentName, char mySymbol, boolean isMyTurn) {
-        // Assume online is recorded if the backend says so, or pass it as param.
-        // For now, let's say online matches are recorded:
         setupGameCommon(myName, opponentName, true);
         isRecorded = true;
         this.isOnlineGame = true;
@@ -101,7 +96,6 @@ public class TicTacToeController implements GameContext.GameCallback {
         updateOnlineTurnUI(isMyTurn);
     }
 
-    // --- HELPER: Common Setup ---
     private void setupGameCommon(String p1, String p2, boolean isRecorded) {
         resetButtons();
         playerNameLabel.setText(p1);
@@ -109,10 +103,8 @@ public class TicTacToeController implements GameContext.GameCallback {
         playerScoreLabel.setText(String.valueOf(ScoreManager.getP1Score()));
         opponentScoreLabel.setText(String.valueOf(ScoreManager.getP2Score()));
 
-        // Handle Recording Indicator
         recordingIndicator.setVisible(isRecorded);
         if(isRecorded) {
-            // Blinking animation for REC
             FadeTransition ft = new FadeTransition(Duration.seconds(1), recordingIndicator);
             ft.setFromValue(1.0);
             ft.setToValue(0.3);
@@ -126,7 +118,6 @@ public class TicTacToeController implements GameContext.GameCallback {
     private void handleMove(ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
 
-        // Prevent clicking if disabled locally (Online Turn Handling)
         if (clickedButton.isDisabled()) return;
 
         Integer r = GridPane.getRowIndex(clickedButton);
@@ -141,7 +132,6 @@ public class TicTacToeController implements GameContext.GameCallback {
 
     @Override
     public void onMoveMade(int row, int col, char symbol) {
-        // Ensure UI updates happen on JavaFX Thread
         Platform.runLater(() -> {
             String key = row + "," + col;
             Button btn = buttonMap.get(key);
@@ -150,17 +140,14 @@ public class TicTacToeController implements GameContext.GameCallback {
                 btn.setText(String.valueOf(symbol));
                 btn.setDisable(true); // Disable this specific cell
 
-                // Style based on symbol
                 if (symbol == 'X') {
                     btn.getStyleClass().add("cell-x");
                 } else {
                     btn.getStyleClass().add("cell-o");
                 }
 
-                // Animate the pop
                 animateMove(btn);
 
-                // HANDLE TURNS FOR ONLINE
                 if (isOnlineGame) {
                     boolean isNowMyTurn = (symbol != mySymbol);
                     updateOnlineTurnUI(isNowMyTurn);
@@ -182,11 +169,6 @@ public class TicTacToeController implements GameContext.GameCallback {
     }
 
     private void setBoardLocked(boolean locked) {
-        // Disable interaction with the whole board, but keep it visible
-        // We iterate buttons to check if they are already played.
-        // If locked = true, disable all free buttons.
-        // If locked = false, enable all free buttons (buttons with no text).
-
         buttonMap.values().forEach(b -> {
             if (b.getText().isEmpty()) {
                 b.setDisable(locked);
@@ -214,7 +196,6 @@ public class TicTacToeController implements GameContext.GameCallback {
 
             disableAllButtons();
 
-            // Brief delay before navigating so user sees the win
             new java.util.Timer().schedule(new java.util.TimerTask() {
                 @Override
                 public void run() {

@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -18,7 +17,6 @@ import java.util.ResourceBundle;
 
 public class RecordScreenController implements Initializable {
 
-    @FXML private GridPane boardGrid;
     @FXML private Button b0, b1, b2, b3, b4, b5, b6, b7, b8;
     @FXML private Label playerXLabel;
     @FXML private Label playerOLabel;
@@ -133,7 +131,7 @@ public class RecordScreenController implements Initializable {
     private void handlePlay() {
         if (record == null) return;
         if (timeline != null && timeline.getStatus() == Timeline.Status.RUNNING) {
-            return; // already playing
+            return;
         }
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {

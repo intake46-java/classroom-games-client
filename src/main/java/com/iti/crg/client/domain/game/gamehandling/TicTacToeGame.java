@@ -13,7 +13,6 @@ public class TicTacToeGame extends TicTacToeBoard implements GameHandling {
         startGame();
     }
 
-    // --- Implementing the new GameHandling methods ---
 
     @Override
     public boolean makeMove(int row, int col) {
@@ -46,7 +45,6 @@ public class TicTacToeGame extends TicTacToeBoard implements GameHandling {
 
     @Override
     public void startGame() {
-        // Clear board logic
         for (int r = 0; r < getRows(); r++) {
             for (int c = 0; c < getCols(); c++) {
                 grid[r][c] = '_';
@@ -78,20 +76,19 @@ public class TicTacToeGame extends TicTacToeBoard implements GameHandling {
     }    
     
     
-    //edited by mina
- 
+
     public boolean isWinner() {
         char[][] grid = this.getGrid();
         for (int i = 0; i < this.getRows(); i++) {
-            // Check Rows
+
             if (grid[i][0] != '_' && grid[i][0] == grid[i][1] && grid[i][1] == grid[i][2]) {
                 return true;
-            } // Check Columns
+            }
             else if (grid[0][i] != '_' && grid[0][i] == grid[1][i] && grid[1][i] == grid[2][i]) {
                 return true;
             }
         }
-        // Check Diagonals
+
         if (grid[1][1] != '_') {
             if (grid[0][0] == grid[1][1] && grid[1][1] == grid[2][2]) {
                 return true;

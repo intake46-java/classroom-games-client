@@ -17,7 +17,7 @@ public class Game_invitationController implements Initializable {
 
     @FXML private Label invitationLabel;
     @FXML private Label timerLabel;
-    @FXML private Arc timerArc; // Link to FXML Arc
+    @FXML private Arc timerArc;
 
     private String fromUser;
     private final RespondToInviteUseCase respondUseCase;
@@ -49,18 +49,15 @@ public class Game_invitationController implements Initializable {
                 new KeyFrame(Duration.seconds(1), event -> {
                     timeSeconds--;
 
-                    // Update Text
                     if (timerLabel != null) {
                         timerLabel.setText(String.valueOf(timeSeconds));
                     }
 
-                    // Update Circle Arc (360 degrees / 20 seconds = 18 degrees per second)
                     if (timerArc != null) {
                         double progress = (double) timeSeconds / TIMEOUT_SECONDS;
                         timerArc.setLength(progress * 360);
                     }
 
-                    // Auto-Reject
                     if (timeSeconds <= 0) {
                         stopTimer();
                         onReject(null);

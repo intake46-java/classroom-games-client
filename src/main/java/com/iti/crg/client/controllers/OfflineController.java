@@ -1,10 +1,8 @@
 package com.iti.crg.client.controllers;
 
-import java.io.IOException;
 
 import com.iti.crg.client.controllers.utils.AnimatedNetworkBackground;
 import com.iti.crg.client.controllers.utils.View;
-import javafx.animation.AnimationTimer;
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,8 +27,6 @@ public class OfflineController implements Initializable {
     @FXML private VBox cardLocal;
     private AnimatedNetworkBackground background;
 
-    private static final int PARTICLE_COUNT = 60; // Adjust for density
-    private AnimationTimer timer;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -50,9 +46,6 @@ public class OfflineController implements Initializable {
     @FXML
     private void handlePlayComputer(javafx.scene.input.MouseEvent event) {
         System.out.println("Play vs Computer clicked");
-        
-//        navigate(View.GAME_BOARD);
-//        navigate(View.DIFFICULTY);
 
         navigate(View.COMPUTER_SETUP);
     }

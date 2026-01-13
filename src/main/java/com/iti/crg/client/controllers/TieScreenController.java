@@ -1,10 +1,7 @@
 package com.iti.crg.client.controllers;
 
 import com.iti.crg.client.controllers.utils.Navigator;
-import com.iti.crg.client.controllers.utils.ScoreManager;
-import com.iti.crg.client.controllers.utils.View;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -15,8 +12,6 @@ public class TieScreenController {
 
     @FXML private MediaView mediaView;
     @FXML private VBox placeholderBox;
-    @FXML private Button playAgainButton;
-    @FXML private Button backToHomeButton;
 
     private MediaPlayer mediaPlayer;
 
@@ -70,29 +65,7 @@ public class TieScreenController {
             e.printStackTrace();
         }
     }
-    
-    @FXML
-    private void handlePlayAgain() {
 
-        TicTacToeController controller = Navigator.navigate(View.GAME_BOARD);
-
-        if (controller == null) return;
-
-        if (ScoreManager.isSinglePlayerMode()) {
-
-            controller.initComputerGame(
-                    ScoreManager.getP1Name(),
-                    ScoreManager.getDifficulty(),
-                    true
-            );
-
-        } else {
-//            controller.initLocalTwoPlayerGame(
-//                    ScoreManager.getP1Name(),
-//                    ScoreManager.getP2Name(),
-//                    isRecorded);
-        }
-    }
 
     @FXML
     private void handleBackToHome() {

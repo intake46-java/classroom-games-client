@@ -19,7 +19,6 @@ public abstract class GameContext {
 
     public abstract void processMove(int row, int col, GameCallback callback);
 
-    // Interface to communicate back to the UI Controller
     public interface GameCallback {
         void onMoveMade(int row, int col, char symbol);
         void onGameWin(char winner);

@@ -31,7 +31,6 @@ public class OnlinePayingContext extends GameContext {
     private volatile boolean listening = true;
     private GameCallback uiCallback;
 
-    // Recording Fields
     private Move[] moves = new Move[9];
     private int moveIndex = 0;
 
@@ -61,7 +60,6 @@ public class OnlinePayingContext extends GameContext {
 
         if (game.makeMove(row, col)) {
 
-            // 2. Record the Move
             moves[moveIndex++] = new Move(row, col, mySymbol);
 
             callback.onMoveMade(row, col, mySymbol);
@@ -78,7 +76,7 @@ public class OnlinePayingContext extends GameContext {
     }
 
     public void leaveGame() {
-        listening = false; // Stop listener loop
+        listening = false;
         gameRepository.sendLeave(opponentUsername);
     }
 
@@ -98,7 +96,6 @@ public class OnlinePayingContext extends GameContext {
                         GameMoveDto move = gson.fromJson(request.getPayload(), GameMoveDto.class);
                         Platform.runLater(() -> handleOpponentMove(move));
                     }
-                    // NEW: Handle opponent leaving
                     else if ("OPPONENT_LEFT".equals(request.getType())) {
                         listening = false;
                         Platform.runLater(() -> {
@@ -142,7 +139,6 @@ public class OnlinePayingContext extends GameContext {
                 uiCallback.onGameTie();
                 listening = false;
             } else {
-                // 5. Unlock Turn
                 game.changeTurn();
                 isMyTurn = true;
                 System.out.println("It is now your turn!");
@@ -182,13 +178,11 @@ public class OnlinePayingContext extends GameContext {
         Move[] actualMoves = Arrays.copyOf(moves, moveIndex);
         GameRecord record = new GameRecord(p1, p2, actualMoves);
 
-        // 3. Generate filename
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String safeP1 = p1.replaceAll("\\s+", "");
         String safeP2 = p2.replaceAll("\\s+", "");
         String fileName = "Records/Online_" + safeP1 + "_vs_" + safeP2 + "_" + timeStamp + ".record";
 
-        // 4. Save
         SaveRecordManager.saveInStream(record, fileName);
     }
 }

@@ -28,7 +28,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -40,7 +39,6 @@ public class OnlineLobbyController implements Initializable {
     @FXML private VBox playerList;
     @FXML private ComboBox<String> gameSelector;
     @FXML private StackPane rootPane;
-    // --- NEW INJECTED LABELS FOR USER INFO ---
     @FXML private Label currentUserLabel;
     @FXML private Label currentScoreLabel;
 
@@ -52,7 +50,6 @@ public class OnlineLobbyController implements Initializable {
     private final Gson gson = new Gson();
     private final SendInvitationUseCase sendInvitationUseCase;
 
-    // --- STATE MANAGEMENT ---
     private final Set<String> pendingInvites = new HashSet<>();
     private final Map<String, Button> inviteButtons = new HashMap<>();
 
@@ -66,22 +63,18 @@ public class OnlineLobbyController implements Initializable {
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
         AnimatedNetworkBackground background = new AnimatedNetworkBackground(rootPane);
-        // 1. Setup Game Selector
         gameSelector.setItems(FXCollections.observableArrayList("Tic-Tac-Toe"));
         gameSelector.getSelectionModel().selectFirst();
 
-        // 2. DISPLAY USER INFO (New Code)
         if (myUsername != null) {
             currentUserLabel.setText(myUsername);
         }
         currentScoreLabel.setText(String.valueOf(score));
 
-        // 3. Setup Connection
         reader = ServerConnection.getInstance().getReader();
         new Thread(this::listenForServerMessages).start();
     }
 
-    // --- HELPER: Global Button Toggle ---
     private void setAllButtonsDisable(boolean disable) {
         inviteButtons.forEach((username, button) -> {
             if (disable) {
@@ -118,7 +111,7 @@ public class OnlineLobbyController implements Initializable {
                 }
             }
         } catch (IOException e) {
-            if (listening) { // Only report if we didn't intentionally stop listening
+            if (listening) {
                 System.err.println("Connection error: " + e.getMessage());
                 handleServerDisconnect();
             }
@@ -134,7 +127,6 @@ public class OnlineLobbyController implements Initializable {
             alert.setContentText("The server has shut down or the connection was lost.\nYou will be returned to the main menu.");
             alert.showAndWait();
 
-            // Navigate back to Home/Login
             logout();
         });
     }
@@ -201,7 +193,6 @@ public class OnlineLobbyController implements Initializable {
         row.getStyleClass().add("player-row");
         row.setAlignment(Pos.CENTER_LEFT);
 
-        // --- Left side of card (Status + Name + Score) ---
         HBox infoBox = new HBox(15);
         infoBox.setAlignment(Pos.CENTER_LEFT);
 
@@ -217,11 +208,9 @@ public class OnlineLobbyController implements Initializable {
         nameBox.getChildren().addAll(username, scoreLabel);
         infoBox.getChildren().addAll(status, nameBox);
 
-        // --- Spacer to push button to right ---
         Pane spacer = new Pane();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        // --- Invite Button ---
         Button invite = new Button("Invite");
         invite.getStyleClass().add("invite-btn");
 

@@ -33,7 +33,6 @@ public class InvitationRepositoryImp implements InvitationRepository {
         sendRequest("INVITE_REJECT", originalSender);
     }
 
-    // Helper method to wrap data in JSON and send it
     private boolean sendRequest(String type, String username) {
 
         if (!connection.isConnected()) return false;

@@ -16,11 +16,9 @@ public class MultiplePlayerContext extends GameContext {
     private Move[] moves = new Move[9];
     private int moveIndex = 0;
 
-    // Names needed for the GameRecord
     private String player1Name;
     private String player2Name;
 
-    // Updated Constructor: Now requires names
     public MultiplePlayerContext(GameHandling game, String player1Name, String player2Name) {
         super(game);
         this.player1Name = player1Name;
@@ -34,7 +32,6 @@ public class MultiplePlayerContext extends GameContext {
         }
 
         if (game.makeMove(row, col)) {
-            // Record move
             moves[moveIndex++] = new Move(row, col, game.getCurrentPlayer());
 
             callback.onMoveMade(row, col, game.getCurrentPlayer());
@@ -50,7 +47,6 @@ public class MultiplePlayerContext extends GameContext {
         if (game.checkWin()) {
             game.endGame();
 
-            // Save if recorded
             if (callback.isRecorded()) {
                 saveRecording();
             }

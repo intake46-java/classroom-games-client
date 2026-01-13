@@ -27,7 +27,6 @@ import java.util.ResourceBundle;
 public class AuthController implements Initializable {
     @FXML private Canvas backgroundCanvas;
     private static final int PARTICLE_COUNT = 40;
-    // --- FXML Injections (Make sure these match fx:id in FXML) ---
     @FXML private TextField usernameField;
     @FXML private StackPane root_pane;
     @FXML private PasswordField passwordField;
@@ -43,17 +42,14 @@ public class AuthController implements Initializable {
     private final RegisterUseCase registerUseCase = new RegisterUseCase();
     private boolean isLoginMode = true;
 
-    // --- Dependencies ---
     private final LoginUseCase loginUseCase = new LoginUseCase(new AuthRepositoryImp());
     private boolean isPasswordVisible = false;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         AnimatedNetworkBackground background = new AnimatedNetworkBackground(root_pane);
-        // Initialize the visibility state
         passwordTextField.setVisible(false);
 
-        // Sync the text between the hidden PasswordField and visible TextField
         passwordTextField.textProperty().bindBidirectional(passwordField.textProperty());
 
 
@@ -156,11 +152,9 @@ public class AuthController implements Initializable {
             LoginResult result;
 
             if (isLoginMode) {
-                // Perform Login
                 result = loginUseCase.execute(username, password);
                 
             } else {
-                // Perform Register
                 result = registerUseCase.execute(username, password);
             }
 
@@ -173,7 +167,6 @@ public class AuthController implements Initializable {
                         OnlineLobbyController.score = 0;
                         Navigator.navigate(View.ONLINE_LOBBY);
                     } else {
-                        // If register success, switch back to login or auto-login
                         showAlert("Success", "Account created! Please log in.");
                         setLoginMode();
                     }

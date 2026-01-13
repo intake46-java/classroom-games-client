@@ -19,11 +19,9 @@ public class SinglePlayerContext extends GameContext {
     public Move[] moves = new Move[9];
     private int moveIndex = 0;
 
-    // Names needed for the GameRecord
     private String player1Name;
     private String player2Name = "Computer";
 
-    // Updated Constructor to accept Player Names
     public SinglePlayerContext(GameHandling game, AiStrategy aiStrategy, String player1Name) {
         super(game);
         this.aiStrategy = aiStrategy;
@@ -35,7 +33,6 @@ public class SinglePlayerContext extends GameContext {
         if (game.isGameOver()) {
             return;
         }
-        // 1. Human Move
         if (game.makeMove(row, col)) {
             moves[moveIndex++] = new Move(row, col, game.getCurrentPlayer());
             callback.onMoveMade(row, col, game.getCurrentPlayer());
@@ -46,13 +43,11 @@ public class SinglePlayerContext extends GameContext {
 
             game.changeTurn();
 
-            // 2. AI Move
             new Thread(() -> {
                 try {
                     Thread.sleep(700); // AI Thinking delay
                 } catch (InterruptedException ignored) {}
 
-                // Assuming Game extends Board or implements the logic needed
                 Cell aiMove = aiStrategy.AIMove((Board) game);
 
                 Platform.runLater(() -> {

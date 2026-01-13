@@ -21,21 +21,16 @@ public class ServerConnection {
     }
 
     private ServerConnection() {
-        // Optional: You could auto-connect here, or keep it manual
     }
 
-    // 2. Static Inner Class - The "Holder"
-    // This class is not loaded into memory until getInstance() is called.
     private static class ServerConnectionHolder {
         private static final ServerConnection INSTANCE = new ServerConnection();
     }
 
-    // 3. Global Access Point
     public static ServerConnection getInstance() {
         return ServerConnectionHolder.INSTANCE;
     }
 
-    // --- Infrastructure Logic ---
 
     /**
      * Connects to the server if not already connected.

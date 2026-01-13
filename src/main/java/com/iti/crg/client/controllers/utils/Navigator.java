@@ -12,7 +12,6 @@ public class Navigator {
     private static View lastView;
     private static final String VIEWS_PACKAGE = "/com/iti/crg/client/";
 
-    // Defaults for the initial launch
     private static final double DEFAULT_WIDTH = 1000;
     private static final double DEFAULT_HEIGHT = 650;
 
@@ -29,27 +28,22 @@ public class Navigator {
         }
 
         try {
-            // Load FXML
             FXMLLoader loader = new FXMLLoader(Navigator.class.getResource(VIEWS_PACKAGE + view.getFxmlName()));
             Parent root = loader.load();
 
             Scene scene = stage.getScene();
 
             if (scene == null) {
-                // FIRST LAUNCH: Create scene and set default dimensions
                 scene = new Scene(root);
                 stage.setScene(scene);
                 stage.setWidth(DEFAULT_WIDTH);
                 stage.setHeight(DEFAULT_HEIGHT);
             } else {
-                // SUBSEQUENT NAVIGATIONS: Just replace the root (content)
-                // This keeps the window size and position exactly where the user left it.
                 scene.setRoot(root);
             }
 
             stage.show();
 
-            // Return the controller typed as T
             return (T) loader.getController();
 
         } catch (IOException e) {
