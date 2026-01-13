@@ -283,7 +283,9 @@ public class OnlineLobbyController implements Initializable {
 
     @FXML
     private void logout() {
+        listening = false;
         ServerConnection.getInstance().forceDisconnect();
         Navigator.navigate(View.HOME);
+
     }
 }
