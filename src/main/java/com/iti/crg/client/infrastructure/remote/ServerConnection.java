@@ -8,7 +8,7 @@ import java.net.Socket;
 
 public class ServerConnection {
 
-    private static final String SERVER_IP = "127.0.0.1"; // Or load from config
+    private String serverIp = "127.0.0.1"; // Or load from config
     private static final int SERVER_PORT = 5005;
 
     private Socket socket;
@@ -16,23 +16,24 @@ public class ServerConnection {
     private PrintStream writer;
     public boolean connected = false;
 
-    private ServerConnection() {
-        // Optional: You could auto-connect here, or keep it manual
+    public boolean isConnected() {
+        return socket != null && !socket.isClosed() && socket.isConnected();
     }
 
-    // 2. Static Inner Class - The "Holder"
-    // This class is not loaded into memory until getInstance() is called.
+    private ServerConnection() {
+    }
+
     private static class ServerConnectionHolder {
         private static final ServerConnection INSTANCE = new ServerConnection();
     }
 
-    // 3. Global Access Point
     public static ServerConnection getInstance() {
         return ServerConnectionHolder.INSTANCE;
     }
 
-    // --- Infrastructure Logic ---
-
+    public void setIp(String ip) {
+        this.serverIp = ip;
+    }
     /**
      * Connects to the server if not already connected.
      * @return true if connection successful or already connected
@@ -44,7 +45,7 @@ public class ServerConnection {
         }
 
         try {
-            socket = new Socket(SERVER_IP, SERVER_PORT);
+            socket = new Socket(serverIp, SERVER_PORT);
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             writer = new PrintStream(socket.getOutputStream());
             System.out.println("Connected to server.");

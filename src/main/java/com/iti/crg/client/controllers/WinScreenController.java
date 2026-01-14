@@ -1,7 +1,7 @@
 package com.iti.crg.client.controllers;
 
+import com.iti.crg.client.controllers.utils.Navigator;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -16,17 +16,18 @@ public class WinScreenController {
     @FXML
     private VBox placeholderBox;
     
-    @FXML
-    private Button playAgainButton;
-    
-    @FXML
-    private Button backToHomeButton;
-    
     private MediaPlayer mediaPlayer;
     
     @FXML
     public void initialize() {
         loadBonusVideo();
+    mediaView.setOnMouseClicked(event -> {
+        if (mediaPlayer != null && mediaPlayer.getStatus() == MediaPlayer.Status.STOPPED) {
+            mediaPlayer.seek(Duration.ZERO);
+            mediaPlayer.play();
+        }
+    });
+
     }
     
     private void loadBonusVideo() {
@@ -45,12 +46,11 @@ public class WinScreenController {
                 mediaView.setVisible(true);
                 mediaPlayer.play();
             });
-            
-            mediaPlayer.setOnEndOfMedia(() -> {
-                mediaPlayer.stop();
-                mediaPlayer.seek(Duration.ZERO);
-                mediaPlayer.play();
-            });
+                    mediaPlayer.setOnEndOfMedia(() -> {
+            System.out.println("Win video finished.");
+            mediaPlayer.stop();
+        });
+    
             
             mediaPlayer.setOnError(() -> {
                 System.err.println("Media error: " + mediaPlayer.getError().getMessage());
@@ -66,16 +66,12 @@ public class WinScreenController {
         }
     }
     
-    @FXML
-    private void handlePlayAgain() {
-        // stopVideo();
-        // App.setRoot();
-    }
+
     
     @FXML
     private void handleBackToHome() {
-        // stopVideo();
-        // App.setRoot();
+        stopVideo();
+        Navigator.navigateBack();
     }
     
     private void stopVideo() {

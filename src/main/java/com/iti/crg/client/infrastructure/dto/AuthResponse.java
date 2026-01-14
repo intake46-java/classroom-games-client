@@ -6,14 +6,14 @@ import java.util.Set;
 
 public class AuthResponse {
     private boolean success;
-    private Set<Player> onlinePlayers;
+    private int score;
 
-    public AuthResponse(boolean success, Set<Player> onlinePlayers) {
+    public AuthResponse(boolean success, int score) {
         this.success = success;
-        this.onlinePlayers = onlinePlayers;
+        this.score = score;
     }
 
     public boolean isSuccess() { return success; }
-    public Set<Player> getOnlinePlayers() { return onlinePlayers; }
+    public int getScore() { return score; }
 }
 

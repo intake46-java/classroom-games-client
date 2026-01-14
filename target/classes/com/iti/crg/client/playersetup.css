@@ -1,0 +1,172 @@
+/* 1. Main Background */
+.main-root {
+    /* Gentle gradient: Light Purple -> White -> Light Mint */
+    -fx-background-color: linear-gradient(to top right, #e3d7ff, #fdfbff, #d8f8ee);
+}
+
+/* 2. Header Text */
+.header-text {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2D3436;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.1), 0, 2, 0, 2);
+}
+
+/* 3. The Central White Card */
+.setup-card {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    /* Soft shadow to give depth */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 20, 0, 0, 10);
+    -fx-border-color: white;
+    -fx-border-width: 5;
+    -fx-border-radius: 20;
+}
+
+/* 4. Input Field Labels */
+.input-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #636e72;
+    -fx-font-size: 14px;
+    -fx-padding: 0 0 0 2;
+}
+
+/* 5. TextField Styling */
+.text-input {
+    -fx-padding: 12;
+    -fx-background-radius: 10;
+    -fx-background-color: #F8F9FA;
+    -fx-border-color: #DFE6E9;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 10;
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #b2bec3;
+    -fx-text-fill: #2d3436;
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+.text-input:focused {
+    -fx-background-color: white;
+    -fx-border-color: #6D9EF3; /* Blue focus */
+    -fx-effect: dropshadow(three-pass-box, rgba(109, 158, 243, 0.2), 5, 0, 0, 2);
+}
+
+/* Special border color for Player 1 field */
+.text-field-p1:focused {
+    -fx-border-color: #6D9EF3;
+}
+
+/* 6. ComboBox Styling (Difficulty) */
+.combo-box {
+    -fx-background-color: #F8F9FA;
+    -fx-background-radius: 10;
+    -fx-border-color: #DFE6E9;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 10;
+    -fx-padding: 2 10 2 10; /* Align text with TextField */
+}
+
+.combo-box:showing,
+.combo-box:focused {
+    -fx-background-color: white;
+    -fx-border-color: #B197FC; /* Purple focus for difficulty */
+    -fx-effect: dropshadow(three-pass-box, rgba(177, 151, 252, 0.2), 5, 0, 0, 2);
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #2d3436;
+    -fx-padding: 8 5;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected,
+.combo-box-popup .list-view .list-cell:filled:hover {
+    -fx-background-color: #f3e9ff; /* Light purple hover */
+    -fx-text-fill: #6c5ce7;
+}
+
+/* 7. Checkbox Styling */
+.custom-checkbox {
+    -fx-font-size: 14px;
+    -fx-text-fill: #636e72;
+    -fx-padding: 5 0 0 0;
+    -fx-cursor: hand;
+}
+
+.custom-checkbox > .box {
+    -fx-background-color: white;
+    -fx-border-color: #b2bec3;
+    -fx-border-radius: 4;
+}
+
+.custom-checkbox:selected > .box {
+    -fx-background-color: #6D9EF3;
+    -fx-border-color: #6D9EF3;
+}
+
+.custom-checkbox:selected > .box > .mark {
+    -fx-background-color: white;
+    -fx-shape: "M0,4 L3,7 L9,1 L8,0 L3,5 L1,3 Z"; /* Cleaner checkmark */
+}
+
+/* 8. Start Game Button (Gradient Pill) */
+.start-button {
+    -fx-background-color: linear-gradient(to right, #6D9EF3, #5B8DE0);
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 0;
+    -fx-background-radius: 30;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(91, 141, 224, 0.3), 10, 0, 0, 5);
+}
+
+.start-button:hover {
+    -fx-background-color: linear-gradient(to right, #5B8DE0, #4A7BC0);
+    -fx-translate-y: -2;
+    -fx-effect: dropshadow(three-pass-box, rgba(91, 141, 224, 0.5), 15, 0, 0, 7);
+}
+
+.start-button:pressed {
+    -fx-translate-y: 1;
+    -fx-effect: none;
+}
+
+/* 9. Back Button (Top Left) */
+.back-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #636e72;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-padding: 8 16;
+    -fx-border-color: #b2bec3;
+    -fx-border-radius: 20;
+    -fx-border-width: 1.5;
+    -fx-background-radius: 20;
+    -fx-transition: all 0.2s;
+}
+
+.back-button:hover {
+    -fx-background-color: white;
+    -fx-text-fill: #6D9EF3;
+    -fx-border-color: #6D9EF3;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+/* Optional: Change SVG color on hover (requires looking up the SVG path in CSS) */
+.back-button:hover .svg-path {
+    -fx-fill: #6D9EF3;
+}
+
+/* 10. Footer */
+.footer-text {
+    -fx-text-fill: #b2bec3;
+    -fx-font-size: 12px;
+}
