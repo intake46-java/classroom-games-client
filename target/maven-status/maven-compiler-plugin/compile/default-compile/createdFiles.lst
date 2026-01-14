@@ -60,6 +60,7 @@ com\iti\crg\client\infrastructure\repository\InvitationRepositoryImp.class
 com\iti\crg\client\domain\game\gamecontext\MultiplePlayerContext.class
 com\iti\crg\client\controllers\OfflineController.class
 com\iti\crg\client\domain\usecases\LoginUseCase.class
+com\iti\crg\client\mainClass.class
 com\iti\crg\client\controllers\utils\AnimatedNetworkBackground$Particle.class
 com\iti\crg\client\domain\game\gamehandling\GameHandling.class
 com\iti\crg\client\domain\repository\AuthRepository.class

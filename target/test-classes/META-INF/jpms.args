@@ -1,0 +1,4 @@
+--patch-module
+com.iti.tictactoe.client=_
+--add-reads
+com.iti.tictactoe.client=ALL-UNNAMED
