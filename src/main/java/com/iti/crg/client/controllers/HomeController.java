@@ -195,8 +195,8 @@ public class HomeController implements Initializable {
         grid.setVgap(10);
 
         TextField ipField = new TextField();
-        ipField.setPromptText("127.0.0.1");
-        ipField.setText("127.0.0.1");
+        ipField.setPromptText("4.211.128.251");
+        ipField.setText("4.211.128.251");
 
         grid.add(new Label("IP Address:"), 0, 0);
         grid.add(ipField, 1, 0);
