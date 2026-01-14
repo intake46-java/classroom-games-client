@@ -19,6 +19,4 @@ public class LoadRecordManager {
         }
         return record;
     }
-
-
 }

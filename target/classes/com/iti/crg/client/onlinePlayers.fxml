@@ -2,34 +2,78 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.iti.crg.client.controllers.OnlineLobbyController"
-            stylesheets="@onlinePlayers.css">
+<StackPane fx:id="rootPane"
+           xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.iti.crg.client.controllers.OnlineLobbyController"
+           stylesheets="@onlinePlayers.css">
 
-    <top>
-        <HBox spacing="10" alignment="CENTER_LEFT" styleClass="top-bar">
-            <ComboBox fx:id="gameSelector" prefWidth="150"/>
-            <Label text="Online Lobby" styleClass="title"/>
-            <Pane HBox.hgrow="ALWAYS"/>
-            <Button text="Logout" styleClass="logout-btn"/>
-        </HBox>
-    </top>
+    <BorderPane styleClass="main-layout">
 
-    <center>
-        <VBox spacing="15">
-            <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
-            </padding>
+        <left>
+            <VBox styleClass="sidebar" spacing="20" alignment="TOP_CENTER" prefWidth="260">
+                <padding>
+                    <Insets top="50" right="20" bottom="30" left="20"/>
+                </padding>
 
-            <Label text="Online Players" styleClass="section-title"/>
+                <VBox alignment="CENTER" spacing="15">
+                    <StackPane>
+                        <Circle radius="45" styleClass="profile-avatar-bg"/>
+                        <Label text="ME" styleClass="avatar-text"/>
+                    </StackPane>
 
-            <ScrollPane fitToWidth="true">
-                <VBox fx:id="playerList" spacing="10"/>
-            </ScrollPane>
-        </VBox>
-    </center>
+                    <VBox alignment="CENTER" spacing="5">
+                        <Label fx:id="currentUserLabel" text="Username" styleClass="profile-name"/>
+                        <HBox alignment="CENTER" spacing="8" styleClass="score-badge">
+                            <Label text="SCORE" styleClass="score-label-small"/>
+                            <Label fx:id="currentScoreLabel" text="0" styleClass="profile-score-value"/>
+                        </HBox>
+                    </VBox>
+                </VBox>
 
-</BorderPane>
+                <Region VBox.vgrow="ALWAYS"/>
+
+                <Button onAction="#logout" text="Sign Out" styleClass="logout-btn" maxWidth="Infinity"/>
+            </VBox>
+        </left>
+
+        <center>
+            <VBox spacing="25" styleClass="content-area">
+                <padding>
+                    <Insets top="40" right="40" bottom="40" left="40"/>
+                </padding>
+
+                <HBox alignment="CENTER_LEFT" spacing="20">
+                    <VBox spacing="2">
+                        <Label text="Game Lobby" styleClass="page-title"/>
+                        <Label text="Choose your arena and challenge a player" styleClass="page-subtitle"/>
+                    </VBox>
+
+                    <Pane HBox.hgrow="ALWAYS"/>
+
+                    <HBox alignment="CENTER" styleClass="game-selector-container">
+                        <Label text="Game Mode:" styleClass="selector-label"/>
+                        <ComboBox fx:id="gameSelector" prefWidth="160" styleClass="game-combo"/>
+                    </HBox>
+                </HBox>
+
+                <Separator styleClass="custom-separator"/>
+
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Active Players" styleClass="section-header"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label text="Status: Online" styleClass="status-indicator"/>
+                </HBox>
+
+                <ScrollPane fitToWidth="true" styleClass="custom-scroll" VBox.vgrow="ALWAYS">
+                    <VBox fx:id="playerList" spacing="15">
+                    </VBox>
+                </ScrollPane>
+            </VBox>
+        </center>
+    </BorderPane>
+
+</StackPane>

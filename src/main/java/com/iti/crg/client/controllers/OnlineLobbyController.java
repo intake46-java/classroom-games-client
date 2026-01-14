@@ -11,12 +11,15 @@ import com.iti.crg.client.infrastructure.dto.Request;
 import com.iti.crg.client.infrastructure.remote.ServerConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+
+import com.iti.crg.client.infrastructure.repository.GameRepositoryImp;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -47,6 +50,7 @@ public class OnlineLobbyController implements Initializable {
     public static int score;
 
     private BufferedReader reader;
+    private PrintWriter writer; 
     private final Gson gson = new Gson();
     private final SendInvitationUseCase sendInvitationUseCase;
 
@@ -72,8 +76,59 @@ public class OnlineLobbyController implements Initializable {
         currentScoreLabel.setText(String.valueOf(score));
 
         reader = ServerConnection.getInstance().getReader();
+
+        notifyServerIAmAvailable();
+
         new Thread(this::listenForServerMessages).start();
     }
+
+    private void notifyServerIAmAvailable() {
+        new Thread(() -> {
+            try {
+                new GameRepositoryImp().sendTie("");
+
+            } catch (Exception e) {
+                System.err.println("Failed to notify server: " + e.getMessage());
+            }
+        }).start();
+    }
+
+    private void listenForServerMessages() {
+        try {
+            while (listening) {
+                String line = reader.readLine();
+
+                if (line == null) {
+                    System.out.println("Server connection lost (Stream ended).");
+                    handleServerDisconnect();
+                    break;
+                }
+
+                try {
+                    if (line.trim().startsWith("{")) {
+                        Request request = gson.fromJson(line, Request.class);
+                        if ("GAME_START".equals(request.getType())) {
+                            listening = false; // Stop listening so we can switch scenes
+                            handleGameStart(request.getPayload());
+                            break;
+                        }
+                        handleJsonMessage(line);
+                    } else {
+                        handleRawMessage(line);
+                    }
+                } catch (Exception innerEx) {
+                    System.err.println("Error processing message: " + line);
+                    innerEx.printStackTrace();
+                }
+            }
+        } catch (IOException e) {
+            if (listening) {
+                System.err.println("Connection error: " + e.getMessage());
+                handleServerDisconnect();
+            }
+        }
+    }
+
 
     private void setAllButtonsDisable(boolean disable) {
         inviteButtons.forEach((username, button) -> {
@@ -87,38 +142,6 @@ public class OnlineLobbyController implements Initializable {
         });
     }
 
-
-    private void listenForServerMessages() {
-        try {
-            while (listening) {
-                String line = reader.readLine();
-
-                if (line == null) {
-                    System.out.println("Server connection lost (Stream ended).");
-                    handleServerDisconnect();
-                    break;
-                }
-
-                if (line.trim().startsWith("{")) {
-                    Request request = gson.fromJson(line, Request.class);
-                    if ("GAME_START".equals(request.getType())) {
-                        listening = false;
-                        handleGameStart(request.getPayload());
-                        break;
-                    }
-                    handleJsonMessage(line);
-                } else {
-                    handleRawMessage(line);
-                }
-            }
-        } catch (IOException e) {
-            if (listening) {
-                System.err.println("Connection error: " + e.getMessage());
-                handleServerDisconnect();
-            }
-        }
-    }
-
     private void handleServerDisconnect() {
         listening = false;
         Platform.runLater(() -> {
@@ -127,7 +150,6 @@ public class OnlineLobbyController implements Initializable {
             alert.setHeaderText("Server Offline");
             alert.setContentText("The server has shut down or the connection was lost.\nYou will be returned to the main menu.");
             alert.showAndWait();
-
             logout();
         });
     }
@@ -169,17 +191,28 @@ public class OnlineLobbyController implements Initializable {
         try {
             String countStr = reader.readLine();
             String scoreSer = reader.readLine();
-            if (countStr == null) return;
+
+            if (countStr == null || scoreSer == null) return;
+
             int n = Integer.parseInt(countStr);
             int userScore = Integer.parseInt(scoreSer);
+
             Map<String, Integer> onlinePlayers = new HashMap<>();
-            System.out.println("Score "+ userScore);
+
             for (int i = 0; i < n; i++) {
                 String username = reader.readLine();
-                int score = Integer.parseInt(reader.readLine());
-                int status = Integer.parseInt(reader.readLine());
-                if (!myUsername.equals(username)) {
-                    onlinePlayers.put(username, score);
+                String scoreStr = reader.readLine();
+                String statusStr = reader.readLine();
+
+                // Robust parsing
+                int pScore = (scoreStr != null) ? Integer.parseInt(scoreStr) : 0;
+                // You can use status to color the circle (0 = offline/busy, 1 = available)
+                int status = (statusStr != null) ? Integer.parseInt(statusStr) : 0;
+
+                if (username != null && !myUsername.equals(username)) {
+                    // Logic: If status == 1 (Available), add to list.
+                    // If your logic requires showing busy players too, keep them.
+                    onlinePlayers.put(username, pScore);
                 }
             }
 
@@ -187,10 +220,18 @@ public class OnlineLobbyController implements Initializable {
                 currentScoreLabel.setText(String.valueOf(userScore));
                 playerList.getChildren().clear();
                 inviteButtons.clear();
-                onlinePlayers.forEach((username, score) -> addPlayer(username, score, true));
+                // Pass 'true' if status indicates available.
+                // For now, defaulting to true as per your original code,
+                // but ideally use the 'status' variable read above.
+                onlinePlayers.forEach((username, pScore) -> addPlayer(username, pScore, true));
             });
-        } catch (IOException ex) { ex.printStackTrace(); }
+        } catch (NumberFormatException | IOException ex) {
+            ex.printStackTrace();
+            // Important: Don't let this crash the main listener loop
+        }
     }
+
+    // ... [addPlayer, showInviteDialog, handleGameStart, logout remain same] ...
 
     private void addPlayer(String name, int score, boolean online) {
         HBox row = new HBox();

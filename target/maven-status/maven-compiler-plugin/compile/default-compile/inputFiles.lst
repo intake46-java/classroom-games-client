@@ -12,13 +12,12 @@ F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\cont
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\GameRecord.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\aistrategy\EasyTicTacToeAi.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\LoginResult.java
+F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\GetPlayerScore.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\dto\AuthResponse.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\aistrategy\HardTicTacToeAi.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\Board.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\SecondaryController.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\SendInvitationUseCase.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\module-info.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\OnlineGameBoardController.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\App.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\managers\LoadRecordManager.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\repository\GameRepository.java
@@ -29,7 +28,6 @@ F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\cont
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\utils\AnimatedNetworkBackground.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\RecordScreenController.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\managers\SaveRecordManager.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\DifficultyController.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\utils\View.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamecontext\MultiplePlayerContext.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\HomeController.java
@@ -37,7 +35,6 @@ F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infr
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\RegisterUseCase.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\dto\Request.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\ComputerSetupController.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\OnlinePlayersController.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\AuthController.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\usecases\GetOnlinePlayersUseCase.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamehandling\TicTacToeGame.java
@@ -49,14 +46,12 @@ F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infr
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\Game_invitationController.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\remote\ServerConnection.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\aistrategy\AiStrategy.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\GameBoardController.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\Cell.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\aistrategy\MediumTicTacToeAi.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\dto\GameMoveDto.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\TieScreenController.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\repository\InvitationRepository.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\controllers\WinScreenController.java
-F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\game\gamecontext\OfflineSingleGameContext.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\repository\AuthRepository.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\domain\entities\TicTacToeBoard.java
 F:\ITI\java\Project\classroom-games-client\src\main\java\com\iti\crg\client\infrastructure\repository\InvitationRepositoryImp.java
