@@ -1,4 +1,4 @@
-# Networked Tic-Tac-Toe Platform
+# Class Room Games
 
 ## Project Overview
 
